@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layout')
 
 @section('title', 'Edit Team Registration Page')
 
@@ -81,24 +81,24 @@
                            placeholder="Captain's Name">
                 </div>
 
-                {{-- Email Field --}}
+                {{-- Captain Email Field --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Label</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Captain Email Label</label>
                     <input type="text" 
                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           data-content-key="team_registration.form.email"
-                           value="{{ content('team_registration.form.email', 'Email Address') }}"
-                           placeholder="Email Address">
+                           data-content-key="team_registration.form.captain_email"
+                           value="{{ content('team_registration.form.captain_email', 'Captain\'s Email') }}"
+                           placeholder="Captain's Email">
                 </div>
 
-                {{-- Phone Field --}}
+                {{-- Captain Phone Field --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Label</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Captain Phone Label</label>
                     <input type="text" 
                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           data-content-key="team_registration.form.phone"
-                           value="{{ content('team_registration.form.phone', 'Phone Number') }}"
-                           placeholder="Phone Number">
+                           data-content-key="team_registration.form.captain_phone"
+                           value="{{ content('team_registration.form.captain_phone', 'Captain\'s Phone') }}"
+                           placeholder="Captain's Phone">
                 </div>
 
                 {{-- Team Size Field --}}
@@ -157,9 +157,93 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Submit Button Text</label>
                 <input type="text" 
                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                       data-content-key="team_registration.form.submit_button"
-                       value="{{ content('team_registration.form.submit_button', 'Register Team') }}"
+                       data-content-key="team_registration.form.register_button"
+                       value="{{ content('team_registration.form.register_button', 'Register Team') }}"
                        placeholder="Register Team">
+            </div>
+        </div>
+
+        {{-- Tabs Section --}}
+        <div class="border border-gray-300 rounded-lg p-6 bg-gray-50">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Navigation Tabs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                {{-- Tournament Tab --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Tournament Tab Text</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.tabs.tournament"
+                           value="{{ content('team_registration.tabs.tournament', 'Tournament Registrations') }}"
+                           placeholder="Tournament Registrations">
+                </div>
+
+                {{-- Register Tab --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Register Tab Text</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.tabs.register"
+                           value="{{ content('team_registration.tabs.register', 'Register – now') }}"
+                           placeholder="Register – now">
+                </div>
+
+                {{-- Team Tab --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Team Tab Text</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.tabs.team"
+                           value="{{ content('team_registration.tabs.team', 'Team') }}"
+                           placeholder="Team">
+                </div>
+            </div>
+        </div>
+
+        {{-- Additional Form Fields --}}
+        <div class="border border-gray-300 rounded-lg p-6 bg-gray-50">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Additional Form Fields</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {{-- Captain Logo Field --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Captain Logo Label</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.form.captain_logo"
+                           value="{{ content('team_registration.form.captain_logo', 'Captain\'s Logo') }}"
+                           placeholder="Captain's Logo">
+                </div>
+
+                {{-- Team Logo Field --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Team Logo Label</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.form.team_logo"
+                           value="{{ content('team_registration.form.team_logo', 'Team Logo') }}"
+                           placeholder="Team Logo">
+                </div>
+
+                {{-- Upload Placeholder --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload Placeholder Text</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.form.upload_placeholder"
+                           value="{{ content('team_registration.form.upload_placeholder', 'Click to upload') }}"
+                           placeholder="Click to upload">
+                </div>
+
+                {{-- Game ID Field --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Game ID Label</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.form.game_id"
+                           value="{{ content('team_registration.form.game_id', 'Game ID') }}"
+                           placeholder="Game ID">
+                </div>
             </div>
         </div>
 
@@ -173,29 +257,49 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Section Title</label>
                     <input type="text" 
                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           data-content-key="team_registration.members.title"
-                           value="{{ content('team_registration.members.title', 'Team Members') }}"
+                           data-content-key="team_registration.form.team_members"
+                           value="{{ content('team_registration.form.team_members', 'Team Members') }}"
                            placeholder="Team Members">
                 </div>
 
-                {{-- Add Member Button --}}
+                {{-- Member 1 --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Add Member Button Text</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Member 1 Label</label>
                     <input type="text" 
                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           data-content-key="team_registration.members.add_button"
-                           value="{{ content('team_registration.members.add_button', 'Add Team Member') }}"
-                           placeholder="Add Team Member">
+                           data-content-key="team_registration.form.member1"
+                           value="{{ content('team_registration.form.member1', 'Member 1') }}"
+                           placeholder="Member 1">
                 </div>
 
-                {{-- Member Name Label --}}
+                {{-- Member 2 --}}
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Member Name Label</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Member 2 Label</label>
                     <input type="text" 
                            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                           data-content-key="team_registration.members.name_label"
-                           value="{{ content('team_registration.members.name_label', 'Player Name') }}"
-                           placeholder="Player Name">
+                           data-content-key="team_registration.form.member2"
+                           value="{{ content('team_registration.form.member2', 'Member 2') }}"
+                           placeholder="Member 2">
+                </div>
+
+                {{-- Member 3 --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Member 3 Label</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.form.member3"
+                           value="{{ content('team_registration.form.member3', 'Member 3') }}"
+                           placeholder="Member 3">
+                </div>
+
+                {{-- Member 4 --}}
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Member 4 Label</label>
+                    <input type="text" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                           data-content-key="team_registration.form.member4"
+                           value="{{ content('team_registration.form.member4', 'Member 4') }}"
+                           placeholder="Member 4">
                 </div>
 
                 {{-- Member Role Label --}}

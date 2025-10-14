@@ -3,7 +3,7 @@
 @section('title', 'News')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
 @endpush
 
 @section('content')

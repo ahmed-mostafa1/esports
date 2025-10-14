@@ -1005,15 +1005,17 @@ class ContentSeeder extends Seeder
             ],
 
             // ==============================================
-            // TOURNAMENTS PAGE CONTENT (Extended)
+            // TOURNAMENTS PAGE CONTENT (All 8 Tournaments)
             // ==============================================
+            
+            // Tournament 1: League of Legends World Championship
             [
                 'key' => 'tournaments.tournament1.title',
                 'type' => 'text',
                 'group' => 'tournaments',
                 'value' => [
-                    'en' => 'DESAFIO EM HOWLING ABYSS: ÀS CEGAS',
-                    'ar' => 'تحدي في هاولينغ أبيس: أعمى'
+                    'en' => 'LEAGUE OF LEGENDS WORLD CHAMPIONSHIP',
+                    'ar' => 'بطولة العالم للعبة ليج أوف ليجندز'
                 ]
             ],
             [
@@ -1021,8 +1023,8 @@ class ContentSeeder extends Seeder
                 'type' => 'text',
                 'group' => 'tournaments',
                 'value' => [
-                    'en' => '01/11/23',
-                    'ar' => '01/11/23'
+                    'en' => '15/12/2024',
+                    'ar' => '15/12/2024'
                 ]
             ],
             [
@@ -1030,8 +1032,8 @@ class ContentSeeder extends Seeder
                 'type' => 'text',
                 'group' => 'tournaments',
                 'value' => [
-                    'en' => '20:00',
-                    'ar' => '20:00'
+                    'en' => '18:00',
+                    'ar' => '18:00'
                 ]
             ],
             [
@@ -1039,8 +1041,8 @@ class ContentSeeder extends Seeder
                 'type' => 'text',
                 'group' => 'tournaments',
                 'value' => [
-                    'en' => '$ 2,000.00',
-                    'ar' => '2,000.00 دولار'
+                    'en' => '$5,000.00',
+                    'ar' => '5,000.00 دولار'
                 ]
             ],
             [
@@ -1048,6 +1050,314 @@ class ContentSeeder extends Seeder
                 'type' => 'image',
                 'group' => 'tournaments',
                 'value' => ['path' => 'tournaments.tournament1.image.png']
+            ],
+
+            // Tournament 2: FIFA Ultimate Team Challenge
+            [
+                'key' => 'tournaments.tournament2.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'FIFA ULTIMATE TEAM CHALLENGE',
+                    'ar' => 'تحدي فيفا التيم النهائي'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament2.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '20/12/2024',
+                    'ar' => '20/12/2024'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament2.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '16:30',
+                    'ar' => '16:30'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament2.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$3,500.00',
+                    'ar' => '3,500.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament2.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament2.image.png']
+            ],
+
+            // Tournament 3: Call of Duty Warzone Battle
+            [
+                'key' => 'tournaments.tournament3.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'CALL OF DUTY WARZONE BATTLE',
+                    'ar' => 'معركة كول أوف ديوتي وورزون'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament3.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '25/12/2024',
+                    'ar' => '25/12/2024'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament3.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '14:00',
+                    'ar' => '14:00'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament3.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$4,200.00',
+                    'ar' => '4,200.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament3.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament3.image.png']
+            ],
+
+            // Tournament 4: Counter-Strike Global Offensive
+            [
+                'key' => 'tournaments.tournament4.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'COUNTER-STRIKE GLOBAL OFFENSIVE',
+                    'ar' => 'كاونتر سترايك الهجوم العالمي'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament4.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '28/12/2024',
+                    'ar' => '28/12/2024'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament4.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '19:45',
+                    'ar' => '19:45'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament4.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$6,750.00',
+                    'ar' => '6,750.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament4.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament4.image.png']
+            ],
+
+            // Tournament 5: Valorant Champions Series
+            [
+                'key' => 'tournaments.tournament5.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'VALORANT CHAMPIONS SERIES',
+                    'ar' => 'سلسلة أبطال فالورانت'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament5.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '02/01/2025',
+                    'ar' => '02/01/2025'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament5.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '17:15',
+                    'ar' => '17:15'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament5.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$8,000.00',
+                    'ar' => '8,000.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament5.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament5.image.png']
+            ],
+
+            // Tournament 6: Apex Legends Arena Masters
+            [
+                'key' => 'tournaments.tournament6.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'APEX LEGENDS ARENA MASTERS',
+                    'ar' => 'أساتذة ساحة أبيكس ليجندز'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament6.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '05/01/2025',
+                    'ar' => '05/01/2025'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament6.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '15:30',
+                    'ar' => '15:30'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament6.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$3,800.00',
+                    'ar' => '3,800.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament6.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament6.image.png']
+            ],
+
+            // Tournament 7: Rocket League Championship Series
+            [
+                'key' => 'tournaments.tournament7.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'ROCKET LEAGUE CHAMPIONSHIP SERIES',
+                    'ar' => 'سلسلة بطولة روكيت ليج'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament7.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '08/01/2025',
+                    'ar' => '08/01/2025'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament7.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '13:45',
+                    'ar' => '13:45'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament7.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$2,900.00',
+                    'ar' => '2,900.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament7.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament7.image.png']
+            ],
+
+            // Tournament 8: Overwatch League Grand Finals
+            [
+                'key' => 'tournaments.tournament8.title',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => 'OVERWATCH LEAGUE GRAND FINALS',
+                    'ar' => 'النهائيات الكبرى لدوري أوفرواتش'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament8.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '12/01/2025',
+                    'ar' => '12/01/2025'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament8.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '21:00',
+                    'ar' => '21:00'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament8.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$10,500.00',
+                    'ar' => '10,500.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.tournament8.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.tournament8.image.png']
             ],
 
             // ==============================================

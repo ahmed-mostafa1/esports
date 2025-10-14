@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Models\Content;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class ContentRepository
 {
@@ -27,30 +28,63 @@ class ContentRepository
 
         return Cache::rememberForever($cacheKey, function () use ($key, $default) {
             // Use raw database query to avoid model complications
-            $row = \DB::table('contents')
+            $row = DB::table('contents')
                      ->where('key', $key)
                      ->where('type', 'image')
                      ->first();
                      
             if (!$row) return $default ? asset($default) : '';
-            
+
             // Parse the JSON value
             $value = json_decode($row->value, true);
             $filename = $value['path'] ?? null;
-            
+
             if (!$filename) return $default ? asset($default) : '';
-            return asset('content-images/'.$filename);
+            $url = asset('content-images/'.$filename);
+            $path = public_path('content-images/'.$filename);
+            $version = is_string($path) && file_exists($path) ? filemtime($path) : null;
+
+            return $version ? "{$url}?v={$version}" : $url;
         });
     }
 
-    public static function forgetText(string $key): void
+    public static function forgetText(string $key, array $locales = []): void
     {
-        Cache::forget("cms:content:{$key}:en");
-        Cache::forget("cms:content:{$key}:ar");
+        foreach (self::localesForKey($key, $locales) as $locale) {
+            Cache::forget("cms:content:{$key}:{$locale}");
+        }
     }
 
     public static function forgetImage(string $key): void
     {
         Cache::forget("cms:content-media:{$key}");
+    }
+
+    protected static function localesForKey(string $key, array $locales = []): array
+    {
+        $defaults = array_filter([
+            App::getLocale(),
+            config('app.locale'),
+            config('app.fallback_locale'),
+            'en',
+            'ar',
+        ]);
+
+        $fromContent = [];
+
+        if (empty($locales)) {
+            try {
+                $content = Content::where('key', $key)->first();
+                if ($content) {
+                    $fromContent = array_keys($content->getTranslations('value') ?? []);
+                }
+            } catch (\Throwable $e) {
+                $fromContent = [];
+            }
+        }
+
+        $candidates = array_merge($locales, $fromContent, $defaults);
+
+        return array_values(array_unique(array_filter($candidates)));
     }
 }

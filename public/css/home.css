@@ -1735,7 +1735,6 @@ body {
     display: flex;
     gap: var(--gap);
     width: max-content;
-    transform: none !important;
     position: relative !important;
   }
 
@@ -1774,7 +1773,6 @@ body {
   display: flex;
   gap: clamp(16px, 4vw, 28px);
   width: max-content; /* shrink-wrap */
-  transform: none !important; /* don't counteract scroll position */
   position: relative !important;
 }
 

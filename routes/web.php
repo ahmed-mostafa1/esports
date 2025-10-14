@@ -60,13 +60,6 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::post('/contents/{key}', [ContentController::class, 'update'])->name('contents.update');
         Route::post('/contents/{key}/ajax', [ContentController::class, 'updateAjax'])->name('contents.update.ajax');
         
-        // Skeleton editors for specific pages
-        Route::get('/skeleton/home', fn() => view('admin.skeleton-home'))->name('skeleton.home');
-        Route::get('/skeleton/services', fn() => view('admin.skeleton-services'))->name('skeleton.services');
-        Route::get('/skeleton/news', fn() => view('admin.skeleton-news'))->name('skeleton.news');
-        Route::get('/skeleton/reg-team', fn() => view('admin.skeleton-reg-team'))->name('skeleton.reg-team');
-        Route::get('/skeleton/reg-single', fn() => view('admin.skeleton-reg-single'))->name('skeleton.reg-single');
-        
         // AJAX endpoints for content management
         Route::post('/content/update-ajax', [ContentController::class, 'updateContentAjax'])->name('content.update-ajax');
         Route::post('/content/batch-update', [ContentController::class, 'batchUpdate'])->name('content.batch-update');

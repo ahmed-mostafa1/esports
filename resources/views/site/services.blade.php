@@ -3,8 +3,8 @@
 @section('title', 'Services')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('./css/ourservices.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/ourservices.css') }}" />
 @endpush
 
 @section('content')

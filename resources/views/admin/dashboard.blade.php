@@ -84,21 +84,21 @@
       <div class="space-y-3 mb-6">
         <div class="text-sm font-medium text-gray-300 mb-2">📄 Main Website Pages</div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <a href="{{ route('admin.skeleton.home') }}" 
+          <a href="{{ route('admin.contents.skeleton', 'home') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded transition-all transform hover:scale-105">
-            🏠 Home Page (Complete)
+            🏠 Home Page (Standard)
           </a>
           <a href="{{ route('admin.contents.skeleton', 'about') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded transition-all transform hover:scale-105">
             📄 About Page (Standard)
           </a>
-          <a href="{{ route('admin.skeleton.services') }}" 
+          <a href="{{ route('admin.contents.skeleton', 'services') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white rounded transition-all transform hover:scale-105">
-            🛠️ Services Page (Complete)
+            🛠️ Services Page (Standard)
           </a>
-          <a href="{{ route('admin.skeleton.news') }}" 
+          <a href="{{ route('admin.contents.skeleton', 'news') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded transition-all transform hover:scale-105">
-            📰 News Page (Complete)
+            📰 News Page (Standard)
           </a>
           <a href="{{ route('admin.contents.skeleton', 'tournaments') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded transition-all transform hover:scale-105">
@@ -119,21 +119,25 @@
       <div class="space-y-3 mb-4">
         <div class="text-sm font-medium text-gray-300 mb-2">📝 Registration Forms</div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <a href="{{ route('admin.skeleton.reg-team') }}" 
+          <a href="{{ route('admin.contents.skeleton', 'team_registration') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded transition-all transform hover:scale-105">
-            👥 Team Registration (Complete)
+            👥 Team Registration (Custom)
           </a>
-          <a href="{{ route('admin.skeleton.reg-single') }}" 
+          <a href="{{ route('admin.contents.skeleton', 'single_registration') }}" 
              class="block px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded transition-all transform hover:scale-105">
-            👤 Single Player Registration (Complete)
+            👤 Single Player Registration (Custom)
           </a>
         </div>
       </div>
 
       <div class="text-xs text-gray-500 p-3 bg-green-900/20 border border-green-700 rounded">
-        ✅ <strong>COMPLETE SUITE:</strong> All 9 pages now have full skeleton editors with complete content visibility!
+        ✅ <strong>AVAILABLE EDITORS:</strong> 2 custom skeleton editors + standard skeleton editors for all pages!
         <br>
-        💡 <strong>Tip:</strong> Click any highlighted content directly on any page to edit it instantly!
+        🎆 <strong>Custom Skeleton Editors:</strong> Team Registration, Single Player Registration (with auto-save & batch update)
+        <br>
+        📋 <strong>Standard Skeleton Editors:</strong> Home, About, Services, News, Tournaments, Partners, Gallery
+        <br>
+        💡 <strong>Tip:</strong> Custom skeleton editors include comprehensive form sections with real-time editing!
       </div>
     </div>
   </div>

@@ -53,19 +53,42 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
   }
 
   const cards = () => Array.from(track.querySelectorAll('.card-partner'));
+  const toNumber = (value) => {
+    const parsed = parseFloat(value ?? '');
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  function cardStride(list = cards()) {
+    if (list.length <= 1) {
+      const single = list[0];
+      return single ? single.getBoundingClientRect().width : slider.clientWidth;
+    }
+    const delta = Math.abs(list[1].offsetLeft - list[0].offsetLeft);
+    if (delta > 0) return delta;
+    const width = list[0].getBoundingClientRect().width;
+    return width || slider.clientWidth;
+  }
   
   // Configuration
-  const VISIBLE_CARDS = 4; // Show 4 cards at a time on desktop
   let currentIndex = 0;
   let autoplayTimer = null;
-  const AUTOPLAY_DELAY = 4000;
+  const AUTOPLAY_DELAY = 1500;
 
   function getVisibleCards() {
-    // Responsive: adjust visible cards based on screen size
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 768) return 1; // Mobile: 1 card
-    if (screenWidth <= 1024) return 2; // Tablet: 2 cards
-    return VISIBLE_CARDS; // Desktop: 4 cards
+    const list = cards();
+    if (!list.length) return 1;
+
+    const stride = cardStride(list);
+    if (!stride) return 1;
+
+    const styles = window.getComputedStyle(slider);
+    const paddingStart = toNumber(styles.paddingInlineStart || styles.paddingLeft);
+    const paddingEnd = toNumber(styles.paddingInlineEnd || styles.paddingRight);
+    const available = slider.clientWidth - paddingStart - paddingEnd;
+    const usable = available > 0 ? available : slider.clientWidth;
+    const approx = usable / stride;
+
+    return Math.max(1, Math.round(approx));
   }
 
   function getMaxIndex() {
@@ -75,19 +98,21 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
   }
 
   function setIndex(index, stopAutoplay = false) {
+    const list = cards();
+    if (!list.length) return;
+
     const maxIdx = getMaxIndex();
-    const visibleCards = getVisibleCards();
     currentIndex = Math.max(0, Math.min(index, maxIdx));
     
-    // Calculate movement based on card percentage (each card is 20% on desktop)
-    const cardPercentage = 100 / cards().length; // Percentage per card
-    const translatePercentage = currentIndex * cardPercentage;
+    const stride = cardStride(list);
+    const offset = stride * currentIndex;
     const rtlMode = isRTL();
     
-    // Calculate translation
-    const x = rtlMode ? translatePercentage : -translatePercentage;
+    // Calculate translation in pixels to account for card gap + width
+    const direction = rtlMode ? 1 : -1;
+    const x = direction * offset;
     
-    track.style.transform = `translateX(${x}%)`;
+    track.style.transform = `translateX(${x}px)`;
     updateDots();
     updateArrowsState();
     

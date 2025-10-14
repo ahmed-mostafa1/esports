@@ -152,8 +152,9 @@ class ContentController extends Controller
             $content->value = $value;
             $content->save();
             
-            // Clear cache for text content
-            \App\Support\ContentRepository::forgetText($key);
+            // Clear cache for text content (all locales we have values for)
+            $locales = array_keys($content->getTranslations('value') ?? []);
+            \App\Support\ContentRepository::forgetText($key, $locales);
         }
         
         // Handle image content updates
@@ -206,7 +207,8 @@ class ContentController extends Controller
                 $content->save();
                 
                 // Clear cache for text content
-                \App\Support\ContentRepository::forgetText($key);
+                $locales = array_keys($content->getTranslations('value') ?? []);
+                \App\Support\ContentRepository::forgetText($key, $locales);
                 
                 return response()->json([
                     'success' => true,
@@ -373,7 +375,8 @@ class ContentController extends Controller
                 $content->save();
                 
                 // Clear cache
-                \App\Support\ContentRepository::forgetText($key);
+                $locales = array_keys($content->getTranslations('value') ?? []);
+                \App\Support\ContentRepository::forgetText($key, $locales);
             }
             
             return response()->json([
@@ -432,7 +435,8 @@ class ContentController extends Controller
                     $content->save();
                     
                     // Clear cache
-                    \App\Support\ContentRepository::forgetText($key);
+                    $locales = array_keys($content->getTranslations('value') ?? []);
+                    \App\Support\ContentRepository::forgetText($key, $locales);
                     $updatedCount++;
                 }
             }

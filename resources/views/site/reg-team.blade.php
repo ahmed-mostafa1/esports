@@ -3,8 +3,8 @@
 @section('title', 'Team Registeration')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('./css/reg-team.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/reg-team.css') }}" />
 @endpush
 
 @section('content')

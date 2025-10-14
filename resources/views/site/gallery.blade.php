@@ -3,8 +3,8 @@
 @section('title', 'Gallery')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('./css/gallery.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/gallery.css') }}" />
 @endpush
 
 @section('content')

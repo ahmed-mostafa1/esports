@@ -3,8 +3,8 @@
 @section('title', 'Terms of Service')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('./css/terms.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/terms.css') }}" />
 @endpush
 
 @section('content')
