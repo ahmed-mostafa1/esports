@@ -15,7 +15,7 @@
     <!-- Left -->
     <aside class="hero-left" aria-hidden="false">
       <h1 class="hero-title">{{ content('home.hero.title', 'Your Title') }}</h1>
-      <h1 class="hero-title">{{ content('home.hero.text', 'Your text...') }}</h1>
+      <h1 class="hero-title">{{ content('home.hero.subtitle', 'Your text...') }}</h1>
 
       <p class="hero-desc">
         We are excited to announce that Tournament Community 2025 will
@@ -52,7 +52,7 @@
     <div class="hero-right">
       <div class="hero-media">
         <img
-          src="{{ content_media('home.hero.image', 'img/hero.png') }}"
+          src="{{ content_media('home.hero.image', 'img/home.png') }}"
           class="hero-img"
           alt="Esports showcase" />
         <button class="play" aria-label="Play"></button>

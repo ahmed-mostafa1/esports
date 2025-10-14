@@ -31,6 +31,13 @@ class Content extends Model
     {
         if (! $this->isImage()) return null;
         // Accessing $this->value directly is fine here because images are not translated.
-        return is_array($this->value) ? ($this->value['path'] ?? null) : null;
+        $value = $this->value;
+
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            $value = is_array($decoded) ? $decoded : null;
+        }
+
+        return is_array($value) ? ($value['path'] ?? null) : null;
     }
 }

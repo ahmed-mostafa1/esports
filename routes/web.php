@@ -9,8 +9,12 @@ Route::view('/', 'site.home')->name('home');
 // Locale toggle
 Route::get('/lang/{locale}', function (string $locale) {
     $allowed = ['en','ar'];
-    session(['locale' => in_array($locale, $allowed, true) ? $locale : 'en']);
-    return back();
+    $selected = in_array($locale, $allowed, true) ? $locale : config('app.fallback_locale', 'en');
+
+    session(['locale' => $selected]);
+    app()->setLocale($selected);
+
+    return redirect()->back(fallback: route('home'));
 })->name('setLocale');
 
 // The rest of pages
