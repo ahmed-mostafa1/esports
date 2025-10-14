@@ -3,8 +3,8 @@
 @section('title', 'About')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('./css/about.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/about.css') }}" />
 @endpush
 
 @section('content')
@@ -14,10 +14,11 @@
 
     <div class="right-panel">
         <div class="form-header">
+           
             <button
                 class="tab-btn active"
                 style="font-size: 20px; border-radius: 10px">
-                About Us
+                {{ content('about.header.text', 'About Us') }}
             </button>
         </div>
     </div>
@@ -26,12 +27,12 @@
         <!-- Stat 1 -->
         <article class="stat">
             <figure class="stat__avatar">
-                <img src="{{ asset('./img/esport iamges.png') }}" alt="Games">
+                <img src="{{ content_media('about.games.image', 'img/esport iamges.png') }}" alt="Games">
             </figure>
 
             <div class="stat__value">
                 <span class="num">89</span>
-                <span class="label">Games</span>
+                <span class="label">{{ content('about.stats.games', 'Games') }}</span>
             </div>
 
             <div class="stat__icon" aria-hidden="true">
@@ -42,10 +43,9 @@
             </div>
 
             <div class="tile">
-                <h3 class="tile__title">Our Story</h3>
+                <h3 class="tile__title">{{ content('about.story.title', 'Our Story') }}</h3>
                 <p class="tile__body">
-                    In early winter 2020, amidst a raging pandemic, FOUR04 ESPORTS was born. Our goal is to reinvent the region’s esports championship by
-                    bringing together diverse expert teams to execute events that serve the game community better.
+                    {{ content('about.story.text', 'In early winter 2020, amidst a raging pandemic, FOUR04 ESPORTS was born. Our goal is to reinvent the region\'s esports championship by bringing together diverse expert teams to execute events that serve the game community better.') }}
                 </p>
             </div>
         </article>
@@ -53,12 +53,12 @@
         <!-- Stat 2 -->
         <article class="stat">
             <figure class="stat__avatar">
-                <img src="{{ asset('./img/esport iamges(2).png') }}" alt="Locations">
+                <img src="{{ content_media('about.locations.image', 'img/esport iamges(2).png') }}" alt="Locations">
             </figure>
 
             <div class="stat__value">
                 <span class="num">6</span>
-                <span class="label">Locations</span>
+                <span class="label">{{ content('about.stats.locations', 'Locations') }}</span>
             </div>
 
             <div class="stat__icon" aria-hidden="true">
@@ -69,10 +69,9 @@
             </div>
 
             <div class="tile">
-                <h3 class="tile__title">Our Mission</h3>
+                <h3 class="tile__title">{{ content('about.mission.title', 'Our Mission') }}</h3>
                 <p class="tile__body">
-                    Establish a scalable esports platform in the Middle East, linking local and international communities with solutions for
-                    players and brands to get involved.
+                    {{ content('about.mission.text', 'Establish a scalable esports platform in the Middle East, linking local and international communities with solutions for players and brands to get involved.') }}
                 </p>
             </div>
         </article>
@@ -80,12 +79,12 @@
         <!-- Stat 3 -->
         <article class="stat">
             <figure class="stat__avatar">
-                <img src="{{ asset('./img/esport iamges(1).png') }}" alt="Total Prizes">
+                <img src="{{ content_media('about.total.prizes.image', 'img/esport iamges(1).png') }}" alt="Total Prizes">
             </figure>
 
             <div class="stat__value">
                 <span class="num">590K&nbsp;$</span>
-                <span class="label">Total Prizes</span>
+                <span class="label">{{ content('about.stats.prizes', 'Total Prizes') }}</span>
             </div>
 
             <div class="stat__icon" aria-hidden="true">
@@ -96,9 +95,9 @@
             </div>
 
             <div class="tile">
-                <h3 class="tile__title">Our Vision</h3>
+                <h3 class="tile__title">{{ content('about.vision.title', 'Our Vision') }}</h3>
                 <p class="tile__body">
-                    Build a community where players feel energized and supported, with events that value mental health and lasting happiness.
+                    {{ content('about.vision.text', 'Build a community where players feel energized and supported, with events that value mental health and lasting happiness.') }}
                 </p>
             </div>
         </article>

@@ -4,29 +4,60 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('./css/auth-fixes.css') }}" />
 @endpush
 
 @section('content')
+<div class="main-section">
+  <div class="left-panel hero-area">
+    <img src="{{ content_media('auth.hero.image', 'img/image 3.png') }}" alt="Gamers" class="hero-img" />
+    <!-- Floating triangles around hero image -->
+    <div class="hero-triangle t1"></div>
+    <div class="hero-triangle t2"></div>
+    <div class="hero-triangle t3"></div>
+    <div class="hero-triangle t4"></div>
+    <div class="hero-triangle t5"></div>
+  </div>
 
-<div class="container">
-        <div class="form-header">
-          <button class="tab-btn active" style="font-size: 25px;">Login</button>
-        </div>
-        <img src="{{ asset('./img/forgot-password.png') }}" style="border-radius: 50%;" alt="forgot" />
+  <div class="right-panel">
+    <div class="form-header">
+      <button class="tab-btn active">{{ content('auth.forgot.title', 'Forgot Password') }}</button>
+    </div>
     
-        <div class="description" style="border: 1px red solid; padding: 10px; border-radius: 20px;">
-          <h2>Forgot password ?</h2>
-          <p>Enter the email address associated with your account.</p>
+    <div class="forgot-password-hero">
+      <img src="{{ content_media('auth.forgot.image', 'img/forgot-password.png') }}" alt="Forgot Password" class="forgot-img" />
+    </div>
+    
+    <p class="description">
+      {{ content('auth.forgot.description', 'Enter the email address associated with your account and we will send you a password reset link.') }}
+    </p>
+    
+    <form class="signup-form" method="POST" action="{{ route('password.email') }}">
+      @csrf
+      
+      <!-- Display status messages -->
+      @if (session('status'))
+        <div class="alert alert-success">
+          {{ session('status') }}
         </div>
-        
-        <form class="signup-form" style="width: 70%; text-align: start;">
-          <p style="margin: 0;">Email</p>
-          <div class="form-row">
-            <input type="text" id="email" name="email" placeholder="Enter your Email" />
-          </div>
-          <button type="submit" class="btn-submit">Reset password</button>
-        </form>
+      @endif
+      
+      <!-- Display validation errors -->
+      @if ($errors->any())
+        <div class="alert alert-danger">
+          @foreach ($errors->all() as $error)
+            <p>{{ $error }}</p>
+          @endforeach
         </div>
+      @endif
+      
+      <div class="form-row">
+        <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="{{ content('auth.forgot.email_placeholder', 'Enter your Email') }}" required />
+      </div>
+      <button type="submit" class="btn-submit">{{ content('auth.forgot.button', 'Reset Password') }}</button>
+    </form>
+  </div>
+</div>
 
 @endsection
 @push('scripts')

@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ContentStarterSeeder::class,
-
+            ContentAdditionsSeeder::class,
+            ContentSeeder::class,
+            InitialContentSeeder::class,
         ]);
         // User::factory(10)->create();
 

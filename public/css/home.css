@@ -36,6 +36,8 @@ body {
   padding: 50px;
 }
 
+/* NAVBAR STYLES MOVED TO navbar.css - Commenting out duplicate styles */
+/*
 .nav-links {
   display: flex;
   align-items: center;
@@ -56,6 +58,7 @@ body {
   background-color: var(--accent);
   padding: 10px 20px;
 }
+*/
 
 .btn.ghost {
   background: transparent;
@@ -529,12 +532,14 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   overflow: hidden;
+  width: 100%;
 }
 
 .track {
   display: flex;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
+  width: fit-content;
 }
 
 /* Card */
@@ -1548,6 +1553,15 @@ body {
     flex: 0 0 100%;
     padding: 0 10px;
   }
+  
+  .partners-section .nav {
+    right: 10px;
+    bottom: 20px;
+  }
+  
+  .dots-partner {
+    bottom: 50px;
+  }
 
   /* Testimonials mobile fixes */
   .ts-card {
@@ -1814,8 +1828,8 @@ body {
   transform: translateY(0);
 }
 
-/* Navbar on mobile */
-
+/* Navbar styles MOVED TO navbar.css - commenting out to prevent conflicts */
+/*
 .navbar {
   display: flex;
   align-items: center;
@@ -1828,7 +1842,10 @@ body {
   z-index: 1000;
   background-color: #000000;
 }
+*/
 
+/* ALL NAVBAR STYLES MOVED TO navbar.css - commenting out to prevent conflicts */
+/*
 .logo {
   display: flex;
   align-items: center;
@@ -1841,10 +1858,10 @@ body {
 
 .navbar-toggle {
   display: none;
-} /* hidden checkbox */
+}
 .navbar-toggler {
   display: none;
-} /* hidden on desktop */
+}
 
 .nav-links {
   display: flex;
@@ -1856,17 +1873,17 @@ body {
   text-decoration: none;
   white-space: nowrap;
 }
+*/
 
-/* ===== Mobile layout ===== */
+/* ALL NAVBAR STYLES MOVED TO navbar.css - COMPLETELY COMMENTED OUT */
+/*
 @media (max-width: 768px) {
-  /* Keep header as the anchor; never wrap the header row */
   .navbar {
     padding: 12px 16px;
     flex-wrap: nowrap;
     white-space: nowrap;
   }
 
-  /* Logo stays left; compact size */
   .logo-img {
     height: 42px;
   }
@@ -1882,7 +1899,6 @@ body {
     font-size: 20px;
   }
 
-  /* Show hamburger, pin it to the right so it cannot wrap */
   .navbar-toggler {
     display: flex !important;
     align-items: center;
@@ -1895,10 +1911,9 @@ body {
     height: 28px;
     padding: 0;
     cursor: pointer;
-    z-index: 1002; /* above the dropdown panel */
+    z-index: 1002;
   }
 
-  /* Hamburger lines */
   .hamburger-line {
     position: absolute;
     left: 5px;
@@ -1908,6 +1923,7 @@ body {
     border-radius: 2px;
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
+/* NAVBAR STYLES MOVED TO navbar.css - All commented out
   .hamburger-line:nth-child(1) {
     top: 6px;
   }
@@ -1918,12 +1934,10 @@ body {
     top: 18px;
   }
 
-  /* Checkbox takes no layout space on mobile */
   .navbar-toggle {
     display: none !important;
   }
 
-  /* Turn the inline link row into a dropdown panel under the header */
   .nav-links {
     position: absolute !important;
     top: 100%;
@@ -1931,13 +1945,13 @@ body {
     right: 0;
     background: var(--bg);
     border-top: 1px solid #222;
-    display: block !important; /* override desktop flex row */
-    max-height: 0; /* collapsed by default */
+    display: block !important;
+    max-height: 0;
     overflow: hidden;
     transition: max-height 0.35s ease;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    z-index: 1001; /* below the toggler */
+    z-index: 1001;
   }
   .nav-links a {
     display: block;
@@ -1945,12 +1959,10 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  /* Open the dropdown when the (hidden) checkbox is checked */
   .navbar-toggle:checked ~ .nav-links {
-    max-height: 70vh; /* enough space to reveal all links */
+    max-height: 70vh;
   }
 
-  /* Hamburger morphs to X when open */
   .navbar-toggle:checked + .navbar-toggler .hamburger-line:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
   }
@@ -1963,11 +1975,13 @@ body {
   .title{
     font-size: 20px;
   }
+END NAVBAR STYLES COMMENT
+*/
 }
 
-/* ===== Small polish (optional, nice defaults) ===== */
+/* NAVBAR STYLES COMPLETELY MOVED TO navbar.css - All commented out */
+/*
 @media (max-width: 768px) {
-  /* Hide any horizontal scrollbar in the dropdown */
   .nav-links::-webkit-scrollbar {
     display: none;
   }
@@ -1979,13 +1993,11 @@ body {
   }
 }
 
-/* Solid black dropdown background on mobile */
 @media (max-width: 768px) {
   .nav-links {
-    background: #000 !important; /* override any var(--bg) / transparency */
+    background: #000 !important;
     backdrop-filter: none !important;
   }
-  /* Keep links themselves transparent so the panel's black shows through */
   .nav-links a {
     background: transparent;
   }
@@ -1997,19 +2009,17 @@ body {
   }
 }
 
-/* === Navbar link hover animation === */
 .nav-links a {
   position: relative;
   transition: color 0.25s ease, transform 0.25s ease;
 }
 
-/* underline (no layout shift) */
 .nav-links a::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -6px; /* sits just below the text */
+  bottom: -6px;
   height: 2px;
   background: currentColor;
   transform: scaleX(0);
@@ -2018,18 +2028,16 @@ body {
   opacity: 0.9;
 }
 
-/* hover / focus styles */
 .nav-links a:hover,
 .nav-links a:focus-visible {
-  color: #ff3a3f; /* your accent red */
-  transform: translateY(-1px); /* subtle lift */
+  color: #ff3a3f;
+  transform: translateY(-1px);
 }
 .nav-links a:hover::after,
 .nav-links a:focus-visible::after {
   transform: scaleX(1);
 }
 
-/* active page state (optional) */
 .nav-links a[aria-current="page"] {
   color: #ff3a3f;
 }
@@ -2037,7 +2045,6 @@ body {
   transform: scaleX(1);
 }
 
-/* Reduce motion preference: keep color change, skip movement */
 @media (prefers-reduced-motion: reduce) {
   .nav-links a,
   .nav-links a::after {
@@ -2053,6 +2060,7 @@ body {
     width: 100%;
   }
 }
+END OF NAVBAR STYLES COMMENT */
 
 /* 1) Remove the overflow caused by the subtitle’s 200px side margins */
 .subtitle {

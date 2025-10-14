@@ -206,13 +206,13 @@ body {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 }
 
-/* Animated fill */
+/* Animated fill - RTL version fills from left to right */
 .progress-fill {
   width: 0;
   height: 100%;
   background-color: #ff0000;
   position: absolute;
-  right: 0;
+  left: 0;
   top: 0;
   border-radius: 20px;
 }
@@ -831,12 +831,13 @@ body {
   opacity: 0.65;
   user-select: none;
 }
+/* RTL: Swap quote positions */
 .ts-ql {
-  left: 22px;
+  right: 22px;
   top: 10px;
 }
 .ts-qr {
-  right: 22px;
+  left: 22px;
   bottom: 8px;
   transform: translateY(2px);
   color: #d9d9d9;

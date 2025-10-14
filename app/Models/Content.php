@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class Content extends Model
 {
-    use HasTranslations;
+    use HasFactory, HasTranslations;
 
-    protected $fillable = ['key', 'type', 'group', 'value'];
+    protected $fillable = ['key', 'group', 'type', 'value'];
 
-    // 'value' is translatable ONLY for text rows.
+    protected $casts = ['value' => 'array'];
+
     public $translatable = ['value'];
 
     public function isText(): bool
@@ -24,20 +26,12 @@ class Content extends Model
         return $this->type === 'image';
     }
 
-    /**
-     * For image rows, we store: ["path" => "home.hero.png"]
-     */
-    public function imagePath(): ?string
+    public function imageFilename(): ?string
     {
-        if (! $this->isImage()) return null;
-        // Accessing $this->value directly is fine here because images are not translated.
-        $value = $this->value;
-
-        if (is_string($value)) {
-            $decoded = json_decode($value, true);
-            $value = is_array($decoded) ? $decoded : null;
+        if (! $this->isImage()) {
+            return null;
         }
-
-        return is_array($value) ? ($value['path'] ?? null) : null;
+        
+        return $this->value['path'] ?? null;
     }
 }

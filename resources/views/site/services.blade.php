@@ -17,7 +17,7 @@
             class="tab-btn active"
             style="font-size: 20px; border-radius: 10px;"
           >
-            Our Services
+            {{ content('services.header.title', 'Our Services') }}
           </button>
         </div>
       </div>
@@ -32,18 +32,18 @@
                 <img src="{{ asset('./img/services-icon.png') }}" />
               </span>
               <span class="svc-card__label"
-                >Technology &amp; Platform Development</span
+                >{{ content('services.card1.title', 'Technology & Platform Development') }}</span
               >
             </div>
 
             <div class="svc-card__body">
               <ul class="svc-list">
-                <li>Custom tournament platforms and registration portals</li>
-                <li>Score tracking dashboards and live updates</li>
+                <li>{{ content('services.card1.item1', 'Custom tournament platforms and registration portals') }}</li>
+                <li>{{ content('services.card1.item2', 'Score tracking dashboards and live updates') }}</li>
                 <li>
-                  Integration with Discord, Twitch, and other gaming tools
+                  {{ content('services.card1.item3', 'Integration with Discord, Twitch, and other gaming tools') }}
                 </li>
-                <li>Mobile-first responsive design</li>
+                <li>{{ content('services.card1.item4', 'Mobile-first responsive design') }}</li>
               </ul>
             </div>
           </article>

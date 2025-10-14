@@ -1,0 +1,112 @@
+@extends('layouts.app')
+
+@section('title', 'About')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/about.css') }}" />
+@endpush
+
+@section('content')
+
+<section class="about" aria-labelledby="about-title">
+
+
+    <div class="right-panel">
+        <div class="form-header">
+            <img src="{{ content_media('about.header.image', 'content-images/about.header.png') }}" alt="{{ content('about.header.text') }}" class="header-image" style="max-width: 100px; margin-bottom: 10px;" />
+            <button
+                class="tab-btn active"
+                style="font-size: 20px; border-radius: 10px">
+                {{ content('about.header.text', 'About Us') }}
+            </button>
+        </div>
+    </div>
+
+    <div class="about__stats">
+        <!-- Stat 1 -->
+        <article class="stat">
+            <figure class="stat__avatar">
+                <img src="{{ asset('img/esport iamges.png') }}" alt="Games">
+            </figure>
+
+            <div class="stat__value">
+                <span class="num">89</span>
+                <span class="label">{{ content('about.stats.games', 'Games') }}</span>
+            </div>
+
+            <div class="stat__icon" aria-hidden="true">
+                <!-- heart -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M20.8 8.6a5 5 0 0 0-8.8-3.4l-.9.9-.9-.9a5 5 0 0 0-8.8 3.4 5.7 5.7 0 0 0 1.7 4L11 22l8.9-9.4a5.7 5.7 0 0 0 1.7-4z" />
+                </svg>
+            </div>
+
+            <div class="tile">
+                <h3 class="tile__title">{{ content('about.story.title', 'Our Story') }}</h3>
+                <p class="tile__body">
+                    {{ content('about.story.text', 'In early winter 2020, amidst a raging pandemic, FOUR04 ESPORTS was born. Our goal is to reinvent the region\'s esports championship by bringing together diverse expert teams to execute events that serve the game community better.') }}
+                </p>
+            </div>
+        </article>
+
+        <!-- Stat 2 -->
+        <article class="stat">
+            <figure class="stat__avatar">
+                <img src="{{ asset('img/esport iamges(2).png') }}" alt="Locations">
+            </figure>
+
+            <div class="stat__value">
+                <span class="num">6</span>
+                <span class="label">{{ content('about.stats.locations', 'Locations') }}</span>
+            </div>
+
+            <div class="stat__icon" aria-hidden="true">
+                <!-- search -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z" />
+                </svg>
+            </div>
+
+            <div class="tile">
+                <h3 class="tile__title">{{ content('about.mission.title', 'Our Mission') }}</h3>
+                <p class="tile__body">
+                    {{ content('about.mission.text', 'Establish a scalable esports platform in the Middle East, linking local and international communities with solutions for players and brands to get involved.') }}
+                </p>
+            </div>
+        </article>
+
+        <!-- Stat 3 -->
+        <article class="stat">
+            <figure class="stat__avatar">
+                <img src="{{ asset('img/esport iamges(1).png') }}" alt="Total Prizes">
+            </figure>
+
+            <div class="stat__value">
+                <span class="num">590K&nbsp;$</span>
+                <span class="label">{{ content('about.stats.prizes', 'Total Prizes') }}</span>
+            </div>
+
+            <div class="stat__icon" aria-hidden="true">
+                <!-- plus in square -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M4 4h16v16H4zM12 8v8M8 12h8" />
+                </svg>
+            </div>
+
+            <div class="tile">
+                <h3 class="tile__title">{{ content('about.vision.title', 'Our Vision') }}</h3>
+                <p class="tile__body">
+                    {{ content('about.vision.text', 'Build a community where players feel energized and supported, with events that value mental health and lasting happiness.') }}
+                </p>
+            </div>
+        </article>
+    </div>
+</section>
+
+
+
+@endsection
+@push('scripts')
+@vite('../../../public/js/script.js')
+@endpush

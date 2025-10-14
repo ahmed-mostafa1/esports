@@ -9,10 +9,12 @@
         rel="stylesheet" />
 
         @stack('styles')
+        <!-- Navbar CSS loads last to ensure it overrides any conflicts -->
+        <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
 </head>
-@include('layouts.header')
 
 <body>
+@include('layouts.header')
         <main>
 
             @yield('content')
@@ -25,42 +27,42 @@
         <div class="footer-links">
             <div class="col">
                 <img
-                    src="./img/footer-logo.png"
+                    src="{{ content_media('logo.footer', 'img/footer-logo.png') }}"
                     class="footer-logo"
                     alt="Four04 Logo" />
             </div>
             <div class="col">
-                <h4>Our Contact</h4>
-                <a href="./about.html">Who we are ?</a>
-                <a href="./terms.html">Terms and Conditions</a>
-                <p>POBOX:123456</p>
+                <h4>{{ content('footer.contact.title', 'Our Contact') }}</h4>
+                <a href="{{ route('about') }}">{{ content('footer.contact.who_we_are', 'Who we are ?') }}</a>
+                <a href="{{ route('terms') }}">{{ content('footer.contact.terms', 'Terms and Conditions') }}</a>
+                <p>{{ content('footer.contact.pobox', 'POBOX:123456') }}</p>
             </div>
 
             <div class="col">
-                <h4>Event Management</h4>
+                <h4>{{ content('footer.event_management.title', 'Event Management') }}</h4>
 
-                <p>info@four04.com</p>
-                <p>+971 50123456</p>
+                <p>{{ content('footer.event_management.email', 'info@four04.com') }}</p>
+                <p>{{ content('footer.event_management.phone', '+971 50123456') }}</p>
             </div>
 
             <div class="col">
-                <h4>E-spost</h4>
-                <p>Bur Dubai</p>
-                <p>Esport@four04.com</p>
-                <p>+971 50123456</p>
+                <h4>{{ content('footer.esport.title', 'E-spost') }}</h4>
+                <p>{{ content('footer.esport.location', 'Bur Dubai') }}</p>
+                <p>{{ content('footer.event_management.email', 'Esport@four04.com') }}</p>
+                <p>{{ content('footer.event_management.phone', '+971 50123456') }}</p>
             </div>
 
             <div class="col">
-                <h4>Careers</h4>
-                <a href="#">Blog</a>
-                <a href="#">Press</a>
-                <a href="#">Partnerships</a>
+                <h4>{{ content('footer.careers.title', 'Careers') }}</h4>
+                <a href="#">{{ content('footer.careers.blog', 'Blog') }}</a>
+                <a href="#">{{ content('footer.careers.press', 'Press') }}</a>
+                <a href="#">{{ content('footer.careers.partnerships', 'Partnerships') }}</a>
             </div>
         </div>
 
         <div class="footer-bottom gradient-bar">
-            <p>©Copyright 2025</p>
-            <p>Designed & Developed by Four04</p>
+            <p>{{ content('footer.copyright', '©Copyright 2025') }}</p>
+            <p>{{ content('footer.developed_by', 'Designed & Developed by Four04') }}</p>
         </div>
     </footer>
     @stack('scripts')

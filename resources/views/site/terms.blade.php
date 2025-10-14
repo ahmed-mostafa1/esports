@@ -22,7 +22,7 @@
               background: linear-gradient(#970f05, #fff);
             "
           >
-            Terms and Conditions
+            {{ content('terms.header.title', 'Terms and Conditions') }}
           </button>
         </div>
       </div>
@@ -33,32 +33,23 @@
           <li class="tc-item">
             <h3 class="tc-item__title">
               <span class="tc-dot" aria-hidden="true"></span>
-              <span>National Markets Orchestrator</span>
+              <span>{{ content('terms.section1.title', 'National Markets Orchestrator') }}</span>
             </h3>
             <p>
-              Vero quis est. Quos sint ut voluptate quo pariatur ut ut culpa. Et
-              ullam quia quia optio maiores. Qui in ut repudiandae et et
-              voluptatem. Ipsa ratione expedita sit provident voluptatem
-              doloremque blanditiis temporibus ab. Corporis excepturi unde ipsam
-              maxime qui sunt ipsam sunt eos.
+              {{ content('terms.section1.content1', 'Vero quis est. Quos sint ut voluptate quo pariatur ut ut culpa. Et ullam quia quia optio maiores. Qui in ut repudiandae et et voluptatem. Ipsa ratione expedita sit provident voluptatem doloremque blanditiis temporibus ab. Corporis excepturi unde ipsam maxime qui sunt ipsam sunt eos.') }}
             </p>
             <p class="indent">
-              Perspiciatis earum porro dolorum molestiae perspiciatis. Eos culpa
-              consequatur et soluta cum. Non recusandae ratione voluptatem et id
-              atque nesciunt. Maxime delectus rerum. Totam velit ipsum aut ut.
-              Ea dolorum vero aspernatur assumenda asperiores vitae voluptatem.
+              {{ content('terms.section1.content2', 'Perspiciatis earum porro dolorum molestiae perspiciatis. Eos culpa consequatur et soluta cum. Non recusandae ratione voluptatem et id atque nesciunt. Maxime delectus rerum. Totam velit ipsum aut ut. Ea dolorum vero aspernatur assumenda asperiores vitae voluptatem.') }}
             </p>
             <p>
-              Id dolor hic sint eum blanditiis. Et veritatis libero et
-              doloremque et cumque architecto mollitia. Quia illum enim ipsam
-              voluptatem vitae et sit recusandae.
+              {{ content('terms.section1.content3', 'Id dolor hic sint eum blanditiis. Et veritatis libero et doloremque et cumque architecto mollitia. Quia illum enim ipsam voluptatem vitae et sit recusandae.') }}
             </p>
           </li>
 
           <li class="tc-item">
             <h3 class="tc-item__title">
               <span class="tc-dot" aria-hidden="true"></span>
-              <span>National Metrics Planner</span>
+              <span>{{ content('terms.section2.title', 'National Metrics Planner') }}</span>
             </h3>
             <p>
               Porro suscipit alias voluptatibus atque. Culpa possimus et
@@ -82,7 +73,7 @@
           <li class="tc-item">
             <h3 class="tc-item__title">
               <span class="tc-dot" aria-hidden="true"></span>
-              <span>Dynamic Intranet Administrator</span>
+              <span>{{ content('terms.section3.title', 'Dynamic Intranet Administrator') }}</span>
             </h3>
             <p>
               Doloribus saepe et consectetur voluptatum nisi. Quibusdam vero aut
@@ -112,7 +103,7 @@
         </label>
 
         <button class="tc-btn" type="button" aria-describedby="approve-all">
-          Approve all Terms and condensations
+          {{ content('terms.consent.button_text', 'Approve all Terms and conditions') }}
         </button>
       </div>
     </section>

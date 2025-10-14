@@ -1,27 +1,31 @@
-    <!-- Header -->
+    <!-- Header Navigation -->
     <header class="navbar">
+      <!-- Logo Section -->
       <div class="logo">
-        <img src="./img/logo.png" class="logo-img fluid" alt="Four04 Logo" />
+        <a href="{{ route('home') }}" aria-label="Four04 Esports Home">
+          <img src="{{ content_media('logo.main', 'img/logo.png') }}" class="logo-img" alt="Four04 Esports Logo" />
+        </a>
       </div>
-      <!-- Hamburger Menu Toggle (hidden checkbox) -->
-      <input type="checkbox" id="navbar-toggle" class="navbar-toggle">
-      <label for="navbar-toggle" class="navbar-toggler" aria-label="Toggle navigation">
+      
+      <!-- Mobile Menu Toggle -->
+      <input type="checkbox" id="navbar-toggle" class="navbar-toggle" aria-hidden="true">
+      <label for="navbar-toggle" class="navbar-toggler" aria-label="Toggle navigation menu">
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
         <span class="hamburger-line"></span>
       </label>
 
-      <nav class="nav-links">
-        <a href="{{ route('home') }}">Home</a>
-        <a href="{{ route('about') }}">About Us</a>
-        <a href="{{ route('services') }}">Our Services</a>
-        <a href="{{ route('tournaments') }}">E-Sports</a>
-        <a href="{{ route('tours-reg') }}">Events Management</a>
-        <a href="{{ route('team') }}">Our Team</a>
-        <a href="{{ route('login') }}">Login</a>
-        <a href="{{ route('register') }}">Sign Up for free</a>
-        <a href="{{ route('setLocale', 'en') }}">EN</a>
-        <a href="{{ route('setLocale', 'ar') }}">AR</a>
-
+      <!-- Navigation Menu -->
+      <nav class="nav-links" role="navigation" aria-label="Main navigation">
+        <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'aria-current=page' : '' }}>{{ content('nav.home', 'Home') }}</a>
+        <a href="{{ route('about') }}" {{ request()->routeIs('about') ? 'aria-current=page' : '' }}>{{ content('nav.about', 'About Us') }}</a>
+        <a href="{{ route('services') }}" {{ request()->routeIs('services') ? 'aria-current=page' : '' }}>{{ content('nav.services', 'Our Services') }}</a>
+        <a href="{{ route('tournaments') }}" {{ request()->routeIs('tournaments') ? 'aria-current=page' : '' }}>{{ content('nav.esports', 'E-Sports') }}</a>
+        <a href="{{ route('tours-reg') }}" {{ request()->routeIs('tours-reg') ? 'aria-current=page' : '' }}>{{ content('nav.events', 'Events Management') }}</a>
+        <a href="{{ route('team') }}" {{ request()->routeIs('team') ? 'aria-current=page' : '' }}>{{ content('nav.team', 'Our Team') }}</a>
+        <a href="{{ route('login') }}" {{ request()->routeIs('login') ? 'aria-current=page' : '' }}>{{ content('nav.login', 'Login') }}</a>
+        <a href="{{ route('register') }}" {{ request()->routeIs('register') ? 'aria-current=page' : '' }}>{{ content('nav.signup', 'Sign Up for free') }}</a>
+        <a href="{{ route('setLocale', 'en') }}" class="lang-switch {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
+        <a href="{{ route('setLocale', 'ar') }}" class="lang-switch {{ app()->getLocale() === 'ar' ? 'active' : '' }}">AR</a>
       </nav>
     </header>

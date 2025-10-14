@@ -5,6 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
 <link rel="stylesheet" href="{{ asset('./css/reg-single.css') }}" />
+<link rel="stylesheet" href="{{ asset('./css/auth-fixes.css') }}" />
 @endpush
 
 @section('content')
@@ -33,6 +34,7 @@
 
       <figure class="phoenix">
         <img src="{{ asset('./img/Phoenix.png') }}" alt="Phoenix character card">
+      </figure>
     </aside>
 
     <!-- Right: avatar + single-column form -->
@@ -42,32 +44,38 @@
       </div>
 
       <form class="reg-form" action="#" method="post" novalidate>
-        <div class="field" style="width: 50%;">
-          <label for="playerName">Player Name</label>
-          <input id="playerName" name="playerName" type="text" placeholder="Enter  your name">
+        <div class="form-row">
+          <div class="field">
+            <label for="playerName">Player Name</label>
+            <input id="playerName" name="playerName" type="text" placeholder="Enter your name">
+          </div>
+
+          <div class="field">
+            <label for="ingameId">In-Game ID</label>
+            <input id="ingameId" name="ingameId" type="text" placeholder="Enter your in-game ID">
+          </div>
         </div>
 
-        <div class="field right-field">
-          <label for="ingameId">In-Game ID</label>
-          <input id="ingameId" name="ingameId" type="text" placeholder="Enter  your in-game ID">
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="Enter your email">
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" placeholder="Enter your phone number">
+          </div>
         </div>
 
-        <div class="field"">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="Enter  your email">
+        <div class="form-row">
+          <div class="field">
+            <label for="age">Player Age</label>
+            <input id="age" name="age" type="number" inputmode="numeric" placeholder="Enter your age" min="1">
+          </div>
         </div>
 
-        <div class="field right-field">
-          <label for="phone">Phone Number</label>
-          <input id="phone" name="phone" type="tel" placeholder="Enter  your phone number">
-        </div>
-
-        <div class="field"">
-          <label for="age">Player Age</label>
-          <input id="age" name="age" type="number" inputmode="numeric" placeholder="Enter  your age" min="1">
-        </div>
-
-        <div class="actions">
+        <div class="form-actions">
           <button class="btn-register" type="submit">Register</button>
         </div>
       </form>

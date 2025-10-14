@@ -72,8 +72,13 @@
             <div class="cta">
               <button class="btn-register" type="button">Register - now</button>
               <div class="segmented">
-                <button class="mini" type="button" data-url="./reg-single.html">Single</button>
-                <button class="mini" type="button" data-url="./reg-team.html">Team</button>
+                @auth
+                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
+                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
+                @else
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
+                @endauth
               </div>
             </div>
           </li>
@@ -103,8 +108,13 @@
             <div class="cta">
               <button class="btn-register" type="button">Register - now</button>
               <div class="segmented">
-                <button class="mini" type="button" data-url="./reg-single.html">Single</button>
-                <button class="mini" type="button" data-url="./reg-team.html">Team</button>
+                @auth
+                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
+                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
+                @else
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
+                @endauth
               </div>
             </div>
           </li>
@@ -134,8 +144,13 @@
             <div class="cta">
               <button class="btn-register" type="button">Register - now</button>
               <div class="segmented">
-                <button class="mini" type="button" data-url="./reg-single.html">Single</button>
-                <button class="mini" type="button" data-url="./reg-team.html">Team</button>
+                @auth
+                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
+                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
+                @else
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
+                @endauth
               </div>
             </div>
           </li>
@@ -165,8 +180,13 @@
             <div class="cta">
               <button class="btn-register" type="button">Register - now</button>
               <div class="segmented">
-                <button class="mini" type="button" data-url="./reg-single.html">Single</button>
-                <button class="mini" type="button" data-url="./reg-team.html">Team</button>
+                @auth
+                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
+                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
+                @else
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
+                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
+                @endauth
               </div>
             </div>
           </li>
@@ -176,17 +196,4 @@
 @endsection
 @push('scripts')
 @vite('../../../public/js/script.js')
-<script>
-     // Works for .mini, .ot-btn, or any element with data-url
-  document.addEventListener('click', (e) => {
-    const el = e.target.closest('[data-url]');
-    if (!el) return;
-
-    const url = el.dataset.url;
-    const newTab = el.dataset.target === '_self' ? false : true;
-
-    if (newTab) window.open(url, '_self', 'noopener,noreferrer');
-    else        window.location.href = url;
-  });
-</script>
 @endpush

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partners Slider Test</title>
+    <link rel="stylesheet" href="public/css/home.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #000;
+            color: #fff;
+            font-family: "Cairo", sans-serif;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .debug {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug" id="debug">
+        <div>Slider Status: <span id="status">Loading...</span></div>
+        <div>Cards: <span id="card-count">0</span></div>
+        <div>Current Index: <span id="current-index">0</span></div>
+    </div>
+
+    <div class="test-container">
+        <h1>Partners Slider Test</h1>
+        
+        <!-- PARTNERS SECTION (simplified) -->
+        <section class="partners-section">
+            <div class="container">
+                <h2 class="title">Our Partners</h2>
+                <div class="title-swoosh">
+                    <svg viewBox="0 0 260 22" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 12 Q130 2 254 12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" />
+                    </svg>
+                </div>
+
+                <!-- Slider -->
+                <div class="slider" id="partners-slider">
+                    <div class="track">
+                        <!-- Test Cards -->
+                        <figure class="card-partner">
+                            <div class="media placeholder">
+                                <img src="https://via.placeholder.com/300x200/ff0000/ffffff?text=Partner+1" alt="Partner 1">
+                                <span class="live">● Live</span>
+                                <button class="play" aria-label="Play"></button>
+                                <figcaption class="overlay">
+                                    <div class="meta-title">LIVE: Test Stream 1</div>
+                                    <div class="meta-sub">Test Channel 1</div>
+                                </figcaption>
+                            </div>
+                            <figcaption class="name">Partner One</figcaption>
+                        </figure>
+
+                        <figure class="card-partner">
+                            <div class="media placeholder alt">
+                                <img src="https://via.placeholder.com/300x200/00ff00/ffffff?text=Partner+2" alt="Partner 2">
+                                <span class="live">● Live</span>
+                                <button class="play" aria-label="Play"></button>
+                                <figcaption class="overlay">
+                                    <div class="meta-title">LIVE: Test Stream 2</div>
+                                    <div class="meta-sub">Test Channel 2</div>
+                                </figcaption>
+                            </div>
+                            <figcaption class="name">Partner Two</figcaption>
+                        </figure>
+
+                        <figure class="card-partner">
+                            <div class="media placeholder">
+                                <img src="https://via.placeholder.com/300x200/0000ff/ffffff?text=Partner+3" alt="Partner 3">
+                                <span class="live">● Live</span>
+                                <button class="play" aria-label="Play"></button>
+                                <figcaption class="overlay">
+                                    <div class="meta-title">LIVE: Test Stream 3</div>
+                                    <div class="meta-sub">Test Channel 3</div>
+                                </figcaption>
+                            </div>
+                            <figcaption class="name">Partner Three</figcaption>
+                        </figure>
+
+                        <figure class="card-partner">
+                            <div class="media placeholder alt">
+                                <img src="https://via.placeholder.com/300x200/ffff00/000000?text=Partner+4" alt="Partner 4">
+                                <span class="live">● Live</span>
+                                <button class="play" aria-label="Play"></button>
+                                <figcaption class="overlay">
+                                    <div class="meta-title">LIVE: Test Stream 4</div>
+                                    <div class="meta-sub">Test Channel 4</div>
+                                </figcaption>
+                            </div>
+                            <figcaption class="name">Partner Four</figcaption>
+                        </figure>
+
+                        <figure class="card-partner">
+                            <div class="media placeholder">
+                                <img src="https://via.placeholder.com/300x200/ff00ff/ffffff?text=Partner+5" alt="Partner 5">
+                                <span class="live">● Live</span>
+                                <button class="play" aria-label="Play"></button>
+                                <figcaption class="overlay">
+                                    <div class="meta-title">LIVE: Test Stream 5</div>
+                                    <div class="meta-sub">Test Channel 5</div>
+                                </figcaption>
+                            </div>
+                            <figcaption class="name">Partner Five</figcaption>
+                        </figure>
+
+                        <figure class="card-partner">
+                            <div class="media placeholder alt">
+                                <img src="https://via.placeholder.com/300x200/00ffff/000000?text=Partner+6" alt="Partner 6">
+                                <span class="live">● Live</span>
+                                <button class="play" aria-label="Play"></button>
+                                <figcaption class="overlay">
+                                    <div class="meta-title">LIVE: Test Stream 6</div>
+                                    <div class="meta-sub">Test Channel 6</div>
+                                </figcaption>
+                            </div>
+                            <figcaption class="name">Partner Six</figcaption>
+                        </figure>
+                    </div>
+                </div>
+
+                <div class="mp-header">
+                    <!-- Dots -->
+                    <div class="dots-partner" id="p-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+
+                    <!-- Arrow pills -->
+                    <div class="nav">
+                        <button class="pill light" id="p-prev" aria-label="Previous">
+                            <span class="chev">‹</span>
+                        </button>
+                        <button class="pill dark" id="p-next" aria-label="Next">
+                            <span class="chev">›</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // RTL detection helper
+        function isRTL() {
+            return document.documentElement.dir === 'rtl' || getComputedStyle(document.documentElement).direction === 'rtl';
+        }
+
+        // Debug function to update status
+        function updateDebug(status, cardCount, currentIndex) {
+            document.getElementById('status').textContent = status;
+            document.getElementById('card-count').textContent = cardCount;
+            document.getElementById('current-index').textContent = currentIndex;
+        }
+    </script>
+    <script src="public/js/home.js"></script>
+    <script>
+        // Additional debug logging
+        setTimeout(() => {
+            const slider = document.getElementById('partners-slider');
+            const track = slider?.querySelector('.track');
+            const cards = track?.querySelectorAll('.card-partner');
+            
+            if (slider && track && cards) {
+                updateDebug('Initialized', cards.length, 0);
+                console.log('Slider elements found:', {
+                    slider: slider,
+                    track: track,
+                    cards: cards.length
+                });
+            } else {
+                updateDebug('Error - Missing elements', 0, 0);
+                console.error('Missing slider elements');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

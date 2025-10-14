@@ -1,3 +1,8 @@
+// RTL detection helper
+function isRTL() {
+  return document.documentElement.dir === 'rtl' || getComputedStyle(document.documentElement).direction === 'rtl';
+}
+
 // Slider micro-lib used across pages
 function makeSlider(root){
   const track = root.querySelector('.slider-track');
@@ -24,236 +29,211 @@ function makeSlider(root){
 document.querySelectorAll('[data-slider]').forEach(makeSlider);
 
 
-// Parteners Slider
-(function () {
-  const slider = document.getElementById('partners-slider');
-  if (!slider) return;
-
-  const track = slider.querySelector('.track');
-  if (!track) return;
-
-  const cards = Array.from(track.querySelectorAll('.card-partner'));
-  if (cards.length < 2) return;
-
-  const state = {
-    timer: null,
-    interval: 1500,        // autoplay delay (ms)
-    isPaused: false
-  };
-
-  function getStep() {
-    // current card width + computed gap (responsive-safe)
-    const cs = getComputedStyle(track);
-    const gap = parseFloat(cs.columnGap || cs.gap) || 0;
-    const card = cards[0];
-    const cardW = card.getBoundingClientRect().width;
-    return cardW + gap;
-  }
-
-  function atEnd() {
-    // near the right edge?
-    return slider.scrollLeft >= track.scrollWidth - slider.clientWidth - 1;
-  }
-
-  function next() {
-    const step = getStep();
-    if (atEnd()) {
-      // jump back to start
-      slider.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      slider.scrollBy({ left: step, behavior: 'smooth' });
-    }
-  }
-
-  function start() {
-    if (state.timer) return;
-    state.timer = setInterval(() => {
-      if (!state.isPaused) next();
-    }, state.interval);
-  }
-
-  function stop() {
-    if (!state.timer) return;
-    clearInterval(state.timer);
-    state.timer = null;
-  }
-
-  // Pause on user interaction; resume when they stop
-  ['mouseenter', 'focusin', 'touchstart', 'pointerdown'].forEach(evt => {
-    slider.addEventListener(evt, () => { state.isPaused = true; }, { passive: true });
-  });
-  ['mouseleave', 'focusout', 'touchend', 'pointerup', 'touchcancel'].forEach(evt => {
-    slider.addEventListener(evt, () => { state.isPaused = false; }, { passive: true });
-  });
-
-  // Optional: keyboard control when focused
-  slider.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') { state.isPaused = true; next(); }
-    if (e.key === 'ArrowLeft')  {
-      const step = getStep();
-      slider.scrollBy({ left: -step, behavior: 'smooth' });
-      state.isPaused = true;
-    }
-  });
-
-  // Keep steps correct on resize (debounced)
-  let t;
-  window.addEventListener('resize', () => {
-    clearTimeout(t);
-    t = setTimeout(() => {
-      const step = getStep();
-      const nearest = Math.round(slider.scrollLeft / step);
-      // snap to nearest card after layout change
-      slider.scrollTo({ left: nearest * step, behavior: 'auto' });
-    }, 150);
-  });
-
-  // Start autoplay
-  start();
-
-  // (Optional) expose simple controls if you ever need them:
-  slider.dataset.autoplay = 'on';
-  slider.addEventListener('autoplay:stop', stop);
-  slider.addEventListener('autoplay:start', start);
-})();
+// Partners Slider - Removed conflicting autoplay function
+// Using only the unified controller below
 
 
-// partners slider control btns
-
+// Partners Slider - Fixed Implementation
 (function () {
   const slider = document.getElementById('partners-slider');
   const track  = slider?.querySelector('.track');
   const prev   = document.getElementById('p-prev');
   const next   = document.getElementById('p-next');
   const dotsEl = document.getElementById('p-dots');
-  if (!slider || !track || !prev || !next || !dotsEl) return;
+  
+  if (!slider || !track || !prev || !next || !dotsEl) {
+    console.warn('Partners slider: Missing required elements', {
+      slider: !!slider,
+      track: !!track, 
+      prev: !!prev,
+      next: !!next,
+      dotsEl: !!dotsEl
+    });
+    return;
+  }
 
   const cards = () => Array.from(track.querySelectorAll('.card-partner'));
+  
+  // Configuration
+  const VISIBLE_CARDS = 4; // Show 4 cards at a time on desktop
+  let currentIndex = 0;
+  let autoplayTimer = null;
+  const AUTOPLAY_DELAY = 4000;
 
-  // --- helpers --------------------------------------------------------------
-  function getGap() {
-    const cs = getComputedStyle(track);
-    return parseFloat(cs.columnGap || cs.gap) || 0;
-  }
-  function getStep() {
-    // one "page" == one card width + gap (your autoplay step)
-    const c = cards()[0];
-    if (!c) return 1;
-    return c.getBoundingClientRect().width + getGap();
-  }
-  function perView() {
-    const step = getStep() || 1;
-    return Math.max(1, Math.round(slider.clientWidth / step));
-  }
-  function maxIndex() {
-    const total = cards().length;
-    const pv = perView();
-    return Math.max(0, total - pv);
-  }
-  function getIndex() {
-    const step = getStep() || 1;
-    return Math.round(slider.scrollLeft / step);
-  }
-  function scrollToIndex(i, behavior = 'smooth') {
-    const mi = maxIndex();
-    const clamped = Math.max(0, Math.min(i, mi));
-    slider.scrollTo({ left: clamped * getStep(), behavior });
-    setActiveDot(clamped);
-  }
-  function atStart() { return getIndex() <= 0; }
-  function atEnd()   { return getIndex() >= maxIndex(); }
-
-  // --- autoplay cooperation (from previous snippet) ------------------------
-  function pauseAutoplay() { slider.dispatchEvent(new Event('autoplay:stop')); }
-  let resumeTimer;
-  function resumeAutoplaySoon(delay = 2500) {
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(() => slider.dispatchEvent(new Event('autoplay:start')), delay);
+  function getVisibleCards() {
+    // Responsive: adjust visible cards based on screen size
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) return 1; // Mobile: 1 card
+    if (screenWidth <= 1024) return 2; // Tablet: 2 cards
+    return VISIBLE_CARDS; // Desktop: 4 cards
   }
 
-  // --- dots ----------------------------------------------------------------
-  let dots = [];
+  function getMaxIndex() {
+    const totalCards = cards().length;
+    const visibleCards = getVisibleCards();
+    return Math.max(0, totalCards - visibleCards);
+  }
+
+  function setIndex(index, stopAutoplay = false) {
+    const maxIdx = getMaxIndex();
+    const visibleCards = getVisibleCards();
+    currentIndex = Math.max(0, Math.min(index, maxIdx));
+    
+    // Calculate movement based on card percentage (each card is 20% on desktop)
+    const cardPercentage = 100 / cards().length; // Percentage per card
+    const translatePercentage = currentIndex * cardPercentage;
+    const rtlMode = isRTL();
+    
+    // Calculate translation
+    const x = rtlMode ? translatePercentage : -translatePercentage;
+    
+    track.style.transform = `translateX(${x}%)`;
+    updateDots();
+    updateArrowsState();
+    
+    if (stopAutoplay) {
+      restartAutoplay();
+    }
+  }
+
+  function nextSlide(stopAutoplay = false) {
+    const maxIdx = getMaxIndex();
+    const nextIdx = currentIndex >= maxIdx ? 0 : currentIndex + 1; // wrap around
+    setIndex(nextIdx, stopAutoplay);
+  }
+
+  function prevSlide(stopAutoplay = false) {
+    const maxIdx = getMaxIndex();
+    const prevIdx = currentIndex <= 0 ? maxIdx : currentIndex - 1; // wrap around
+    setIndex(prevIdx, stopAutoplay);
+  }
+
+  // Dots management
   function buildDots() {
-    const pages = maxIndex() + 1; // number of snap positions
+    const maxIdx = getMaxIndex();
+    const numDots = Math.min(5, maxIdx + 1); // Max 5 dots, minimum 1
     dotsEl.innerHTML = '';
-    dots = Array.from({ length: pages }, (_, i) => {
+    
+    for (let i = 0; i < numDots; i++) {
       const dot = document.createElement('span');
       dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.role = 'button';
-      dot.tabIndex = 0;
-      dot.ariaLabel = `Go to slide ${i + 1}`;
-      dot.addEventListener('click', () => {
-        pauseAutoplay();
-        scrollToIndex(i);
-        resumeAutoplaySoon();
-      });
-      dot.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dot.click(); }
-      });
+      dot.setAttribute('data-slide', i.toString());
+      dot.addEventListener('click', () => setIndex(i, true));
       dotsEl.appendChild(dot);
-      return dot;
-    });
-  }
-  function setActiveDot(i) {
-    const idx = Math.max(0, Math.min(i, dots.length - 1));
-    dots.forEach((d, j) => d.classList.toggle('active', j === idx));
+    }
   }
 
-  // --- nav buttons ---------------------------------------------------------
-  function updateArrowsDisabled() {
-    // If you prefer wrap-around, comment these two lines out.
-    prev.disabled = atStart();
-    next.disabled = atEnd();
+  function updateDots() {
+    const dots = dotsEl.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentIndex);
+    });
   }
-  next.addEventListener('click', () => {
-    pauseAutoplay();
-    if (atEnd()) {
-      // wrap to start; remove this block if you don't want wrapping
-      scrollToIndex(0);
-    } else {
-      scrollToIndex(getIndex() + 1);
-    }
-    resumeAutoplaySoon();
+
+  function updateArrowsState() {
+    // Enable wrap-around, so never disable buttons
+    prev.disabled = false;
+    next.disabled = false;
+    
+    // Optional: Add visual feedback for disabled state
+    prev.style.opacity = '1';
+    next.style.opacity = '1';
+  }
+
+  // Event listeners
+  next.addEventListener('click', (e) => {
+    e.preventDefault();
+    nextSlide(true);
   });
-  prev.addEventListener('click', () => {
-    pauseAutoplay();
-    if (atStart()) {
-      // wrap to end; remove this block if you don't want wrapping
-      scrollToIndex(maxIndex());
-    } else {
-      scrollToIndex(getIndex() - 1);
-    }
-    resumeAutoplaySoon();
+  
+  prev.addEventListener('click', (e) => {
+    e.preventDefault();
+    prevSlide(true);
   });
 
-  // --- keep UI in sync while user scrolls ---------------------------------
-  let raf = null;
-  slider.addEventListener('scroll', () => {
-    if (raf) return;
-    raf = requestAnimationFrame(() => {
-      raf = null;
-      const i = getIndex();
-      setActiveDot(i);
-      updateArrowsDisabled();
-    });
+  // Autoplay functions
+  function startAutoplay() {
+    stopAutoplay();
+    autoplayTimer = setInterval(() => nextSlide(), AUTOPLAY_DELAY);
+  }
+
+  function stopAutoplay() {
+    if (autoplayTimer) {
+      clearInterval(autoplayTimer);
+      autoplayTimer = null;
+    }
+  }
+
+  function restartAutoplay() {
+    stopAutoplay();
+    setTimeout(() => startAutoplay(), 1500); // Restart after 1.5s
+  }
+
+  // Pause autoplay on hover
+  slider.addEventListener('mouseenter', stopAutoplay);
+  slider.addEventListener('mouseleave', startAutoplay);
+
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      buildDots(); // Rebuild dots for new screen size
+      setIndex(Math.min(currentIndex, getMaxIndex())); // Adjust current index if needed
+    }, 250);
+  });
+
+  // Touch/swipe support for mobile
+  let startX = 0;
+  let isDragging = false;
+  
+  slider.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    isDragging = true;
+    stopAutoplay();
+  }, { passive: true });
+  
+  slider.addEventListener('touchend', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    const threshold = 50; // Minimum swipe distance
+    
+    if (Math.abs(diffX) > threshold) {
+      if (diffX > 0) {
+        nextSlide(true); // Swipe left - next slide
+      } else {
+        prevSlide(true); // Swipe right - previous slide  
+      }
+    } else {
+      restartAutoplay();
+    }
   }, { passive: true });
 
-  // --- react to layout changes --------------------------------------------
-  let rezTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(rezTimer);
-    rezTimer = setTimeout(() => {
-      const i = getIndex();
-      buildDots();               // rebuild because perView may change
-      scrollToIndex(i, 'auto');  // snap to the nearest new index
-      updateArrowsDisabled();
-    }, 120);
-  });
+  // Initialize slider
+  function init() {
+    const totalCards = cards().length;
+    console.log(`Partners slider initialized with ${totalCards} cards`);
+    
+    if (totalCards === 0) {
+      console.warn('No partner cards found');
+      return;
+    }
+    
+    buildDots();
+    setIndex(0);
+    updateArrowsState();
+    startAutoplay();
+  }
 
-  // --- init ----------------------------------------------------------------
-  buildDots();
-  setActiveDot(0);
-  updateArrowsDisabled();
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 
 
@@ -261,11 +241,17 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
 (() => {
   // Unique, conflict-free names
   const ts_root   = document.getElementById('ts-slider');
+  if (!ts_root) return;
+  
   const ts_track  = ts_root.querySelector('.ts-track');
+  if (!ts_track) return;
+  
   const ts_cards  = Array.from(ts_track.querySelectorAll('.ts-card'));
   const ts_dotsEl = document.getElementById('ts-dots');
   const ts_prev   = document.getElementById('ts-prev');
   const ts_next   = document.getElementById('ts-next');
+  
+  if (!ts_dotsEl || !ts_prev || !ts_next || ts_cards.length === 0) return;
 
   // Show 2 at a time, slide 1 by 1
   const TS_VISIBLE = 2;
@@ -291,7 +277,11 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
 
   function ts_setIndex(n, stopAuto = false) {
     ts_index = (n + ts_maxIndex + 1) % (ts_maxIndex + 1);   // wrap 0..maxIndex
-    const x = -(ts_index * ts_cardWidth());
+    const cardWidth = ts_cardWidth();
+    const rtlMode = isRTL();
+    
+    // RTL support: reverse the translation direction
+    const x = rtlMode ? (ts_index * cardWidth) : -(ts_index * cardWidth);
     ts_track.style.transform = `translateX(${x}px)`;
 
     // update dots

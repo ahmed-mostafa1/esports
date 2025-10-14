@@ -4,12 +4,13 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('./css/auth-fixes.css') }}" />
 @endpush
 
 @section('content')
 <div class="main-section">
  <div class="left-panel hero-area">
-        <img src="{{ asset('./img/image 3.png') }}" alt="Gamers" class="hero-img" />
+        <img src="{{ content_media('auth.hero.image', 'img/image 3.png') }}" alt="Gamers" class="hero-img" />
         <!-- Floating triangles around hero image -->
         <div class="hero-triangle t1"></div>
         <div class="hero-triangle t2"></div>
@@ -20,33 +21,60 @@
 
       <div class="right-panel">
         <div class="form-header">
-          <button class="tab-btn active" style="font-size: 25px;">Login</button>
+          <button class="tab-btn active">{{ content('auth.login.title', 'Login') }}</button>
         </div>
-        <p class="description" style="border: 1px red solid; padding: 10px; border-radius: 20px;">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry.
+        <p class="description">
+          {{ content('auth.login.description', 'Welcome back! Please login to your account to continue your esports journey.') }}
         </p>
 
-        <form class="signup-form" style="width: 70%;">
+        <div id="loginMessage" style="display: none; color: #ff6b6b; background-color: #ffe0e0; border: 1px solid #ff6b6b; padding: 10px; border-radius: 10px; margin-bottom: 15px; text-align: center;"></div>
+
+        <form class="signup-form" method="POST" action="{{ route('login') }}">
+          @csrf
+          
+          <!-- Display validation errors -->
+          @if ($errors->any())
+            <div class="alert alert-danger">
+              @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+              @endforeach
+            </div>
+          @endif
+          
           <div class="form-row">
-            <input type="text" placeholder="Enter your user name" />
+            <input type="email" name="email" value="{{ old('email') }}" placeholder="{{ content('auth.login.email_placeholder', 'Enter your email address') }}" required />
           </div>
           <div class="form-row">
-            <input type="password" placeholder="Enter your Password" />
+            <input type="password" name="password" placeholder="{{ content('auth.login.password_placeholder', 'Enter your Password') }}" required />
           </div>
 
-          <div class="checkbox-group">
-            <label><input type="checkbox" style="text-decoration: none;" /> Remember me</label>
+          <div class="form-options">
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="remember" /> {{ content('auth.login.remember_me', 'Remember me') }}</label>
+            </div>
+            <div class="forgot-password-link">
+              <a href="{{ route('password.request') }}" class="forgot-password">{{ content('auth.login.forgot_password', 'Forgot Password?') }}</a>
+            </div>
           </div>
-          <div style="text-align: end !important;">
-            <a href="./forgot-password.html" class="forgot-password">Forgot Password?</a>
-          </div>
-          <button type="submit" class="btn-submit">Log in</button>
+          <button type="submit" class="btn-submit">{{ content('auth.login.button', 'Log in') }}</button>
         </form>
       </div>
-      </div>
+</div>
 
 @endsection
 @push('scripts')
 @vite('../../../public/js/script.js')
+<script>
+  // Check for login message from registration attempt
+  document.addEventListener('DOMContentLoaded', function() {
+    const message = sessionStorage.getItem('loginMessage');
+    if (message) {
+      const messageDiv = document.getElementById('loginMessage');
+      messageDiv.textContent = message;
+      messageDiv.style.display = 'block';
+      // Clear the message so it doesn't persist
+      sessionStorage.removeItem('loginMessage');
+    }
+  });
+</script>
 @endpush

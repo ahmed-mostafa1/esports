@@ -3,8 +3,8 @@
 @section('title', 'Our Partners')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('./css/partners.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/partners.css') }}" />
 @endpush
 
 @section('content')
@@ -17,45 +17,48 @@
             class="tab-btn active"
             style="font-size: 20px; border-radius: 10px;"
           >
-            E-Sports
+            {{ content('partners.header.text', 'E-Sports') }}
           </button>
         </div>
       </div>
+
+  <!-- Section 1 -->
+  <div class="section1" style="margin: 20px; text-align: center;">
+    <h2 class="section1__title">{{ content('partners.section1.title', 'Our Partnership Benefits') }}</h2>
+    <p class="section1__text">{{ content('partners.section1.text', 'Discover how partnering with us can elevate your brand and connect you with the esports community.') }}</p>
+  </div>
 
   <!-- cards -->
   <ul class="partners__grid">
     <li class="p-card">
       <figure class="p-card__thumb">
-        <img src="{{ asset('./img/partners.banner.png') }}" alt="Partner showcase: team playing">
+        <img src="{{ content_media('partners.banner.image', 'content-images/partners.banner.png') }}" alt="{{ content('partners.header.text') }}">
       </figure>
       <p class="p-card__desc">
-        The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic  and I know care of the quality for my mental health and
-        Happiness no matter what I face.
+        {{ content('partners.intro.text', 'The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.') }}
       </p>
-      <button class="btn-more" type="button">Read More</button>
+      <button class="btn-more" type="button">{{ content('partners.card.cta', 'Read More') }}</button>
     </li>
 
     <li class="p-card">
       <figure class="p-card__thumb">
         <!-- use the same or another team collage here -->
-        <img src="{{ asset('./img/image 13.png') }}" alt="Partner showcase: esports collage">
+        <img src="{{ content_media('partners.partner.showcase:.esports.collage.image', 'img/image 13.png') }}" alt="Partner showcase: esports collage">
       </figure>
       <p class="p-card__desc">
-        The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic  and I know care of the quality for my mental health and
-        Happiness no matter what I face.
+        {{ content('partners.intro.text', 'The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.') }}
       </p>
-      <button class="btn-more" type="button">Read More</button>
+      <button class="btn-more" type="button">{{ content('partners.card.cta', 'Read More') }}</button>
     </li>
 
     <li class="p-card">
       <figure class="p-card__thumb">
-        <img src="{{ asset('./img/image 13(1).png') }}" alt="Partner ambassador portrait">
+        <img src="{{ content_media('partners.partner.ambassador.portrait.image', 'img/image 13(1).png') }}" alt="Partner ambassador portrait">
       </figure>
       <p class="p-card__desc">
-        The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic  and I know care of the quality for my mental health and
-        Happiness no matter what I face.
+        {{ content('partners.intro.text', 'The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.') }}
       </p>
-      <button class="btn-more" type="button">Read More</button>
+      <button class="btn-more" type="button">{{ content('partners.card.cta', 'Read More') }}</button>
     </li>
   </ul>
 

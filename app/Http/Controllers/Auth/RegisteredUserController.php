@@ -33,12 +33,26 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'mobile' => ['nullable', 'string', 'max:255'],
+            'state' => ['nullable', 'string', 'in:abu_dhabi,dubai,sharjah,ajman,umm_al_quwain,ras_al_khaimah,fujairah'],
+            'address' => ['nullable', 'string'],
+            'gender' => ['nullable', 'string', 'in:male,female'],
+            'birth_date' => ['nullable', 'date'],
+            'emirates_id' => ['nullable', 'string', 'max:255'],
+            'accept_privacy' => ['required', 'accepted'],
+            'accept_terms' => ['required', 'accepted'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'mobile' => $request->mobile,
+            'state' => $request->state,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'birth_date' => $request->birth_date,
+            'emirates_id' => $request->emirates_id,
         ]);
 
         event(new Registered($user));
