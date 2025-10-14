@@ -11,37 +11,26 @@ class Content extends Model
 
     protected $fillable = ['key', 'type', 'group', 'value'];
 
-    // 'value' holds translated TEXT like {"en":"...","ar":"..."}.
-    // For IMAGE rows, we'll store a non-translated structure like {"path":"home.hero.png"}.
+    // 'value' is translatable ONLY for text rows.
     public $translatable = ['value'];
 
-    protected $casts = [
-        'value' => 'array', // always cast to array; for images it will be ["path" => "..."]
-    ];
-
-    /**
-     * Helper: is this row a text field?
-     */
     public function isText(): bool
     {
         return $this->type === 'text';
     }
 
-    /**
-     * Helper: is this row an image field?
-     */
     public function isImage(): bool
     {
         return $this->type === 'image';
     }
 
     /**
-     * For image rows, get the stored path (shared across locales).
-     * Expected structure: ["path" => "home.hero.png"]
+     * For image rows, we store: ["path" => "home.hero.png"]
      */
     public function imagePath(): ?string
     {
         if (! $this->isImage()) return null;
-        return $this->value['path'] ?? null;
+        // Accessing $this->value directly is fine here because images are not translated.
+        return is_array($this->value) ? ($this->value['path'] ?? null) : null;
     }
 }

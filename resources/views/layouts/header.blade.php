@@ -22,5 +22,6 @@
         <a href="{{ route('register') }}">Sign Up for free</a>
         <a href="{{ route('setLocale', 'en') }}">EN</a>
         <a href="{{ route('setLocale', 'ar') }}">AR</a>
+
       </nav>
     </header>

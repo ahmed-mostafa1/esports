@@ -52,7 +52,7 @@
     <div class="hero-right">
       <div class="hero-media">
         <img
-          src="{{ content_media('home.hero.image', 'img/hero.jpg') }}"
+          src="{{ content_media('home.hero.image', 'img/hero.png') }}"
           class="hero-img"
           alt="Esports showcase" />
         <button class="play" aria-label="Play"></button>
