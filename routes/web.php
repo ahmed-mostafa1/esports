@@ -3,6 +3,16 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
+
+
+Route::get('/lang/{locale}', function (string $locale) {
+    $allowed = ['en', 'ar'];
+    session(['locale' => in_array($locale, $allowed, true) ? $locale : 'en']);
+    return back();
+})->name('setLocale');
+
+
 Route::get('/', function () {
     return view('site.home');
 });

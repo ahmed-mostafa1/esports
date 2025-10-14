@@ -26,7 +26,7 @@
   <ul class="partners__grid">
     <li class="p-card">
       <figure class="p-card__thumb">
-        <img src="{{ asset('./img/image 13(2).png') }}" alt="Partner showcase: team playing">
+        <img src="{{ asset('./img/partners.banner.png') }}" alt="Partner showcase: team playing">
       </figure>
       <p class="p-card__desc">
         The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic  and I know care of the quality for my mental health and

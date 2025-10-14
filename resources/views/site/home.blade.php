@@ -14,8 +14,8 @@
   <div class="container hero-inner">
     <!-- Left -->
     <aside class="hero-left" aria-hidden="false">
-      <h1 class="hero-title">Tournament</h1>
-      <h1 class="hero-title">Community 2025</h1>
+      <h1 class="hero-title">{{ content('home.hero.title', 'Your Title') }}</h1>
+      <h1 class="hero-title">{{ content('home.hero.text', 'Your text...') }}</h1>
 
       <p class="hero-desc">
         We are excited to announce that Tournament Community 2025 will
@@ -52,7 +52,7 @@
     <div class="hero-right">
       <div class="hero-media">
         <img
-          src="{{ asset('./img/Rectangle 62(1).png') }}"
+          src="{{ content_media('home.hero.image', 'img/hero.jpg') }}"
           class="hero-img"
           alt="Esports showcase" />
         <button class="play" aria-label="Play"></button>
