@@ -70,9 +70,15 @@
                 <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all">
                     <!-- Tournament Image -->
                     <div class="aspect-w-16 aspect-h-9">
-                        <img src="{{ asset('./img/tournaments-inner.png') }}" 
-                             alt="Tournament {{ $i }}" 
-                             class="w-full h-48 object-cover" />
+                        <span data-content-key="tournaments.card.image"
+                              data-content-type="image"
+                              data-content-value="{{ json_encode(optional($contents->get('tournaments.card.image'))->value ?? []) }}"
+                              data-image-url="{{ content_media('tournaments.card.image', 'img/tournaments-inner.png') }}"
+                              class="block h-full">
+                            <img src="{{ content_media('tournaments.card.image', 'img/tournaments-inner.png') }}" 
+                                 alt="Tournament {{ $i }}" 
+                                 class="w-full h-48 object-cover" />
+                        </span>
                     </div>
                     
                     <!-- Card Body -->
@@ -93,14 +99,22 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                           d="M7 2v3M17 2v3M3 9h18M5 6h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
                                 </svg>
-                                <span>01/11/23</span>
+                                <span data-content-key="tournaments.card.date"
+                                      data-content-type="text"
+                                      data-content-value="{{ optional($contents->get('tournaments.card.date'))->value ?? '{}' }}">
+                                    {{ content('tournaments.card.date', '01/11/23') }}
+                                </span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                           d="M12 8v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/>
                                 </svg>
-                                <span>20:00</span>
+                                <span data-content-key="tournaments.card.time"
+                                      data-content-type="text"
+                                      data-content-value="{{ optional($contents->get('tournaments.card.time'))->value ?? '{}' }}">
+                                    {{ content('tournaments.card.time', '20:00') }}
+                                </span>
                             </div>
                         </div>
 
@@ -110,7 +124,12 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
                                       d="M8 21h8M12 17v4M5 3h14v2a4 4 0 0 1-4 4h-1a4 4 0 0 1-3 4v0H9v0a4 4 0 0 1-3-4H7A4 4 0 0 1 3 5V3h2z"/>
                             </svg>
-                            <span class="font-bold">$ 2.000,00</span>
+                            <span class="font-bold"
+                                  data-content-key="tournaments.card.prize"
+                                  data-content-type="text"
+                                  data-content-value="{{ optional($contents->get('tournaments.card.prize'))->value ?? '{}' }}">
+                                {{ content('tournaments.card.prize', '$ 2.000,00') }}
+                            </span>
                         </div>
 
                         <!-- Register Button -->

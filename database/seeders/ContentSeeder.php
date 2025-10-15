@@ -491,6 +491,39 @@ class ContentSeeder extends Seeder
                 ]
             ],
             [
+                'key' => 'tournaments.card.date',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '01/11/23',
+                    'ar' => '01/11/23'
+                ]
+            ],
+            [
+                'key' => 'tournaments.card.time',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '20:00',
+                    'ar' => '20:00'
+                ]
+            ],
+            [
+                'key' => 'tournaments.card.prize',
+                'type' => 'text',
+                'group' => 'tournaments',
+                'value' => [
+                    'en' => '$ 2.000,00',
+                    'ar' => '2,000.00 دولار'
+                ]
+            ],
+            [
+                'key' => 'tournaments.card.image',
+                'type' => 'image',
+                'group' => 'tournaments',
+                'value' => ['path' => 'tournaments.card.image.png']
+            ],
+            [
                 'key' => 'tournaments.card.register',
                 'type' => 'text',
                 'group' => 'tournaments',
