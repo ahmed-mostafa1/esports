@@ -9,6 +9,71 @@
 
 @section('content')
 
+@php
+    $toursRegCards = [
+        [
+            'key' => 'card1',
+            'theme' => 'theme-dark',
+            'label_classes' => 'vlabel',
+            'name_class' => 'phoenix',
+            'fallback_name' => 'PHOENIX',
+            'fallback_country' => 'United Kingdom',
+            'image' => 'img/Art(3).png',
+            'abilities' => [
+                ['key' => 'ability1', 'fallback' => 'img/vectors/Vector.png'],
+                ['key' => 'ability2', 'fallback' => 'img/vectors/Vector3.png'],
+                ['key' => 'ability3', 'fallback' => 'img/vectors/Vector(2).png'],
+                ['key' => 'ability4', 'fallback' => 'img/vectors/Vector-1.png'],
+            ],
+        ],
+        [
+            'key' => 'card2',
+            'theme' => 'theme-slate',
+            'label_classes' => 'vlabel vlabel--light',
+            'name_class' => '',
+            'fallback_name' => 'JETT',
+            'fallback_country' => 'South Korea',
+            'image' => 'img/Art(2).png',
+            'abilities' => [
+                ['key' => 'ability1', 'fallback' => 'img/vectors/Vector(1).png'],
+                ['key' => 'ability2', 'fallback' => 'img/vectors/Vector3.png'],
+                ['key' => 'ability3', 'fallback' => 'img/vectors/Vector(3).png'],
+                ['key' => 'ability4', 'fallback' => 'img/vectors/Vector-1.png'],
+            ],
+        ],
+        [
+            'key' => 'card3',
+            'theme' => 'theme-coal',
+            'label_classes' => 'vlabel',
+            'name_class' => '',
+            'fallback_name' => 'SOVA',
+            'fallback_country' => 'Russia',
+            'image' => 'img/Art(1).png',
+            'abilities' => [
+                ['key' => 'ability1', 'fallback' => 'img/vectors/Vector3.png'],
+                ['key' => 'ability2', 'fallback' => 'img/vectors/Vector(2).png'],
+                ['key' => 'ability3', 'fallback' => 'img/vectors/Vector.png'],
+                ['key' => 'ability4', 'fallback' => 'img/vectors/Vector-1.png'],
+            ],
+        ],
+        [
+            'key' => 'card4',
+            'theme' => 'theme-white',
+            'label_classes' => 'vlabel vlabel--light',
+            'name_class' => '',
+            'fallback_name' => 'SAGE',
+            'fallback_country' => 'China',
+            'image' => 'img/Art.png',
+            'abilities' => [
+                ['key' => 'ability1', 'fallback' => 'img/vectors/Vector(2).png'],
+                ['key' => 'ability2', 'fallback' => 'img/vectors/Vector3.png'],
+                ['key' => 'ability3', 'fallback' => 'img/vectors/Vector.png'],
+                ['key' => 'ability4', 'fallback' => 'img/vectors/Vector-1.png'],
+            ],
+        ],
+    ];
+@endphp
+
  <section class="tr-cards" aria-labelledby="tr-title">
       <!-- header pills -->
       <h2 style="display: flex; justify-content: center">
@@ -20,7 +85,7 @@
             border-radius: 5px !important;
           "
         >
-          E-Sports
+          {{ content('tours-reg.header.title', 'E-Sports') }}
         </button>
       </h2>
 
@@ -30,12 +95,12 @@
           <button
             class="secondary-btn"
             style="
-              font-size: 25px;
-              padding: 10px 40px;
-              border-radius: 5px !important;
-            "
-          >
-            Our News
+            font-size: 25px;
+            padding: 10px 40px;
+            border-radius: 5px !important;
+          "
+        >
+            {{ content('tours-reg.section.title', 'Our News') }}
           </button>
         </h2>
 
@@ -47,149 +112,71 @@
 
         <!-- cards grid -->
         <ul class="char-grid">
-          <!-- Phoenix -->
-          <li class="char-card theme-dark">
-            <div class="char-wrap">
-              <figure class="art">
-                <img src="{{ asset('./img/Art(3).png') }}" alt="Phoenix artwork" />
-              </figure>
+          @foreach($toursRegCards as $card)
+            @php
+                $cardKey = 'tours-reg.' . $card['key'];
+                $cardName = content($cardKey . '.name', $card['fallback_name']);
+                $cardCountry = content($cardKey . '.country', $card['fallback_country']);
+            @endphp
+            <li class="char-card {{ $card['theme'] }}">
+              <div class="char-wrap">
+                <figure class="art">
+                  <img
+                    src="{{ content_media($cardKey . '.image', $card['image']) }}"
+                    alt="{{ $cardName }} artwork"
+                  />
+                </figure>
 
-              <div class="vlabel">
-                <strong class="phoenix">PHOENIX</strong>
-                <em>United Kingdom</em>
+                <div class="{{ $card['label_classes'] }}">
+                  <strong class="{{ $card['name_class'] }}">{{ $cardName }}</strong>
+                  <em>{{ $cardCountry }}</em>
+                </div>
+                <i class="accent" aria-hidden="true"></i>
+
+                <div class="abilities">
+                  @foreach($card['abilities'] as $index => $ability)
+                    <img
+                      class="ab"
+                      src="{{ content_media($cardKey . '.' . $ability['key'], $ability['fallback']) }}"
+                      alt="{{ $cardName }} ability {{ $loop->iteration }}"
+                    />
+                  @endforeach
+                  <span class="under" aria-hidden="true"></span>
+                </div>
               </div>
-              <i class="accent" aria-hidden="true"></i>
 
-              <div class="abilities">
-                <img class="ab" src="{{ asset('./img/vectors/Vector.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector3.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector(2).png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector-1.png') }}" alt="" />
-                <span class="under" aria-hidden="true"></span>
+              <div class="cta">
+                <button class="btn-register" type="button">
+                  {{ content('tours-reg.card.register_button', 'Register - now') }}
+                </button>
+                <div class="segmented">
+                  @auth
+                    <a href="{{ route('reg-single') }}" class="mini">
+                      {{ content('tours-reg.links.single', 'Single') }}
+                    </a>
+                    <a href="{{ route('reg-team') }}" class="mini">
+                      {{ content('tours-reg.links.team', 'Team') }}
+                    </a>
+                  @else
+                    <a
+                      href="{{ route('login') }}"
+                      class="mini"
+                      onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;"
+                    >
+                      {{ content('tours-reg.links.single', 'Single') }}
+                    </a>
+                    <a
+                      href="{{ route('login') }}"
+                      class="mini"
+                      onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;"
+                    >
+                      {{ content('tours-reg.links.team', 'Team') }}
+                    </a>
+                  @endauth
+                </div>
               </div>
-            </div>
-
-            <div class="cta">
-              <button class="btn-register" type="button">Register - now</button>
-              <div class="segmented">
-                @auth
-                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
-                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
-                @else
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
-                @endauth
-              </div>
-            </div>
-          </li>
-
-          <!-- Jett -->
-          <li class="char-card theme-slate">
-            <div class="char-wrap">
-              <figure class="art">
-                <img src="{{ asset('./img/Art(2).png') }}" alt="Jett artwork" />
-              </figure>
-
-              <div class="vlabel vlabel--light">
-                <strong>JETT</strong>
-                <em>South Korea</em>
-              </div>
-              <i class="accent" aria-hidden="true"></i>
-
-              <div class="abilities">
-                <img class="ab" src="{{ asset('./img/vectors/Vector(1).png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector3.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector(3).png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector-1.png') }}" alt="" />
-                <span class="under" aria-hidden="true"></span>
-              </div>
-            </div>
-
-            <div class="cta">
-              <button class="btn-register" type="button">Register - now</button>
-              <div class="segmented">
-                @auth
-                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
-                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
-                @else
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
-                @endauth
-              </div>
-            </div>
-          </li>
-
-          <!-- Sova -->
-          <li class="char-card theme-coal">
-            <div class="char-wrap">
-              <figure class="art">
-                <img src="{{ asset('./img/Art(1).png') }}" alt="Sova artwork" />
-              </figure>
-
-              <div class="vlabel">
-                <strong>SOVA</strong>
-                <em>Russia</em>
-              </div>
-              <i class="accent" aria-hidden="true"></i>
-
-              <div class="abilities">
-                <img class="ab" src="{{ asset('./img/vectors/Vector3.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector(2).png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector-1.png') }}" alt="" />
-                <span class="under" aria-hidden="true"></span>
-              </div>
-            </div>
-
-            <div class="cta">
-              <button class="btn-register" type="button">Register - now</button>
-              <div class="segmented">
-                @auth
-                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
-                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
-                @else
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
-                @endauth
-              </div>
-            </div>
-          </li>
-
-          <!-- Sage -->
-          <li class="char-card theme-white">
-            <div class="char-wrap">
-              <figure class="art">
-                <img src="{{ asset('./img/Art.png') }}" alt="Sage artwork" />
-              </figure>
-
-              <div class="vlabel vlabel--light">
-                <strong>SAGE</strong>
-                <em>China</em>
-              </div>
-              <i class="accent" aria-hidden="true"></i>
-
-              <div class="abilities">
-                <img class="ab" src="{{ asset('./img/vectors/Vector(2).png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector3.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector.png') }}" alt="" />
-                <img class="ab" src="{{ asset('./img/vectors/Vector-1.png') }}" alt="" />
-                <span class="under" aria-hidden="true"></span>
-              </div>
-            </div>
-
-            <div class="cta">
-              <button class="btn-register" type="button">Register - now</button>
-              <div class="segmented">
-                @auth
-                  <a href="{{ route('reg-single') }}" class="mini">Single</a>
-                  <a href="{{ route('reg-team') }}" class="mini">Team</a>
-                @else
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Single</a>
-                  <a href="{{ route('login') }}" class="mini" onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;">Team</a>
-                @endauth
-              </div>
-            </div>
-          </li>
+            </li>
+          @endforeach
         </ul>
       </section>
 

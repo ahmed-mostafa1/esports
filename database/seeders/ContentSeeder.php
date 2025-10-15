@@ -533,6 +533,245 @@ class ContentSeeder extends Seeder
                 ]
             ],
 
+            // Tours Registration Page Content
+            [
+                'key' => 'tours-reg.header.title',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'E-Sports',
+                    'ar' => 'الرياضات الإلكترونية'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.section.title',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'Our News',
+                    'ar' => 'أخبارنا'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card.register_button',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'Register - now',
+                    'ar' => 'سجل الآن'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.links.single',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'Single',
+                    'ar' => 'فردي'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.links.team',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'Team',
+                    'ar' => 'فريق'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card1.name',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'PHOENIX',
+                    'ar' => 'فينكس'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card1.country',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'United Kingdom',
+                    'ar' => 'المملكة المتحدة'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card1.image',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card1.image.png']
+            ],
+            [
+                'key' => 'tours-reg.card1.ability1',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card1.ability1.png']
+            ],
+            [
+                'key' => 'tours-reg.card1.ability2',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card1.ability2.png']
+            ],
+            [
+                'key' => 'tours-reg.card1.ability3',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card1.ability3.png']
+            ],
+            [
+                'key' => 'tours-reg.card1.ability4',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card1.ability4.png']
+            ],
+            [
+                'key' => 'tours-reg.card2.name',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'JETT',
+                    'ar' => 'جيت'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card2.country',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'South Korea',
+                    'ar' => 'كوريا الجنوبية'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card2.image',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card2.image.png']
+            ],
+            [
+                'key' => 'tours-reg.card2.ability1',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card2.ability1.png']
+            ],
+            [
+                'key' => 'tours-reg.card2.ability2',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card2.ability2.png']
+            ],
+            [
+                'key' => 'tours-reg.card2.ability3',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card2.ability3.png']
+            ],
+            [
+                'key' => 'tours-reg.card2.ability4',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card2.ability4.png']
+            ],
+            [
+                'key' => 'tours-reg.card3.name',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'SOVA',
+                    'ar' => 'سوفا'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card3.country',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'Russia',
+                    'ar' => 'روسيا'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card3.image',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card3.image.png']
+            ],
+            [
+                'key' => 'tours-reg.card3.ability1',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card3.ability1.png']
+            ],
+            [
+                'key' => 'tours-reg.card3.ability2',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card3.ability2.png']
+            ],
+            [
+                'key' => 'tours-reg.card3.ability3',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card3.ability3.png']
+            ],
+            [
+                'key' => 'tours-reg.card3.ability4',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card3.ability4.png']
+            ],
+            [
+                'key' => 'tours-reg.card4.name',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'SAGE',
+                    'ar' => 'سيج'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card4.country',
+                'type' => 'text',
+                'group' => 'tours-reg',
+                'value' => [
+                    'en' => 'China',
+                    'ar' => 'الصين'
+                ]
+            ],
+            [
+                'key' => 'tours-reg.card4.image',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card4.image.png']
+            ],
+            [
+                'key' => 'tours-reg.card4.ability1',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card4.ability1.png']
+            ],
+            [
+                'key' => 'tours-reg.card4.ability2',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card4.ability2.png']
+            ],
+            [
+                'key' => 'tours-reg.card4.ability3',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card4.ability3.png']
+            ],
+            [
+                'key' => 'tours-reg.card4.ability4',
+                'type' => 'image',
+                'group' => 'tours-reg',
+                'value' => ['path' => 'tours-reg.card4.ability4.png']
+            ],
+
             // Authentication Pages Content
             [
                 'key' => 'auth.login.title',

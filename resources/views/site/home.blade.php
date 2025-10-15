@@ -26,17 +26,17 @@
 
 
       <div class="countdown" role="timer" aria-live="polite">
-        <div class="countbox">
+        <div class="countbox months">
           <div class="num">03</div>
           <div class="label">{{ content('home.countdown.months', 'Months') }}</div>
         </div>
         <img src="{{ content_media('home.star.icon', 'img/Star 8.png') }}" class="star-icon" alt="Star Icon" />
-        <div class="countbox">
+        <div class="countbox days">
           <div class="num">23</div>
           <div class="label">{{ content('home.countdown.days', 'Days') }}</div>
         </div>
         <img src="{{ content_media('home.star.icon', 'img/Star 8.png') }}" class="star-icon" alt="Star Icon" />
-        <div class="countbox">
+        <div class="countbox minutes">
           <div class="num">48</div>
           <div class="label">{{ content('home.countdown.minutes', 'Minutes') }}</div>
         </div>
