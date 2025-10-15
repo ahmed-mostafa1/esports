@@ -36,8 +36,7 @@ body {
   padding: 50px;
 }
 
-/* NAVBAR STYLES MOVED TO navbar.css - Commenting out duplicate styles */
-/*
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -58,7 +57,7 @@ body {
   background-color: var(--accent);
   padding: 10px 20px;
 }
-*/
+
 
 .btn.ghost {
   background: transparent;
@@ -1826,8 +1825,7 @@ body {
   transform: translateY(0);
 }
 
-/* Navbar styles MOVED TO navbar.css - commenting out to prevent conflicts */
-/*
+
 .navbar {
   display: flex;
   align-items: center;
@@ -1840,10 +1838,7 @@ body {
   z-index: 1000;
   background-color: #000000;
 }
-*/
 
-/* ALL NAVBAR STYLES MOVED TO navbar.css - commenting out to prevent conflicts */
-/*
 .logo {
   display: flex;
   align-items: center;
@@ -1871,10 +1866,7 @@ body {
   text-decoration: none;
   white-space: nowrap;
 }
-*/
 
-/* ALL NAVBAR STYLES MOVED TO navbar.css - COMPLETELY COMMENTED OUT */
-/*
 @media (max-width: 768px) {
   .navbar {
     padding: 12px 16px;
@@ -1921,7 +1913,6 @@ body {
     border-radius: 2px;
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
-/* NAVBAR STYLES MOVED TO navbar.css - All commented out
   .hamburger-line:nth-child(1) {
     top: 6px;
   }
@@ -1973,12 +1964,10 @@ body {
   .title{
     font-size: 20px;
   }
-END NAVBAR STYLES COMMENT
-*/
+
 }
 
-/* NAVBAR STYLES COMPLETELY MOVED TO navbar.css - All commented out */
-/*
+
 @media (max-width: 768px) {
   .nav-links::-webkit-scrollbar {
     display: none;
@@ -2058,7 +2047,6 @@ END NAVBAR STYLES COMMENT
     width: 100%;
   }
 }
-END OF NAVBAR STYLES COMMENT */
 
 /* 1) Remove the overflow caused by the subtitle’s 200px side margins */
 .subtitle {

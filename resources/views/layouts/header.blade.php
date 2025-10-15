@@ -23,8 +23,20 @@
         <a href="{{ route('tournaments') }}" {{ request()->routeIs('tournaments') ? 'aria-current=page' : '' }}>{{ content('nav.esports', 'E-Sports') }}</a>
         <a href="{{ route('tours-reg') }}" {{ request()->routeIs('tours-reg') ? 'aria-current=page' : '' }}>{{ content('nav.events', 'Events Management') }}</a>
         <a href="{{ route('team') }}" {{ request()->routeIs('team') ? 'aria-current=page' : '' }}>{{ content('nav.team', 'Our Team') }}</a>
-        <a href="{{ route('login') }}" {{ request()->routeIs('login') ? 'aria-current=page' : '' }}>{{ content('nav.login', 'Login') }}</a>
-        <a href="{{ route('register') }}" {{ request()->routeIs('register') ? 'aria-current=page' : '' }}>{{ content('nav.signup', 'Sign Up for free') }}</a>
+        @auth
+          <a href="{{ route('profile.edit') }}" {{ request()->routeIs('profile.*') ? 'aria-current=page' : '' }}>
+            {{ content('nav.profile', 'My Profile') }}
+          </a>
+          <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
+            @csrf
+            <button type="submit">
+              {{ content('nav.logout', 'Logout') }}
+            </button>
+          </form>
+        @else
+          <a href="{{ route('login') }}" {{ request()->routeIs('login') ? 'aria-current=page' : '' }}>{{ content('nav.login', 'Login') }}</a>
+          <a href="{{ route('register') }}" {{ request()->routeIs('register') ? 'aria-current=page' : '' }}>{{ content('nav.signup', 'Sign Up for free') }}</a>
+        @endauth
         <a href="{{ route('setLocale', 'en') }}" class="lang-switch {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
         <a href="{{ route('setLocale', 'ar') }}" class="lang-switch {{ app()->getLocale() === 'ar' ? 'active' : '' }}">AR</a>
       </nav>

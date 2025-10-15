@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/home.css') }}" />
+<!-- <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" /> -->
 @if(app()->getLocale() === 'ar')
 <link rel="stylesheet" href="{{ asset('css/home.rtl.css') }}" />
 @endif
@@ -25,19 +26,44 @@
       </p>
 
 
-      <div class="countdown" role="timer" aria-live="polite">
+@php
+    $countdownNow = now();
+    $countdownDefaultTarget = (clone $countdownNow)->addMonths(3)->startOfMinute();
+    $countdownTargetRaw = content('home.countdown.target_datetime', $countdownDefaultTarget->toIso8601String());
+
+    try {
+        $countdownTarget = \Carbon\Carbon::parse($countdownTargetRaw);
+    } catch (\Throwable $e) {
+        $countdownTarget = clone $countdownDefaultTarget;
+    }
+
+    $countdownTarget = $countdownTarget->timezone($countdownNow->timezone);
+
+    if ($countdownTarget->lessThanOrEqualTo($countdownNow)) {
+        $countdownMonths = $countdownDays = $countdownMinutes = 0;
+    } else {
+        $countdownInterval = $countdownNow->diff($countdownTarget);
+        $countdownMonths = max(0, ($countdownInterval->y * 12) + $countdownInterval->m);
+        $countdownDays = max(0, $countdownInterval->d);
+        $countdownMinutes = max(0, $countdownInterval->i);
+    }
+
+    $countdownTargetIso = $countdownTarget->toIso8601String();
+@endphp
+
+      <div class="countdown" role="timer" aria-live="polite" data-countdown-target="{{ $countdownTargetIso }}">
         <div class="countbox months">
-          <div class="num">03</div>
+          <div class="num" data-countdown-part="months">{{ str_pad($countdownMonths, 2, '0', STR_PAD_LEFT) }}</div>
           <div class="label">{{ content('home.countdown.months', 'Months') }}</div>
         </div>
         <img src="{{ content_media('home.star.icon', 'img/Star 8.png') }}" class="star-icon" alt="Star Icon" />
         <div class="countbox days">
-          <div class="num">23</div>
+          <div class="num" data-countdown-part="days">{{ str_pad($countdownDays, 2, '0', STR_PAD_LEFT) }}</div>
           <div class="label">{{ content('home.countdown.days', 'Days') }}</div>
         </div>
         <img src="{{ content_media('home.star.icon', 'img/Star 8.png') }}" class="star-icon" alt="Star Icon" />
         <div class="countbox minutes">
-          <div class="num">48</div>
+          <div class="num" data-countdown-part="minutes">{{ str_pad($countdownMinutes, 2, '0', STR_PAD_LEFT) }}</div>
           <div class="label">{{ content('home.countdown.minutes', 'Minutes') }}</div>
         </div>
       </div>
@@ -45,7 +71,7 @@
       <div class="hero-actions">
         <a href="{{ route('tournaments') }}">
           <img href="" src="{{ content_media('home.cta.button.image', 'img/register-now.png') }}" /></a>
-        <span class="cta-text">{{ content('home.cta.button', 'Register Now') }}</span>
+        <!-- <span class="cta-text">{{ content('home.cta.button', 'Register Now') }}</span> -->
       </div>
     </aside>
 
@@ -96,7 +122,7 @@
     <div class="cards">
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ content_media('home.services.card1.icon', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', 'Experienced Trainers') }}" />
+          <img src="{{ content_media('home.services.card1', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', 'Experienced Trainers') }}" />
         </div>
         <div class="img-desc">
           <h3>{{ content('home.services.card1.title', 'Experienced Trainers') }}</h3>

@@ -615,3 +615,89 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
 //     }, 180);
 //   }, { passive: true });
 // });
+
+(function countdownTimer() {
+  const countdownEl = document.querySelector('[data-countdown-target]');
+  if (!countdownEl) return;
+
+  const targetIso = countdownEl.getAttribute('data-countdown-target');
+  if (!targetIso) return;
+
+  const targetDate = new Date(targetIso);
+  if (Number.isNaN(targetDate.getTime())) {
+    console.warn('Invalid countdown target datetime', targetIso);
+    return;
+  }
+
+  const partElements = {
+    months: countdownEl.querySelector('[data-countdown-part="months"]'),
+    days: countdownEl.querySelector('[data-countdown-part="days"]'),
+    minutes: countdownEl.querySelector('[data-countdown-part="minutes"]'),
+  };
+
+  const pad = (value) => String(Math.max(0, value ?? 0)).padStart(2, '0');
+
+  const setPart = (part, value) => {
+    if (!partElements[part]) return;
+    partElements[part].textContent = pad(value);
+  };
+
+  const computeDiff = (from, to) => {
+    if (to <= from) {
+      return { months: 0, days: 0, minutes: 0 };
+    }
+
+    let months =
+      (to.getFullYear() - from.getFullYear()) * 12 +
+      (to.getMonth() - from.getMonth());
+
+    const anchor = new Date(from.getTime());
+    anchor.setMonth(anchor.getMonth() + months);
+
+    if (anchor > to) {
+      months -= 1;
+      anchor.setMonth(anchor.getMonth() - 1);
+    }
+
+    let remaining = to.getTime() - anchor.getTime();
+    const dayMs = 24 * 60 * 60 * 1000;
+    const hourMs = 60 * 60 * 1000;
+    const days = Math.floor(remaining / dayMs);
+    remaining -= days * dayMs;
+
+    const hours = Math.floor(remaining / hourMs);
+    remaining -= hours * hourMs;
+
+    const minutes = Math.floor(remaining / 60000);
+
+    return {
+      months: Math.max(0, months),
+      days: Math.max(0, days),
+      minutes: Math.max(0, minutes),
+    };
+  };
+
+  let timerId;
+
+  const tick = () => {
+    const now = new Date();
+    const diff = computeDiff(now, targetDate);
+    setPart('months', diff.months);
+    setPart('days', diff.days);
+    setPart('minutes', diff.minutes);
+  };
+
+  const scheduleNextTick = () => {
+    clearTimeout(timerId);
+    const now = new Date();
+    const msUntilNextMinute =
+      60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+    timerId = setTimeout(() => {
+      tick();
+      scheduleNextTick();
+    }, Math.max(1000, msUntilNextMinute));
+  };
+
+  tick();
+  scheduleNextTick();
+})();

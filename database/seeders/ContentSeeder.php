@@ -85,6 +85,15 @@ class ContentSeeder extends Seeder
                 ]
             ],
             [
+                'key' => 'home.countdown.target_datetime',
+                'type' => 'text',
+                'group' => 'home',
+                'value' => [
+                    'en' => '2025-12-31T18:00:00+00:00',
+                    'ar' => '2025-12-31T18:00:00+00:00'
+                ]
+            ],
+            [
                 'key' => 'home.hero.tag.ready',
                 'type' => 'text',
                 'group' => 'home',
@@ -1065,6 +1074,24 @@ class ContentSeeder extends Seeder
                 'value' => [
                     'en' => 'Sign Up for free',
                     'ar' => 'سجل مجاناً'
+                ]
+            ],
+            [
+                'key' => 'nav.profile',
+                'type' => 'text',
+                'group' => 'navigation',
+                'value' => [
+                    'en' => 'My Profile',
+                    'ar' => 'ملفي الشخصي'
+                ]
+            ],
+            [
+                'key' => 'nav.logout',
+                'type' => 'text',
+                'group' => 'navigation',
+                'value' => [
+                    'en' => 'Logout',
+                    'ar' => 'تسجيل الخروج'
                 ]
             ],
 

@@ -95,10 +95,33 @@
                             </span>
                         </p>
 
+                        @php
+                            $skeletonNow = now();
+                            $skeletonDefaultTarget = (clone $skeletonNow)->addMonths(3)->startOfMinute();
+                            $skeletonTargetRaw = content('home.countdown.target_datetime', $skeletonDefaultTarget->toIso8601String());
+
+                            try {
+                                $skeletonTarget = \Carbon\Carbon::parse($skeletonTargetRaw);
+                            } catch (\Throwable $e) {
+                                $skeletonTarget = clone $skeletonDefaultTarget;
+                            }
+
+                            $skeletonTarget = $skeletonTarget->timezone($skeletonNow->timezone);
+
+                            if ($skeletonTarget->lessThanOrEqualTo($skeletonNow)) {
+                                $skeletonMonths = $skeletonDays = $skeletonMinutes = 0;
+                            } else {
+                                $skeletonInterval = $skeletonNow->diff($skeletonTarget);
+                                $skeletonMonths = max(0, ($skeletonInterval->y * 12) + $skeletonInterval->m);
+                                $skeletonDays = max(0, $skeletonInterval->d);
+                                $skeletonMinutes = max(0, $skeletonInterval->i);
+                            }
+                        @endphp
+
                         <!-- Countdown -->
-                        <div class="countdown flex gap-4 mb-8 p-4 bg-gray-800 rounded">
+                        <div class="countdown flex gap-4 mb-4 p-4 bg-gray-800 rounded">
                             <div class="text-center">
-                                <div class="text-2xl font-bold">03</div>
+                                <div class="text-2xl font-bold">{{ str_pad($skeletonMonths, 2, '0', STR_PAD_LEFT) }}</div>
                                 <div data-content-key="home.countdown.months" 
                                      data-content-type="text"
                                      data-content-value="{{ $contents['home.countdown.months']->value ?? '{}' }}">
@@ -109,7 +132,7 @@
                                 <div class="text-2xl font-bold">⭐</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-2xl font-bold">23</div>
+                                <div class="text-2xl font-bold">{{ str_pad($skeletonDays, 2, '0', STR_PAD_LEFT) }}</div>
                                 <div data-content-key="home.countdown.days" 
                                      data-content-type="text"
                                      data-content-value="{{ $contents['home.countdown.days']->value ?? '{}' }}">
@@ -120,12 +143,27 @@
                                 <div class="text-2xl font-bold">⭐</div>
                             </div>
                             <div class="text-center">
-                                <div class="text-2xl font-bold">48</div>
+                                <div class="text-2xl font-bold">{{ str_pad($skeletonMinutes, 2, '0', STR_PAD_LEFT) }}</div>
                                 <div data-content-key="home.countdown.minutes" 
                                      data-content-type="text"
                                      data-content-value="{{ $contents['home.countdown.minutes']->value ?? '{}' }}">
                                     {{ content('home.countdown.minutes', 'Minutes') }}
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800/70 border border-gray-700 rounded p-4 mb-8 text-sm">
+                            <p class="text-gray-300 font-semibold mb-2">Countdown Target (ISO 8601 format)</p>
+                            <p class="text-gray-400 mb-2">Set the event date &amp; time (e.g. <code>2025-12-31T18:00:00+00:00</code>). The hero countdown automatically recalculates months, days, and minutes based on this value.</p>
+                            <div class="inline-flex items-center gap-2 px-3 py-2 bg-gray-900 rounded border border-gray-700">
+                                <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2h-1M6 5H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span data-content-key="home.countdown.target_datetime"
+                                      data-content-type="text"
+                                      data-content-value="{{ optional($contents->get('home.countdown.target_datetime'))->value ?? '{}' }}">
+                                    {{ content('home.countdown.target_datetime', $skeletonDefaultTarget->toIso8601String()) }}
+                                </span>
                             </div>
                         </div>
 
