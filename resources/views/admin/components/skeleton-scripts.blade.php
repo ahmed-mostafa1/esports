@@ -2,6 +2,27 @@
 let currentContentKey = null;
 let currentContentType = null;
 
+function normalizeTranslations(payload) {
+    if (!payload) return {};
+    if (typeof payload === 'string') {
+        return { en: payload };
+    }
+    if (typeof payload === 'object') {
+        return payload;
+    }
+    return {};
+}
+
+function normalizeImagePayload(payload) {
+    if (payload && typeof payload === 'object') {
+        return payload;
+    }
+    if (typeof payload === 'string') {
+        return { path: payload };
+    }
+    return {};
+}
+
 // Open modal for editing content
 function openModal(contentKey, contentType, currentValue, imageUrl = null) {
     currentContentKey = contentKey;
@@ -21,13 +42,9 @@ function openModal(contentKey, contentType, currentValue, imageUrl = null) {
         document.getElementById('imageFields').classList.add('hidden');
         
         // Populate current values
-        if (currentValue && typeof currentValue === 'object') {
-            document.getElementById('valueEn').value = currentValue.en || '';
-            document.getElementById('valueAr').value = currentValue.ar || '';
-        } else {
-            document.getElementById('valueEn').value = currentValue || '';
-            document.getElementById('valueAr').value = '';
-        }
+        const normalized = normalizeTranslations(currentValue);
+        document.getElementById('valueEn').value = normalized.en || '';
+        document.getElementById('valueAr').value = normalized.ar || '';
     } else if (contentType === 'image') {
         // Show image fields, hide text fields
         document.getElementById('textFields').classList.add('hidden');
@@ -112,7 +129,7 @@ async function saveContent() {
             showSuccessMessage(result.message);
             
             // Update the content in the skeleton view
-            updateSkeletonContent(currentContentKey, result.content, result.imageUrl);
+            updateSkeletonContent(currentContentKey, result.content, result.imageUrl, currentContentType);
             
             // Close modal after short delay
             setTimeout(() => {
@@ -134,19 +151,35 @@ async function saveContent() {
 }
 
 // Update content in skeleton view
-function updateSkeletonContent(key, content, imageUrl = null) {
+function updateSkeletonContent(key, content, imageUrl = null, specifiedType = null) {
     const contentElements = document.querySelectorAll(`[data-content-key="${key}"]`);
     
+    const updateType = specifiedType || currentContentType;
+
     contentElements.forEach(element => {
-        if (currentContentType === 'text') {
-            // Update text content (prefer current locale or fallback to English)
+        if (updateType === 'text') {
+            const translations = normalizeTranslations(content);
             const currentLocale = document.documentElement.lang || 'en';
-            const textValue = content[currentLocale] || content.en || content;
+            const textValue = translations[currentLocale] ?? translations.en ?? translations.default ?? '';
             element.textContent = textValue;
-        } else if (currentContentType === 'image' && imageUrl) {
-            // Update image src
+            const serialised = JSON.stringify(translations);
+            element.setAttribute('data-content-value', serialised);
+            element.dataset.contentValue = serialised;
+        } else if (updateType === 'image' && imageUrl) {
+            const payload = normalizeImagePayload(content);
+            const serialised = JSON.stringify(payload);
+            element.setAttribute('data-content-value', serialised);
+            element.dataset.contentValue = serialised;
+            element.setAttribute('data-image-url', imageUrl);
+            element.dataset.imageUrl = imageUrl;
+
             if (element.tagName === 'IMG') {
                 element.src = imageUrl;
+            } else {
+                const img = element.querySelector('img');
+                if (img) {
+                    img.src = imageUrl;
+                }
             }
         }
         
@@ -193,27 +226,52 @@ document.getElementById('contentModal').addEventListener('click', function(event
 });
 
 // Handle content node clicks
-document.addEventListener('click', function(event) {
+document.addEventListener('click', async function(event) {
     const contentNode = event.target.closest('[data-content-key]');
-    if (contentNode) {
-        event.preventDefault();
-        
-        const key = contentNode.getAttribute('data-content-key');
-        const type = contentNode.getAttribute('data-content-type');
-        const currentValue = contentNode.getAttribute('data-content-value');
-        const imageUrl = contentNode.getAttribute('data-image-url');
-        
-        // Parse current value if it's JSON
-        let parsedValue = currentValue;
-        try {
-            if (currentValue && currentValue.startsWith('{')) {
-                parsedValue = JSON.parse(currentValue);
-            }
-        } catch (e) {
-            // Keep as string if not valid JSON
-        }
-        
-        openModal(key, type, parsedValue, imageUrl);
+    if (!contentNode) {
+        return;
     }
+
+    event.preventDefault();
+        
+    const key = contentNode.getAttribute('data-content-key');
+    const type = contentNode.getAttribute('data-content-type');
+    const currentValue = contentNode.getAttribute('data-content-value');
+    const imageUrl = contentNode.getAttribute('data-image-url');
+    
+    // Parse current value if it's JSON
+    let parsedValue = currentValue;
+    try {
+        if (currentValue && currentValue.trim().startsWith('{')) {
+            parsedValue = JSON.parse(currentValue);
+        }
+    } catch (e) {
+        parsedValue = currentValue;
+    }
+
+    let fetchedValue = parsedValue;
+    let fetchedImageUrl = imageUrl;
+
+    try {
+        const response = await fetch(`/admin/contents/${encodeURIComponent(key)}/data`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            if (data && data.success) {
+                fetchedValue = data.content ?? fetchedValue;
+                if (data.imageUrl) {
+                    fetchedImageUrl = data.imageUrl;
+                }
+            }
+        }
+    } catch (error) {
+        console.warn('Failed to fetch content data for', key, error);
+    }
+    
+    openModal(key, type, fetchedValue, fetchedImageUrl);
 });
 </script>

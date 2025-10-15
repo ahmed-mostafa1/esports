@@ -56,6 +56,7 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::get('/contents', [ContentController::class, 'index'])->name('contents.index');
         Route::get('/contents/page/{group}', [ContentController::class, 'page'])->name('contents.page');
         Route::get('/contents/skeleton/{group}', [ContentController::class, 'skeleton'])->name('contents.skeleton');
+        Route::get('/contents/{key}/data', [ContentController::class, 'showData'])->name('contents.data');
         Route::get('/contents/{key}', [ContentController::class, 'edit'])->name('contents.edit');
         Route::post('/contents/{key}', [ContentController::class, 'update'])->name('contents.update');
         Route::post('/contents/{key}/ajax', [ContentController::class, 'updateAjax'])->name('contents.update.ajax');

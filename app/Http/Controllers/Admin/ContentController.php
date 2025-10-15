@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Content;
+use App\Support\ContentRepository;
 use Illuminate\Http\Request;
 
 class ContentController extends Controller
@@ -154,7 +155,7 @@ class ContentController extends Controller
             
             // Clear cache for text content (all locales we have values for)
             $locales = array_keys($content->getTranslations('value') ?? []);
-            \App\Support\ContentRepository::forgetText($key, $locales);
+            ContentRepository::forgetText($key, $locales);
         }
         
         // Handle image content updates
@@ -175,7 +176,7 @@ class ContentController extends Controller
             $content->save();
             
             // Clear cache for image content
-            \App\Support\ContentRepository::forgetImage($key);
+            ContentRepository::forgetImage($key);
         }
         
         return back()->with('status', 'Content updated successfully!');
@@ -208,12 +209,12 @@ class ContentController extends Controller
                 
                 // Clear cache for text content
                 $locales = array_keys($content->getTranslations('value') ?? []);
-                \App\Support\ContentRepository::forgetText($key, $locales);
+                ContentRepository::forgetText($key, $locales);
                 
                 return response()->json([
                     'success' => true,
                     'message' => 'Content updated successfully',
-                    'content' => $content->value
+                    'content' => $content->getTranslations('value')
                 ]);
             }
             
@@ -241,13 +242,14 @@ class ContentController extends Controller
                 $content->save();
                 
                 // Clear cache for image content
-                \App\Support\ContentRepository::forgetImage($key);
+                ContentRepository::forgetImage($key);
+                $imageUrl = ContentRepository::image($key);
                 
                 return response()->json([
                     'success' => true,
                     'message' => 'Image updated successfully',
                     'content' => $content->value,
-                    'imageUrl' => asset('content-images/' . $filename)
+                    'imageUrl' => $imageUrl
                 ]);
             }
             
@@ -273,6 +275,41 @@ class ContentController extends Controller
                 'message' => 'Server error: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Return raw content data for skeleton editors.
+     */
+    public function showData(string $key)
+    {
+        $content = Content::where('key', $key)->firstOrFail();
+
+        $base = [
+            'success' => true,
+            'key' => $content->key,
+            'type' => $content->type,
+            'updated_at' => optional($content->updated_at)->toIso8601String(),
+        ];
+
+        if ($content->type === 'text') {
+            $translations = $content->getTranslations('value') ?? [];
+
+            return response()->json($base + [
+                'content' => $translations,
+                'locales' => array_keys($translations),
+            ]);
+        }
+
+        if ($content->type === 'image') {
+            return response()->json($base + [
+                'content' => $content->value ?? [],
+                'imageUrl' => ContentRepository::image($key),
+            ]);
+        }
+
+        return response()->json($base + [
+            'content' => $content->value,
+        ]);
     }
     
     /**
@@ -376,7 +413,7 @@ class ContentController extends Controller
                 
                 // Clear cache
                 $locales = array_keys($content->getTranslations('value') ?? []);
-                \App\Support\ContentRepository::forgetText($key, $locales);
+                ContentRepository::forgetText($key, $locales);
             }
             
             return response()->json([
@@ -436,7 +473,7 @@ class ContentController extends Controller
                     
                     // Clear cache
                     $locales = array_keys($content->getTranslations('value') ?? []);
-                    \App\Support\ContentRepository::forgetText($key, $locales);
+                    ContentRepository::forgetText($key, $locales);
                     $updatedCount++;
                 }
             }
