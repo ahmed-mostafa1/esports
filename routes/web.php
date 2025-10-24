@@ -31,7 +31,7 @@ Route::view('/team', 'site.team')->name('team');
 
 // Dashboard & auth (unchanged)
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
