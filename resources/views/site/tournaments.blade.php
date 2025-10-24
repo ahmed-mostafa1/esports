@@ -111,7 +111,7 @@
         <li class="ot-card">
           <article class="ot-card__wrap">
             <figure class="ot-media">
-              <img src="{{ content_media('tournaments.tournament3.image', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament3.title', 'Call of Duty Warzone Battle') }}" />
+              <img src="{{ content_media('tournaments.image.img3', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament3.title', 'Call of Duty Warzone Battle') }}" />
             </figure>
             <div class="ot-body">
               <h3 class="ot-title">{{ content('tournaments.tournament3.title', 'CALL OF DUTY WARZONE BATTLE') }}</h3>
@@ -150,7 +150,7 @@
         <li class="ot-card">
           <article class="ot-card__wrap">
             <figure class="ot-media">
-              <img src="{{ content_media('tournaments.tournament4.image', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament4.title', 'Counter-Strike Global Offensive') }}" />
+              <img src="{{ content_media('tournaments.image.img4', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament4.title', 'Counter-Strike Global Offensive') }}" />
             </figure>
             <div class="ot-body">
               <h3 class="ot-title">{{ content('tournaments.tournament4.title', 'COUNTER-STRIKE GLOBAL OFFENSIVE') }}</h3>
@@ -189,7 +189,7 @@
         <li class="ot-card">
           <article class="ot-card__wrap">
             <figure class="ot-media">
-              <img src="{{ content_media('tournaments.tournament5.image', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament5.title', 'Valorant Champions') }}" />
+              <img src="{{ content_media('tournaments.image.img5', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament5.title', 'Valorant Champions') }}" />
             </figure>
             <div class="ot-body">
               <h3 class="ot-title">{{ content('tournaments.tournament5.title', 'VALORANT CHAMPIONS SERIES') }}</h3>
@@ -228,7 +228,7 @@
         <li class="ot-card">
           <article class="ot-card__wrap">
             <figure class="ot-media">
-              <img src="{{ content_media('tournaments.tournament6.image', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament6.title', 'Apex Legends Arena') }}" />
+              <img src="{{ content_media('tournaments.image.img6', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament6.title', 'Apex Legends Arena') }}" />
             </figure>
             <div class="ot-body">
               <h3 class="ot-title">{{ content('tournaments.tournament6.title', 'APEX LEGENDS ARENA MASTERS') }}</h3>
@@ -267,7 +267,7 @@
         <li class="ot-card">
           <article class="ot-card__wrap">
             <figure class="ot-media">
-              <img src="{{ content_media('tournaments.tournament7.image', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament7.title', 'Rocket League Championship') }}" />
+              <img src="{{ content_media('tournaments.image.img7', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament7.title', 'Rocket League Championship') }}" />
             </figure>
             <div class="ot-body">
               <h3 class="ot-title">{{ content('tournaments.tournament7.title', 'ROCKET LEAGUE CHAMPIONSHIP SERIES') }}</h3>
@@ -306,7 +306,7 @@
         <li class="ot-card">
           <article class="ot-card__wrap">
             <figure class="ot-media">
-              <img src="{{ content_media('tournaments.tournament8.image', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament8.title', 'Overwatch League Finals') }}" />
+              <img src="{{ content_media('tournaments.image.img4', 'img/tournaments-inner.png') }}" alt="{{ content('tournaments.tournament8.title', 'Overwatch League Finals') }}" />
             </figure>
             <div class="ot-body">
               <h3 class="ot-title">{{ content('tournaments.tournament8.title', 'OVERWATCH LEAGUE GRAND FINALS') }}</h3>
