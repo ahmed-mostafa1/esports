@@ -35,7 +35,6 @@
           </form>
         @else
           <a href="{{ route('login') }}" {{ request()->routeIs('login') ? 'aria-current=page' : '' }}>{{ content('nav.login', 'Login') }}</a>
-          <a href="{{ route('register') }}" {{ request()->routeIs('register') ? 'aria-current=page' : '' }}>{{ content('nav.signup', 'Sign Up for free') }}</a>
         @endauth
         <a href="{{ route('setLocale', 'en') }}" class="lang-switch {{ app()->getLocale() === 'en' ? 'active' : '' }}">EN</a>
         <a href="{{ route('setLocale', 'ar') }}" class="lang-switch {{ app()->getLocale() === 'ar' ? 'active' : '' }}">AR</a>

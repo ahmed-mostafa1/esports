@@ -12,8 +12,13 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white border-r border-gray-200">
       <div class="p-4 border-b border-gray-200">
-        <a href="{{ route('admin.dashboard') }}" class="block text-gray-900 font-semibold">Esports</a>
-        <div class="text-xs text-gray-500">Content Manager</div>
+        <a href="{{ route('admin.dashboard') }}" class="block text-gray-900 font-semibold">Esports Admin</a>
+         <form method="POST" action="{{ route('logout') }}" class="nav-logout-form"  style="color: red; text-align: right;">
+            @csrf
+            <button type="submit">
+              {{ content('nav.logout', 'Logout') }}
+            </button>
+          </form>
       </div>
 
       <nav class="p-3 space-y-1">
