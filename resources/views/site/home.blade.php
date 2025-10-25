@@ -8,6 +8,20 @@
 
 @section('content')
 
+@php
+  $homeLocale = app()->getLocale();
+  $tournaments = \App\Models\TournamentCard::published()->ordered()->get();
+  $partners = \App\Models\Partner::published()->ordered()->get();
+  $testimonials = \App\Models\Testimonial::published()->ordered()->get();
+  $tournamentColumns = 3;
+  $itemsPerColumn = max(1, (int) ceil(($tournaments->count() ?: 1) / $tournamentColumns));
+  $chunkedTournaments = $tournaments->values()->chunk($itemsPerColumn);
+
+  while ($chunkedTournaments->count() < $tournamentColumns) {
+      $chunkedTournaments->push(collect());
+  }
+@endphp
+
 
 <!-- HERO -->
 <section class="hero" id="home">
@@ -132,7 +146,7 @@
     <!-- Title + swoosh -->
     <div class="mp-header">
       <div class="popular-title">
-        <h2 class="title">Most Popular Tournaments</h2>
+        <h2 class="title">{{ content('home.tournaments.title', 'Most Popular Tournaments') }}</h2>
         <div class="title-swoosh curved-underline">
           <svg
             viewBox="0 0 260 24"
@@ -149,15 +163,14 @@
         </div>
 
         <!-- Subtitle -->
-        <p class="subtitle">Community Organizing Team</p>
+        <p class="subtitle">{{ content('home.tournaments.subtitle', 'Community Organizing Team') }}</p>
       </div>
       <!-- Dots-->
       <div class="dots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+        @php($tournamentDotCount = max(1, min(5, $tournaments->count())))
+        @for($i = 0; $i < $tournamentDotCount; $i++)
+          <span class="dot {{ $i === 0 ? 'active' : '' }}"></span>
+        @endfor
       </div>
       <!-- nav btn -->
       <div class="nav-arrows">
@@ -171,72 +184,29 @@
     </div>
     <!-- 3-column list -->
     <div class="list-grid">
-      <!-- Column 1 -->
-      <ul class="mp-list">
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html"> Dubai Police Esports Tournament</div></a>
-          </div>
-        </li>
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html">Que Club 1v1 League of Legends Showdown </div></a>
-          </div>
-        </li>
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html"> Dubai Police Esports Tournament</div></a>
-          </div>
-        </li>
-      </ul>
-
-      <!-- Column 2 -->
-      <ul class="mp-list">
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html"> Dubai Police Esports Tournament</div></a>
-          </div>
-        </li>
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div></div>
-            <div><a class="txt" href="./tours-reg.html">EMIRATES ESPORTS FESTIVAL 22 </div></a>
-          </div>
-        </li>
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html"> Dubai Police Esports Tournament</div></a>
-          </div>
-        </li>
-      </ul>
-
-      <!-- Column 3 -->
-      <ul class="mp-list">
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html"> Dubai Police Esports Tournament</div></a>
-          </div>
-        </li>
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html">Manchester City FIFA Cup powered by MIDEA </div></a>
-          </div>
-        </li>
-        <li class="mp-item">
-          <span class="badge"><img src="{{ asset('./img/badge.png') }}" /></span>
-          <div class="txt">
-            <div><a class="txt" href="./tours-reg.html">DOTA 2 MENA TOURNAMENT </div></a>
-          </div>
-        </li>
-      </ul>
+      @foreach($chunkedTournaments as $columnItems)
+        <ul class="mp-list">
+          @forelse($columnItems as $tournament)
+            <li class="mp-item">
+              <span class="badge"><img src="{{ asset('./img/badge.png') }}" alt="badge" /></span>
+              <div class="txt">
+                <div>
+                  <a class="txt" href="{{ route('tours-reg') }}">
+                    {{ $tournament->titleFor($homeLocale) ?: 'Tournament' }}
+                  </a>
+                </div>
+              </div>
+            </li>
+          @empty
+            <li class="mp-item">
+              <span class="badge"><img src="{{ asset('./img/badge.png') }}" alt="badge" /></span>
+              <div class="txt">
+                <div>{{ __('Coming soon') }}</div>
+              </div>
+            </li>
+          @endforelse
+        </ul>
+      @endforeach
     </div>
   </div>
 </section>
@@ -245,7 +215,7 @@
 <section class="partners-section" data-reveal="fade-right" data-reveal-delay="150">
   <div class="container">
     <!-- Title -->
-    <h2 class="title">Our Partners</h2>
+    <h2 class="title">{{ content('home.partners.title', 'Our Partners') }}</h2>
     <div class="title-swoosh" aria-hidden="true">
       <svg viewBox="0 0 260 22" xmlns="http://www.w3.org/2000/svg">
         <!-- gentle upward “smile” like the source -->
@@ -261,95 +231,43 @@
     <!-- Slider -->
     <div class="slider" id="partners-slider">
       <div class="track">
-        <!-- Slide -->
-        <figure class="card-partner">
-          <div class="media placeholder">
-            <img src="{{ asset('./img/dubi.png') }}" />
-            <span class="live">● Live</span>
-            <button class="play" aria-label="Play"></button>
-            <figcaption class="overlay">
-              <div class="meta-title">LIVE: Nemiga vs Fornite</div>
-              <div class="meta-sub">Agung Zero Dark Channel</div>
+        @forelse($partners as $partner)
+          <figure class="card-partner">
+            <div class="media {{ $loop->even ? 'placeholder alt' : 'placeholder' }}">
+              @if($partner->media_type === 'video' && $partner->video_url)
+                <div class="ratio-16x9">
+                  <iframe src="{{ $partner->video_url }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+              @elseif($partner->media_type === 'image' && $partner->image_path)
+                <img src="{{ asset($partner->image_path) }}" alt="{{ $partner->displayName($homeLocale) }}">
+              @else
+                <div class="ratio-16x9">
+                  <div class="ratio-16x9__inner">{{ __('Media unavailable') }}</div>
+                </div>
+              @endif
+              <span class="live">{{ content('home.partners.live_indicator', '● Live') }}</span>
+              <button class="play" aria-label="Play"></button>
+              <figcaption class="overlay">
+                <div class="meta-title">{{ content('home.partners.live_title', 'LIVE: Nemiga vs Fornite') }}</div>
+                <div class="meta-sub">{{ content('home.partners.live_subtitle', 'Agung Zero Dark Channel') }}</div>
+              </figcaption>
+            </div>
+            <figcaption class="name {{ $partner->displayName($homeLocale) && strlen($partner->displayName($homeLocale)) > 18 ? 'wrap' : '' }}">
+              {{ $partner->displayName($homeLocale) ?: content('home.partners.title', 'Our Partners') }}
             </figcaption>
-          </div>
-          <figcaption class="name">Dubai Police</figcaption>
-        </figure>
-
-        <!-- Slide -->
-        <figure class="card-partner">
-          <div class="media placeholder alt">
-            <img src="{{ asset('./img/que.png') }}" />
-            <span class="live">● Live</span>
-            <button class="play" aria-label="Play"></button>
-            <figcaption class="overlay">
-              <div class="meta-title">LIVE: Nemiga vs Fornite</div>
-              <div class="meta-sub">Agung Zero Dark Channel</div>
-            </figcaption>
-          </div>
-          <figcaption class="name">Que Club</figcaption>
-        </figure>
-
-        <!-- Slide -->
-        <figure class="card-partner">
-          <div class="media placeholder">
-            <img src="{{ asset('./img/emirate.png') }}" />
-            <span class="live">● Live</span>
-            <button class="play" aria-label="Play"></button>
-            <figcaption class="overlay">
-              <div class="meta-title">LIVE: Nemiga vs Fornite</div>
-              <div class="meta-sub">Agung Zero Dark Channel</div>
-            </figcaption>
-          </div>
-          <figcaption class="name wrap">
-            EMIRATES ESPORTS FESTIVAL
-          </figcaption>
-        </figure>
-
-        <!-- Slide -->
-        <figure class="card-partner">
-          <div class="media placeholder alt">
-            <img src="{{ asset('./img/dotta.png') }}" />
-            <span class="live">● Live</span>
-            <button class="play" aria-label="Play"></button>
-            <figcaption class="overlay">
-              <div class="meta-title">LIVE: Nemiga vs Fornite</div>
-              <div class="meta-sub">Agung Zero Dark Channel</div>
-            </figcaption>
-          </div>
-          <figcaption class="name wrap">
-            DOTA 2 MENA TOURNAMENT
-          </figcaption>
-        </figure>
-
-        <!-- extra slides (placeholders) to demonstrate pagination -->
-        <figure class="card-partner">
-          <div class="media placeholder">
-            <img src="{{ asset('./img/emirate.png') }}" />
-            <button class="play" aria-label="Play"></button>
-          </div>
-          <figcaption class="name">Partner Five</figcaption>
-        </figure>
-        <figure class="card-partner">
-          <div class="media placeholder alt">
-            <img src="{{ asset('./img/emirate.png') }}" />
-            <button class="play" aria-label="Play"></button>
-          </div>
-          <figcaption class="name">Partner Six</figcaption>
-        </figure>
-        <figure class="card-partner">
-          <div class="media placeholder">
-            <img src="{{ asset('./img/emirate.png') }}" />
-            <button class="play" aria-label="Play"></button>
-          </div>
-          <figcaption class="name">Partner Seven</figcaption>
-        </figure>
-        <figure class="card-partner">
-          <div class="media placeholder alt">
-            <img src="{{ asset('./img/emirate.png') }}" />
-            <button class="play" aria-label="Play"></button>
-          </div>
-          <figcaption class="name">Partner Eight</figcaption>
-        </figure>
+          </figure>
+        @empty
+          <figure class="card-partner">
+            <div class="media placeholder">
+              <div class="ratio-16x9">
+                <div class="ratio-16x9__inner">{{ __('Partners coming soon') }}</div>
+              </div>
+              <span class="live">{{ content('home.partners.live_indicator', '● Live') }}</span>
+              <button class="play" aria-label="Play"></button>
+            </div>
+            <figcaption class="name">{{ content('home.partners.title', 'Our Partners') }}</figcaption>
+          </figure>
+        @endforelse
       </div>
 
 
@@ -360,11 +278,10 @@
         class="dots-partner"
         id="p-dots"
         aria-label="Slider pagination">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+        @php($partnerDotCount = max(1, min(5, $partners->count())))
+        @for($i = 0; $i < $partnerDotCount; $i++)
+          <span class="dot {{ $i === 0 ? 'active' : '' }}"></span>
+        @endfor
       </div>
 
       <!-- Arrow pills (bottom-right) -->
@@ -385,7 +302,7 @@
 <section class="ts-section" data-reveal="fade-up" data-reveal-delay="150">
   <div class="ts-container">
     <div class="ts-head">
-      <h2 class="ts-title">Client <span>Testimonial</span></h2>
+      <h2 class="ts-title">{{ content('home.testimonials.title', 'Client') }} <span>{{ content('home.testimonials.subtitle', 'Testimonial') }}</span></h2>
       <div class="ts-swoosh" aria-hidden="true">
         <svg viewBox="0 0 240 22" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -396,83 +313,32 @@
             stroke-linecap="round" />
         </svg>
       </div>
-      <p class="ts-sub">Our Client feedback is overseas and Localy</p>
+      <p class="ts-sub">{{ content('home.testimonials.description', 'Our Client feedback is overseas and Localy') }}</p>
     </div>
 
     <div class="ts-slider" id="ts-slider">
       <div class="ts-track">
-        <!-- Card 1 -->
-        <article class="ts-card">
-          <div class="ts-avatar">
-            <img src="{{ asset('./img/Rectangle 28.png') }}" />
-          </div>
-          <div class="ts-inner">
-            <h3 class="ts-name">Mickdad Abbas</h3>
-            <div class="ts-role">Founder</div>
-            <div class="ts-q ts-ql">“</div>
-            <p class="ts-text">
-              “The tournament was organized with such professionalism and
-              excitement. From the stage setup to the smooth coordination
-              of matches, everything felt world-class. I truly enjoyed
-              being part of it and can’t wait to join their next esports
-              event!”
-            </p>
-            <div class="ts-q ts-qr">”</div>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="ts-card">
-          <div class="ts-avatar ts-alt">
-            <img src="{{ asset('./img/Rectangle 28.png') }}" />
-          </div>
-          <div class="ts-inner">
-            <h3 class="ts-name">Wysten Night</h3>
-            <div class="ts-role">CEO</div>
-            <div class="ts-q ts-ql">“</div>
-            <p class="ts-text">
-              “We know how to bring the esports community together! The
-              energy, the atmosphere, and the attention to detail made the
-              event unforgettable. It was more than just a competition —
-              it was an experience I’ll always remember.”
-            </p>
-            <div class="ts-q ts-qr">”</div>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="ts-card">
-          <div class="ts-avatar">
-            <img src="{{ asset('./img/Rectangle 28.png') }}" />
-          </div>
-          <div class="ts-inner">
-            <h3 class="ts-name">Amira Saeed</h3>
-            <div class="ts-role">Head of Events</div>
-            <div class="ts-q ts-ql">“</div>
-            <p class="ts-text">
-              “Top-tier production and smooth scheduling—fans loved every
-              moment.”
-            </p>
-            <div class="ts-q ts-qr">”</div>
-          </div>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="ts-card">
-          <div class="ts-avatar ts-alt">
-            <img src="{{ asset('./img/Rectangle 28.png') }}" />
-          </div>
-          <div class="ts-inner">
-            <h3 class="ts-name">Rashid Al Nuaimi</h3>
-            <div class="ts-role">Operations Lead</div>
-            <div class="ts-q ts-ql">“</div>
-            <p class="ts-text">
-              “Superb coordination and hospitality—easily the best esports
-              crew we’ve worked with.”
-            </p>
-            <div class="ts-q ts-qr">”</div>
-          </div>
-        </article>
+        @forelse($testimonials as $t)
+          <article class="ts-card">
+            <div class="ts-avatar {{ $loop->even ? 'ts-alt' : '' }}">
+              <img src="{{ $t->avatar_path ? asset($t->avatar_path) : content_media('home.testimonial1.avatar', 'img/Rectangle 28.png') }}" />
+            </div>
+            <div class="ts-inner">
+              <h3 class="ts-name">{{ $t->name[$homeLocale] ?? ($t->name['en'] ?? '') }}</h3>
+              <div class="ts-role">{{ $t->role[$homeLocale] ?? ($t->role['en'] ?? '') }}</div>
+              <div class="ts-q ts-ql">“</div>
+              <p class="ts-text">“{{ $t->text[$homeLocale] ?? ($t->text['en'] ?? '') }}”</p>
+              <div class="ts-q ts-qr">”</div>
+            </div>
+          </article>
+        @empty
+          <article class="ts-card ts-card--empty">
+            <div class="ts-inner text-center">
+              <h3 class="ts-name">{{ __('No testimonials available right now.') }}</h3>
+              <p class="ts-text">“{{ __('Check back soon to hear from our community.') }}”</p>
+            </div>
+          </article>
+        @endforelse
       </div>
 
       <!-- Dots -->
@@ -495,6 +361,7 @@
       </div>
     </div>
   </div>
+
 </section>
 
 <!-- ABOUT -->

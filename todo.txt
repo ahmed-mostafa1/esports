@@ -3,24 +3,13 @@
 Server error: SplFileInfo::getSize(): stat failed for /tmp/php06e0ncf0iabccgFmApX
 
 
+ in news skeleton page we will have another way to edit each card. 
+ the admin must have the ability to add / delete / modify each of them  
+ and show dynamically in new page each card shows first 40 words of article.description
+ also each news card in site/news page must have a button 'read more' when visitor click 
+ redirect to a new page with same design of site/news.blade.php page but only show clicked
+ card full text content and the card will cover full content width
+ suggest me the bset way
 
-
-
-players register and wining logic
-
-- visitors will register from reg-team and reg-single pages
-all data of each player and selected tournament will be stored in database or json file (you choose the best) 
-
-the admin will have a page to view open (not finished) tournaments 
-each tournament will show registered (single players / teams) with full data of each
-
-
-- create a new site/winner.blade.php page inwhich we will view saved winners of each tournament
-from database according to tournament card
-
-- in dashboard/tournaments page, the admin must be able to 
-make any tournament card finished (register button diasbled 
-and replaced with 'winner' button. when visitor click redirect him to site/winner.blade.php page
-with tournament name and view corresponding winner / winners
 
 
