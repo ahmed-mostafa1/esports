@@ -1,0 +1,26 @@
+-  edit modal: make modal load current data (arabic / english / image / video)
+-in dashboard when i tried to uplaod a new image i got this error
+Server error: SplFileInfo::getSize(): stat failed for /tmp/php06e0ncf0iabccgFmApX
+
+
+
+
+
+players register and wining logic
+
+- visitors will register from reg-team and reg-single pages
+all data of each player and selected tournament will be stored in database or json file (you choose the best) 
+
+the admin will have a page to view open (not finished) tournaments 
+each tournament will show registered (single players / teams) with full data of each
+
+
+- create a new site/winner.blade.php page inwhich we will view saved winners of each tournament
+from database according to tournament card
+
+- in dashboard/tournaments page, the admin must be able to 
+make any tournament card finished (register button diasbled 
+and replaced with 'winner' button. when visitor click redirect him to site/winner.blade.php page
+with tournament name and view corresponding winner / winners
+
+

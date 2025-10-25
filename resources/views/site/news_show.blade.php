@@ -1,0 +1,42 @@
+@extends('layouts.app')
+
+@section('title', $article->t('title', app()->getLocale()))
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+@endpush
+
+@section('content')
+  <h2 style="display:flex;justify-content:center;">
+    <button class="tab-btn active" style="font-size:25px;padding:10px 40px;border-radius:5px!important;">
+      {{ content('news.header.main_title','E-Sports') }}
+    </button>
+  </h2>
+
+  <section class="our-news-section">
+    <h2 style="display:flex;justify-content:start;">
+      <button class="secondary-btn" style="font-size:25px;padding:10px 40px;border-radius:5px!important;">
+        {{ content('news.header.section_title','Our News') }}
+      </button>
+    </h2>
+
+    <div class="news-container">
+      <div class="news-card" style="grid-column:1/-1;">
+        <div class="news-content" style="width:100%;">
+          <p class="news-date">{{ optional($article->date)->format('F j, Y') }}</p>
+          <h1 class="news-title">{{ $article->t('title', app()->getLocale()) }}</h1>
+          <p class="news-desc">
+            {{ $article->t('description', app()->getLocale()) }}
+          </p>
+        </div>
+        @if($article->image_path)
+          <img src="{{ $article->imageUrl() }}" alt="{{ $article->t('title', app()->getLocale()) }}" />
+        @endif
+      </div>
+    </div>
+  </section>
+@endsection
+
+@push('scripts')
+@vite('../../../public/js/script.js')
+@endpush
