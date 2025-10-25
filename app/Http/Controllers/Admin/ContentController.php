@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Content;
 use App\Support\ContentRepository;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class ContentController extends Controller
 {
@@ -16,6 +17,7 @@ class ContentController extends Controller
             'total' => Content::count(),
             'text' => Content::where('type', 'text')->count(),
             'image' => Content::where('type', 'image')->count(),
+            'video' => Content::where('type', 'video')->count(),
         ];
         
         // Get recent edits (last 10 updated items)
@@ -158,25 +160,24 @@ class ContentController extends Controller
             ContentRepository::forgetText($key, $locales);
         }
         
-        // Handle image content updates
-        if ($content->type === 'image' && $request->hasFile('image')) {
-            $request->validate([
-                'image' => 'required|image|mimes:png,jpg,jpeg,webp|max:2048'
-            ]);
-            
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename = $key . '.' . $extension;
-            
-            // Save the file
-            $file->move(public_path('content-images'), $filename);
-            
-            // Update database
-            $content->value = ['path' => $filename];
-            $content->save();
-            
-            // Clear cache for image content
-            ContentRepository::forgetImage($key);
+        // Handle media content updates (form submit)
+        if ($request->hasFile('image')) {
+            // Validate based on detected mime kind (guard if invalid upload)
+            $probeFile = $request->file('image');
+            $mime = ($probeFile instanceof UploadedFile && $probeFile->isValid()) ? ($probeFile->getMimeType() ?? '') : '';
+            if (is_string($mime) && str_starts_with($mime, 'video/')) {
+                $request->validate([
+                    'image' => 'required|file|mimetypes:video/mp4,video/quicktime,video/webm,video/x-matroska,video/ogg|max:102400'
+                ]);
+            } else {
+                $request->validate([
+                    'image' => 'required|image|mimes:png,jpg,jpeg,webp,gif|max:15360'
+                ]);
+            }
+        }
+
+        if ($this->hasAnyUpload($request)) {
+            $this->processMediaUpload($request, $content);
         }
         
         return back()->with('status', 'Content updated successfully!');
@@ -219,37 +220,16 @@ class ContentController extends Controller
             }
             
             // Handle image content updates
-            if ($content->type === 'image' && $request->hasFile('image')) {
-                $request->validate([
-                    'image' => 'required|image|mimes:png,jpg,jpeg,webp|max:2048'
-                ]);
-                
-                $file = $request->file('image');
-                $extension = $file->getClientOriginalExtension();
-                $filename = $key . '.' . $extension;
-                
-                // Ensure content-images directory exists
-                $uploadsPath = public_path('content-images');
-                if (!file_exists($uploadsPath)) {
-                    mkdir($uploadsPath, 0755, true);
-                }
-                
-                // Save the file
-                $file->move($uploadsPath, $filename);
-                
-                // Update database
-                $content->value = ['path' => $filename];
-                $content->save();
-                
-                // Clear cache for image content
-                ContentRepository::forgetImage($key);
-                $imageUrl = ContentRepository::image($key);
+            if ($this->hasAnyUpload($request)) {
+                $media = $this->processMediaUpload($request, $content);
                 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Image updated successfully',
+                    'message' => ucfirst($media['type']) . ' updated successfully',
                     'content' => $content->value,
-                    'imageUrl' => $imageUrl
+                    'mediaUrl' => $media['url'],
+                    'contentType' => $media['type'],
+                    'mimeType' => $media['mime'],
                 ]);
             }
             
@@ -300,10 +280,11 @@ class ContentController extends Controller
             ]);
         }
 
-        if ($content->type === 'image') {
+        if (in_array($content->type, ['image', 'video'])) {
             return response()->json($base + [
                 'content' => $content->value ?? [],
-                'imageUrl' => ContentRepository::image($key),
+                'mediaUrl' => ContentRepository::image($key),
+                'mimeType' => $content->value['mime'] ?? null,
             ]);
         }
 
@@ -317,13 +298,64 @@ class ContentController extends Controller
      */
     private function determineContentTypeFromRequest($request)
     {
-        if ($request->hasFile('image')) {
+        $file = $this->extractUploadedFile($request);
+        if ($file instanceof UploadedFile) {
+            $mimeType = $file?->getMimeType() ?? '';
+            if (is_string($mimeType) && str_starts_with($mimeType, 'video/')) {
+                return 'video';
+            }
             return 'image';
         }
         if ($request->has('value')) {
             return 'text';
         }
         return null; // Let findOrCreateContent determine from key
+    }
+
+    /**
+     * Determine if request carries any uploaded file (not just under name 'image').
+     */
+    private function hasAnyUpload(Request $request): bool
+    {
+        $file = $request->file('image');
+        if ($file instanceof UploadedFile && $file->isValid()) {
+            return true;
+        }
+        foreach ($request->files->all() as $item) {
+            if ($item instanceof UploadedFile && $item->isValid()) {
+                return true;
+            }
+            if (is_array($item)) {
+                foreach ($item as $sub) {
+                    if ($sub instanceof UploadedFile && $sub->isValid()) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get the uploaded file from request, trying common field names and any-first fallback.
+     */
+    private function extractUploadedFile(Request $request): ?UploadedFile
+    {
+        $file = $request->file('image');
+        if ($file instanceof UploadedFile) {
+            return $file->isValid() ? $file : null;
+        }
+        foreach ($request->files->all() as $item) {
+            if ($item instanceof UploadedFile) {
+                return $item->isValid() ? $item : null;
+            }
+            if (is_array($item)) {
+                foreach ($item as $sub) {
+                    if ($sub instanceof UploadedFile) {
+                        return $sub->isValid() ? $sub : null;
+                    }
+                }
+            }
+        }
+        return null;
     }
     
     /**
@@ -341,7 +373,10 @@ class ContentController extends Controller
             // Determine content type based on force type or key patterns
             $type = $forceType ?? 'text'; // default
             if (!$forceType) {
-                if (str_contains($key, '.image') || 
+                if (str_contains($key, '.video') ||
+                    str_ends_with($key, '_video')) {
+                    $type = 'video';
+                } elseif (str_contains($key, '.image') || 
                     str_contains($key, '.icon') || 
                     str_contains($key, '.avatar') || 
                     str_contains($key, '.badge') || 
@@ -358,9 +393,15 @@ class ContentController extends Controller
                     'en' => ucwords(str_replace(['.', '_', '-'], ' ', $key)),
                     'ar' => ''
                 ];
+            } elseif ($type === 'image') {
+                $defaultValue = [
+                    'path' => 'placeholder.png',
+                    'mime' => 'image/png',
+                ];
             } else {
                 $defaultValue = [
-                    'path' => 'placeholder.png'
+                    'path' => 'placeholder.mp4',
+                    'mime' => 'video/mp4',
                 ];
             }
             
@@ -495,5 +536,104 @@ class ContentController extends Controller
                 'message' => 'Server error: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Process an uploaded image or video file for a content record.
+     *
+     * @return array{filename:string,url:string,type:string,mime:?string,size:int}
+     */
+    private function processMediaUpload(Request $request, Content $content): array
+    {
+        $file = $this->extractUploadedFile($request);
+
+        if (! $file) {
+            throw new \RuntimeException('No media file provided for upload.');
+        }
+
+        if (! $file->isValid()) {
+            $error = $file->getError();
+            $message = match ($error) {
+                \UPLOAD_ERR_INI_SIZE, \UPLOAD_ERR_FORM_SIZE => 'File too large (server or form limit exceeded).',
+                \UPLOAD_ERR_PARTIAL => 'The file was only partially uploaded.',
+                \UPLOAD_ERR_NO_FILE => 'No file was uploaded.',
+                \UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder on server.',
+                \UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+                \UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload.',
+                default => 'Upload failed due to an unknown error.',
+            };
+            throw new \RuntimeException($message);
+        }
+
+        $mimeType = $file->getMimeType() ?? '';
+        $isVideo = is_string($mimeType) && str_starts_with($mimeType, 'video/');
+
+        $validationRules = $isVideo
+            ? ['image' => 'required|file|mimetypes:video/mp4,video/quicktime,video/webm,video/x-matroska,video/ogg|max:102400']
+            : ['image' => 'required|image|mimes:png,jpg,jpeg,webp,gif|max:15360'];
+
+        $request->validate($validationRules);
+
+        $extension = strtolower($file->getClientOriginalExtension() ?: '');
+
+        if ($isVideo) {
+            $extension = $extension ?: match ($mimeType) {
+                'video/quicktime' => 'mov',
+                'video/webm' => 'webm',
+                'video/ogg' => 'ogg',
+                'video/x-matroska' => 'mkv',
+                default => 'mp4',
+            };
+        } else {
+            $allowedImageExtensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+            if (! in_array($extension, $allowedImageExtensions, true)) {
+                $extension = 'png';
+            }
+        }
+
+        $filename = "{$content->key}.{$extension}";
+        $uploadsPath = public_path('content-images');
+
+        if (! is_dir($uploadsPath)) {
+            mkdir($uploadsPath, 0755, true);
+        }
+
+        // Capture size before moving (tmp file may be removed after move)
+        $originalSize = $file->getSize();
+        $previousFilename = $content->value['path'] ?? null;
+        $file->move($uploadsPath, $filename);
+
+        if ($previousFilename && $previousFilename !== $filename) {
+            $previousPath = $uploadsPath . DIRECTORY_SEPARATOR . $previousFilename;
+            if (is_file($previousPath)) {
+                @unlink($previousPath);
+            }
+        }
+
+        $content->type = $isVideo ? 'video' : 'image';
+        $movedPath = $uploadsPath . DIRECTORY_SEPARATOR . $filename;
+        $calculatedSize = $originalSize;
+        if ($calculatedSize === null && is_file($movedPath)) {
+            // Fallback to filesize on the moved path if needed
+            $calculatedSize = @filesize($movedPath) ?: null;
+        }
+
+        $content->value = [
+            'path' => $filename,
+            'mime' => $mimeType,
+            'size' => $calculatedSize,
+        ];
+        $content->save();
+
+        ContentRepository::forgetMedia($content->key);
+        $mediaUrl = ContentRepository::media($content->key);
+
+        return [
+            'filename' => $filename,
+            'url' => $mediaUrl,
+            'type' => $content->type,
+            'mime' => $mimeType,
+            'size' => $calculatedSize,
+        ];
     }
 }

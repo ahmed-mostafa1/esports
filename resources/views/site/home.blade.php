@@ -79,7 +79,7 @@
     <div class="hero-right">
       <div class="hero-media">
         <img
-          src="{{ content_media('home.hero', 'content-images/home.hero.png') }}"
+          src="{{ content_media('home.hero.image', 'content-images/home.hero.image.png') }}"
           class="hero-img"
           alt="{{ content('home.hero.title') }}" />
         <button class="play" aria-label="Play"></button>
@@ -122,7 +122,7 @@
     <div class="cards">
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ content_media('home.services.card1', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', 'Experienced Trainers') }}" />
+          <img src="{{ content_media('home.services.card1.icon', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', 'Experienced Trainers') }}" />
         </div>
         <div class="img-desc">
           <h3>{{ content('home.services.card1.title', 'Experienced Trainers') }}</h3>

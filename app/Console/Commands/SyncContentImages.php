@@ -41,15 +41,15 @@ class SyncContentImages extends Command
         
         // Get all image content entries
         $imageEntries = DB::table('contents')
-            ->where('type', 'image')
+            ->whereIn('type', ['image', 'video'])
             ->get(['key', 'value']);
             
         if ($imageEntries->isEmpty()) {
-            $this->info('No image entries found in database.');
+            $this->info('No media entries found in database.');
             return 0;
         }
-        
-        $this->info("Found {$imageEntries->count()} image entries in database.");
+
+        $this->info("Found {$imageEntries->count()} media entries in database.");
         $this->newLine();
         
         $synced = 0;

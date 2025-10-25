@@ -54,6 +54,49 @@
           </div>
         </div>
 
+        <!-- Datetime Content Fields -->
+        <div id="datetimeFields" class="space-y-4 hidden">
+          <div>
+            <label for="valueDatetime" class="block text-sm font-medium text-gray-300 mb-2">
+              Event Date &amp; Time
+            </label>
+            <input
+              type="datetime-local"
+              id="valueDatetime"
+              class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            >
+            <p class="text-xs text-gray-500 mt-1">
+              Pick the desired date and time. It will be stored in ISO 8601 format for the countdown.
+            </p>
+          </div>
+
+          <div>
+            <label for="valueTimezone" class="block text-sm font-medium text-gray-300 mb-2">
+              Timezone Offset
+            </label>
+            <input
+              type="text"
+              id="valueTimezone"
+              class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 font-mono"
+              placeholder="+00:00"
+              pattern="[+-](0[0-9]|1[0-4]):[0-5][0-9]"
+              inputmode="text"
+            >
+            <p class="text-xs text-gray-500 mt-1">
+              Enter the offset in <code>±HH:MM</code> format (examples: <code>+00:00</code>, <code>+03:00</code>, <code>-05:30</code>).
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">
+              ISO 8601 Preview
+            </label>
+            <div class="bg-neutral-800 border border-neutral-700 rounded-md px-3 py-2">
+              <code id="valueIsoPreview" class="text-sm text-green-400 font-mono break-all">--</code>
+            </div>
+          </div>
+        </div>
+
         <!-- Image Content Fields -->
         <div id="imageFields" class="space-y-4 hidden">
           <!-- Expected Filename Display -->

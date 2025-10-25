@@ -63,6 +63,8 @@
         <div class="footer-bottom gradient-bar">
             <p>{{ content('footer.copyright', '©Copyright 2025') }}</p>
             <p>{{ content('footer.developed_by', 'Designed & Developed by Four04') }}</p>
+         <a href='https://www.free-counters.org/'>org</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=2fe6182914f293fe7d0bc45459df8b30818d7855'></script>
+<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1423638/t/0"></script>
         </div>
     </footer>
     @stack('scripts')

@@ -2,6 +2,18 @@
 let currentContentKey = null;
 let currentContentType = null;
 
+const COUNTDOWN_TARGET_KEY = 'home.countdown.target_datetime';
+const OFFSET_PATTERN = /^[+-](0[0-9]|1[0-4]):[0-5][0-9]$/;
+
+const textFieldsEl = document.getElementById('textFields');
+const imageFieldsEl = document.getElementById('imageFields');
+const datetimeFieldsEl = document.getElementById('datetimeFields');
+const valueEnField = document.getElementById('valueEn');
+const valueArField = document.getElementById('valueAr');
+const datetimeInputEl = document.getElementById('valueDatetime');
+const timezoneInputEl = document.getElementById('valueTimezone');
+const isoPreviewEl = document.getElementById('valueIsoPreview');
+
 function normalizeTranslations(payload) {
     if (!payload) return {};
     if (typeof payload === 'string') {
@@ -23,6 +35,194 @@ function normalizeImagePayload(payload) {
     return {};
 }
 
+function isoToDatetimeLocal(iso) {
+    if (!iso) return '';
+    const parsed = new Date(iso);
+    if (Number.isNaN(parsed.getTime())) {
+        return '';
+    }
+    const tzOffset = parsed.getTimezoneOffset();
+    const local = new Date(parsed.getTime() - tzOffset * 60000);
+    return local.toISOString().slice(0, 16);
+}
+
+function extractOffset(iso) {
+    if (!iso || typeof iso !== 'string') {
+        return '';
+    }
+    const match = iso.match(/([+-]\d{2}:\d{2}|Z)$/);
+    if (!match) {
+        return '';
+    }
+    return match[1] === 'Z' ? '+00:00' : match[1];
+}
+
+function formatOffsetFromMinutes(minutes) {
+    if (!Number.isFinite(minutes)) {
+        return '';
+    }
+    const sign = minutes >= 0 ? '+' : '-';
+    const abs = Math.abs(minutes);
+    const hours = String(Math.floor(abs / 60)).padStart(2, '0');
+    const mins = String(abs % 60).padStart(2, '0');
+    return `${sign}${hours}:${mins}`;
+}
+
+function deriveOffset(datetimeValue) {
+    if (!datetimeValue) {
+        return '';
+    }
+    const reference = new Date(datetimeValue);
+    if (Number.isNaN(reference.getTime())) {
+        return '';
+    }
+    return formatOffsetFromMinutes(-reference.getTimezoneOffset());
+}
+
+function updateIsoPreview(iso) {
+    if (!isoPreviewEl) return;
+    isoPreviewEl.textContent = iso && iso.trim() ? iso : '--';
+}
+
+function resetCountdownFields() {
+    if (datetimeInputEl) {
+        datetimeInputEl.value = '';
+    }
+    if (timezoneInputEl) {
+        timezoneInputEl.value = '';
+        timezoneInputEl.setCustomValidity('');
+    }
+    updateIsoPreview('--');
+}
+
+function getCountdownIso(requireValid = false) {
+    if (!datetimeInputEl) {
+        return requireValid ? null : '';
+    }
+
+    const datetimeValue = datetimeInputEl.value;
+    if (!datetimeValue) {
+        return requireValid ? null : '';
+    }
+
+    const parsed = new Date(datetimeValue);
+    if (Number.isNaN(parsed.getTime())) {
+        return requireValid ? null : '';
+    }
+
+    let offset = timezoneInputEl ? timezoneInputEl.value.trim() : '';
+    if (offset) {
+        if (!OFFSET_PATTERN.test(offset)) {
+            return requireValid ? null : '';
+        }
+    } else {
+        offset = deriveOffset(datetimeValue);
+        if (offset && timezoneInputEl) {
+            timezoneInputEl.value = offset;
+        }
+    }
+
+    if (!offset || !OFFSET_PATTERN.test(offset)) {
+        return requireValid ? null : '';
+    }
+
+    return `${datetimeValue}:00${offset}`;
+}
+
+function updateCountdownPreview() {
+    if (currentContentKey !== COUNTDOWN_TARGET_KEY) {
+        return;
+    }
+
+    const iso = getCountdownIso(false);
+    updateIsoPreview(iso || '--');
+    if (valueEnField) {
+        valueEnField.value = iso || '';
+    }
+    if (valueArField) {
+        valueArField.value = iso || '';
+    }
+}
+
+function activateCountdownFields(initialIso, normalized) {
+    if (!datetimeFieldsEl) {
+        return;
+    }
+
+    datetimeFieldsEl.classList.remove('hidden');
+    textFieldsEl?.classList.add('hidden');
+    imageFieldsEl?.classList.add('hidden');
+
+    const isoValue = typeof initialIso === 'string' ? initialIso : '';
+    const localValue = isoToDatetimeLocal(isoValue);
+    if (datetimeInputEl) {
+        datetimeInputEl.value = localValue;
+    }
+
+    let offset = extractOffset(isoValue);
+    if (!offset && localValue) {
+        offset = deriveOffset(localValue);
+    }
+
+    if (timezoneInputEl) {
+        timezoneInputEl.value = offset;
+        timezoneInputEl.setCustomValidity('');
+    }
+
+    if (valueEnField) {
+        valueEnField.value = isoValue;
+    }
+    if (valueArField) {
+        const fallback = isoValue || '';
+        valueArField.value = (normalized && normalized.ar) || fallback;
+    }
+
+    updateCountdownPreview();
+}
+
+function deactivateCountdownFields() {
+    datetimeFieldsEl?.classList.add('hidden');
+    textFieldsEl?.classList.remove('hidden');
+    imageFieldsEl?.classList.add('hidden');
+    resetCountdownFields();
+}
+
+if (datetimeInputEl) {
+    datetimeInputEl.addEventListener('input', () => {
+        if (currentContentKey !== COUNTDOWN_TARGET_KEY) {
+            return;
+        }
+
+        if (timezoneInputEl && !timezoneInputEl.value) {
+            const derived = deriveOffset(datetimeInputEl.value);
+            if (derived) {
+                timezoneInputEl.value = derived;
+                timezoneInputEl.setCustomValidity('');
+            }
+        }
+
+        updateCountdownPreview();
+    });
+}
+
+if (timezoneInputEl) {
+    timezoneInputEl.addEventListener('input', () => {
+        if (currentContentKey !== COUNTDOWN_TARGET_KEY) {
+            timezoneInputEl.setCustomValidity('');
+            return;
+        }
+
+        const value = timezoneInputEl.value.trim();
+        if (value && !OFFSET_PATTERN.test(value)) {
+            timezoneInputEl.setCustomValidity('Offset must match ±HH:MM (maximum ±14:00).');
+        } else {
+            timezoneInputEl.setCustomValidity('');
+        }
+
+        updateCountdownPreview();
+    });
+}
+
 // Open modal for editing content
 function openModal(contentKey, contentType, currentValue, imageUrl = null) {
     currentContentKey = contentKey;
@@ -37,18 +237,28 @@ function openModal(contentKey, contentType, currentValue, imageUrl = null) {
     hideMessage();
     
     if (contentType === 'text') {
-        // Show text fields, hide image fields
-        document.getElementById('textFields').classList.remove('hidden');
-        document.getElementById('imageFields').classList.add('hidden');
-        
-        // Populate current values
+        imageFieldsEl?.classList.add('hidden');
+
         const normalized = normalizeTranslations(currentValue);
-        document.getElementById('valueEn').value = normalized.en || '';
-        document.getElementById('valueAr').value = normalized.ar || '';
+        const isoCandidate = normalized.en ?? normalized.default ?? normalized.ar ?? '';
+
+        if (contentKey === COUNTDOWN_TARGET_KEY) {
+            activateCountdownFields(isoCandidate, normalized);
+        } else {
+            deactivateCountdownFields();
+            textFieldsEl?.classList.remove('hidden');
+            if (valueEnField) {
+                valueEnField.value = normalized.en || '';
+            }
+            if (valueArField) {
+                valueArField.value = normalized.ar || '';
+            }
+        }
     } else if (contentType === 'image') {
         // Show image fields, hide text fields
-        document.getElementById('textFields').classList.add('hidden');
-        document.getElementById('imageFields').classList.remove('hidden');
+        deactivateCountdownFields();
+        textFieldsEl?.classList.add('hidden');
+        imageFieldsEl?.classList.remove('hidden');
         
         // Set expected filename
         const expectedFilename = contentKey + '.png';
@@ -73,7 +283,11 @@ function openModal(contentKey, contentType, currentValue, imageUrl = null) {
     // Focus first input
     setTimeout(() => {
         if (contentType === 'text') {
-            document.getElementById('valueEn').focus();
+            if (contentKey === COUNTDOWN_TARGET_KEY) {
+                datetimeInputEl?.focus();
+            } else {
+                valueEnField?.focus();
+            }
         } else {
             document.getElementById('imageFile').focus();
         }
@@ -86,6 +300,7 @@ function closeModal() {
     document.getElementById('contentModal').classList.remove('flex');
     currentContentKey = null;
     currentContentType = null;
+    deactivateCountdownFields();
 }
 
 // Save content via AJAX
@@ -106,8 +321,26 @@ async function saveContent() {
         formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
         
         if (currentContentType === 'text') {
-            formData.append('value[en]', document.getElementById('valueEn').value);
-            formData.append('value[ar]', document.getElementById('valueAr').value);
+            if (currentContentKey === COUNTDOWN_TARGET_KEY) {
+                const isoValue = getCountdownIso(true);
+                if (!isoValue) {
+                    showErrorMessage('Please provide a valid date, time, and timezone offset.');
+                    const offsetValue = timezoneInputEl ? timezoneInputEl.value.trim() : '';
+                    if (!datetimeInputEl?.value) {
+                        datetimeInputEl?.focus();
+                    } else if (timezoneInputEl && !OFFSET_PATTERN.test(offsetValue)) {
+                        timezoneInputEl.setCustomValidity('Offset must match ±HH:MM (maximum ±14:00).');
+                        timezoneInputEl.reportValidity();
+                    }
+                    return;
+                }
+                timezoneInputEl?.setCustomValidity('');
+                formData.append('value[en]', isoValue);
+                formData.append('value[ar]', isoValue);
+            } else {
+                formData.append('value[en]', valueEnField?.value ?? '');
+                formData.append('value[ar]', valueArField?.value ?? '');
+            }
         } else if (currentContentType === 'image') {
             const fileInput = document.getElementById('imageFile');
             if (fileInput.files.length > 0) {
@@ -189,6 +422,12 @@ function updateSkeletonContent(key, content, imageUrl = null, specifiedType = nu
             element.classList.remove('content-updated');
         }, 2000);
     });
+
+    if (key === COUNTDOWN_TARGET_KEY && currentContentKey === COUNTDOWN_TARGET_KEY && updateType === 'text') {
+        const translations = normalizeTranslations(content);
+        const isoValue = translations.en ?? translations.default ?? translations.ar ?? '';
+        activateCountdownFields(isoValue, translations);
+    }
 }
 
 // Show error message

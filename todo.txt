@@ -1,0 +1,3 @@
+-  edit modal: make modal load current data (arabic / english / image / video)
+-in dashboard when i tried to uplaod a new image i got this error
+Server error: SplFileInfo::getSize(): stat failed for /tmp/php06e0ncf0iabccgFmApX

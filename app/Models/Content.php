@@ -26,9 +26,14 @@ class Content extends Model
         return $this->type === 'image';
     }
 
+    public function isVideo(): bool
+    {
+        return $this->type === 'video';
+    }
+
     public function imageFilename(): ?string
     {
-        if (! $this->isImage()) {
+        if (! ($this->isImage() || $this->isVideo())) {
             return null;
         }
         

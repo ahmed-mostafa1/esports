@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
   <!-- Stats Cards -->
   <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg p-4">
     <div class="flex items-center justify-between">
@@ -42,6 +42,20 @@
       <div class="p-3 bg-green-600 rounded-lg">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg p-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-gray-400 text-sm">Videos</p>
+        <p class="text-2xl font-bold text-white">{{ $stats['video'] }}</p>
+      </div>
+      <div class="p-3 bg-purple-600 rounded-lg">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m0-4v4m-6 4h6a2 2 0 002-2V6a2 2 0 00-2-2H9a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
         </svg>
       </div>
     </div>

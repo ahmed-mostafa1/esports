@@ -22,7 +22,7 @@ class ContentRepository
         });
     }
 
-    public static function image(string $key, ?string $default=null): string
+    public static function media(string $key, ?string $default=null): string
     {
         $cacheKey = "cms:content-media:{$key}";
 
@@ -30,7 +30,7 @@ class ContentRepository
             // Use raw database query to avoid model complications
             $row = DB::table('contents')
                      ->where('key', $key)
-                     ->where('type', 'image')
+                     ->whereIn('type', ['image', 'video'])
                      ->first();
                      
             if (!$row) return $default ? asset($default) : '';
@@ -48,6 +48,16 @@ class ContentRepository
         });
     }
 
+    public static function image(string $key, ?string $default=null): string
+    {
+        return self::media($key, $default);
+    }
+
+    public static function video(string $key, ?string $default=null): string
+    {
+        return self::media($key, $default);
+    }
+
     public static function forgetText(string $key, array $locales = []): void
     {
         foreach (self::localesForKey($key, $locales) as $locale) {
@@ -56,6 +66,11 @@ class ContentRepository
     }
 
     public static function forgetImage(string $key): void
+    {
+        self::forgetMedia($key);
+    }
+
+    public static function forgetMedia(string $key): void
     {
         Cache::forget("cms:content-media:{$key}");
     }
