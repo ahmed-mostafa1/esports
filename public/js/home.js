@@ -262,6 +262,181 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
 })();
 
 
+// Tournaments slider (image + name), mirrors testimonials behavior
+(() => {
+  const root = document.getElementById('tr-slider');
+  if (!root) return;
+
+  const track = document.getElementById('tr-track');
+  const btnPrev = document.getElementById('tr-prev');
+  const btnNext = document.getElementById('tr-next');
+  const dotsEl = document.getElementById('tr-dots');
+
+  if (!track || !btnPrev || !btnNext || !dotsEl) return;
+
+  const cards = () => Array.from(track.querySelectorAll('.card-tournament'));
+  const AUTO_MS = 2000;
+  let index = 0;
+  let timer = null;
+  let resizeId = null;
+
+  const toNumber = (value) => {
+    const parsed = parseFloat(value ?? '');
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  const cardStride = (list = cards()) => {
+    if (list.length <= 1) {
+      const single = list[0];
+      return single ? single.getBoundingClientRect().width : root.clientWidth;
+    }
+
+    const delta = Math.abs(list[1].offsetLeft - list[0].offsetLeft);
+    if (delta > 0) return delta;
+
+    const width = list[0].getBoundingClientRect().width;
+    return width || root.clientWidth;
+  };
+
+  const visibleCount = () => {
+    const list = cards();
+    if (!list.length) return 1;
+
+    const stride = cardStride(list);
+    if (!stride) return 1;
+
+    const styles = window.getComputedStyle(root);
+    const paddingStart = toNumber(styles.paddingInlineStart || styles.paddingLeft);
+    const paddingEnd = toNumber(styles.paddingInlineEnd || styles.paddingRight);
+    const available = root.clientWidth - paddingStart - paddingEnd;
+    const usable = available > 0 ? available : root.clientWidth;
+
+    return Math.max(1, Math.round(usable / stride));
+  };
+
+  const maxIndex = () => {
+    const total = cards().length;
+    const visible = visibleCount();
+    return Math.max(0, total - visible);
+  };
+
+  const buildDots = () => {
+    const count = Math.max(1, maxIndex() + 1);
+    dotsEl.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => setIndex(i, true));
+      dotsEl.appendChild(dot);
+    }
+  };
+
+  const updateDots = () => {
+    Array.from(dotsEl.children).forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === index);
+    });
+  };
+
+  const setIndex = (nextIndex, stopAuto = false) => {
+    const max = maxIndex();
+    if (max === 0) {
+      index = 0;
+      track.style.transform = '';
+      updateDots();
+      stopAutoplay();
+      return;
+    }
+
+    index = (nextIndex + max + 1) % (max + 1);
+
+    const stride = cardStride();
+    const offset = stride * index;
+    const rtl = isRTL();
+    const translate = rtl ? offset : -offset;
+
+    track.style.transform = `translateX(${translate}px)`;
+    updateDots();
+
+    if (stopAuto) restartAutoplay();
+  };
+
+  const next = (stopAuto = false) => setIndex(index + 1, stopAuto);
+  const prev = (stopAuto = false) => setIndex(index - 1, stopAuto);
+
+  const stopAutoplay = () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  };
+
+  const startAutoplay = () => {
+    stopAutoplay();
+    if (maxIndex() === 0) return; // nothing to slide
+    timer = setInterval(next, AUTO_MS);
+  };
+
+  const restartAutoplay = () => {
+    stopAutoplay();
+    startAutoplay();
+  };
+
+  btnNext.addEventListener('click', () => next(true));
+  btnPrev.addEventListener('click', () => prev(true));
+
+  root.addEventListener('mouseenter', stopAutoplay);
+  root.addEventListener('mouseleave', startAutoplay);
+
+  // Touch swipe
+  let startX = 0;
+  let dragging = false;
+  root.addEventListener('touchstart', (e) => {
+    dragging = true;
+    startX = e.touches[0].clientX;
+    stopAutoplay();
+  }, { passive: true });
+
+  root.addEventListener('touchend', (e) => {
+    if (!dragging) return;
+    dragging = false;
+
+    const dx = startX - e.changedTouches[0].clientX;
+    const threshold = 50;
+    if (Math.abs(dx) > threshold) {
+      dx > 0 ? next(true) : prev(true);
+    } else {
+      restartAutoplay();
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeId);
+    resizeId = setTimeout(() => {
+      const previousMax = maxIndex();
+      buildDots();
+      const boundedIndex = Math.min(index, maxIndex());
+      setIndex(boundedIndex);
+      if (previousMax !== maxIndex()) {
+        restartAutoplay();
+      }
+    }, 200);
+  });
+
+  const init = () => {
+    if (!cards().length) return;
+    buildDots();
+    setIndex(0);
+    startAutoplay();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+
 // Testimonials
 (() => {
   // Unique, conflict-free names

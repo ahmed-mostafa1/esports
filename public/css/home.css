@@ -618,6 +618,72 @@ body {
   background: #ffffff;
 }
 
+.slider--tournaments {
+  margin-top: 32px;
+}
+
+.slider--tournaments .media {
+  background: linear-gradient(180deg, #141519 0%, #090a0d 100%);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.slider--tournaments .media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-tournament .name {
+  margin-top: 18px;
+  font-size: 20px;
+}
+
+.card-tournament .name a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.card-tournament .name a:hover {
+  color: #ff4d4d;
+  transform: translateY(-2px);
+}
+
+.live.live--open {
+  background: #16a34a;
+}
+.live.live--finished {
+  background: #2563eb;
+}
+.live.live--closed {
+  background: #6b7280;
+}
+
+.card-tournament--empty .media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 17, 23, 0.6);
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+.card-tournament--empty .media-empty {
+  color: #d1d5db;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 20px;
+}
+
+.slider--tournaments .dots-partner {
+  bottom: 54px;
+}
+
+.slider--tournaments .nav {
+  bottom: 24px;
+}
+
 /* overlay text (lower left) */
 .overlay {
   position: absolute;
@@ -1764,7 +1830,8 @@ body {
 
 /* === Desktop: show 2 slides, slide 1-by-1 === */
 @media (min-width: 1024px) {
-  #partners-slider {
+  #partners-slider,
+  #tr-slider {
     --gap: 2px; /* space between cards */
     --cards: 2; /* visible cards per view on desktop */
 
@@ -1786,14 +1853,16 @@ body {
     scroll-behavior: smooth;
   }
 
-  #partners-slider .track {
+  #partners-slider .track,
+  #tr-slider .track {
     display: flex;
     gap: var(--gap);
     width: max-content;
     position: relative !important;
   }
 
-  #partners-slider .card-partner {
+  #partners-slider .card-partner,
+  #tr-slider .card-partner {
     flex: 0 0 var(--card-w);
     box-sizing: border-box;
     scroll-snap-align: center; /* autoplay/user scroll locks one-by-one */
@@ -1804,13 +1873,16 @@ body {
 /* Center the partners slider block itself */
 /* 0) Stop overusing will-change */
 #partners-slider,
-#partners-slider * {
+#partners-slider *,
+#tr-slider,
+#tr-slider * {
   will-change: auto !important;
 }
 
 /* 1) Create a centered viewport with padding equal to half the viewport,
       so the active card sits in the middle */
-#partners-slider {
+#partners-slider,
+#tr-slider {
   --card-w: clamp(180px, 70vw, 260px); /* tune card width range */
   width: 100%;
   margin: 0 auto;
@@ -1830,34 +1902,46 @@ body {
   width: max-content; /* shrink-wrap */
   position: relative !important;
 }
+#tr-slider .track {
+  display: flex;
+  gap: clamp(16px, 4vw, 28px);
+  width: max-content;
+  position: relative !important;
+}
 
 /* 3) Slides */
-#partners-slider .card-partner {
+#partners-slider .card-partner,
+#tr-slider .card-partner {
   flex: 0 0 var(--card-w);
   scroll-snap-align: center; /* key: the active slide locks to center */
   box-sizing: border-box;
 }
 
 /* 4) Optional: hide default scrollbar on WebKit without breaking a11y */
-#partners-slider::-webkit-scrollbar {
+#partners-slider::-webkit-scrollbar,
+#tr-slider::-webkit-scrollbar {
   display: none;
 }
 
-#partners-slider {
+#partners-slider,
+#tr-slider {
   scroll-behavior: smooth;
 }
 
 /* Hide the scrollbar for the partners slider (keeps scrolling & snap) */
-#partners-slider {
+#partners-slider,
+#tr-slider {
   -ms-overflow-style: none; /* IE/Edge legacy */
   scrollbar-width: none; /* Firefox */
 }
-#partners-slider::-webkit-scrollbar {
+#partners-slider::-webkit-scrollbar,
+#tr-slider::-webkit-scrollbar {
   display: none; /* Chrome/Safari/Edge (WebKit/Blink) */
 }
 
 /* Optional: avoid rubber-band scrolling affecting the page horizontally */
-#partners-slider {
+#partners-slider,
+#tr-slider {
   overscroll-behavior-x: contain;
 }
 

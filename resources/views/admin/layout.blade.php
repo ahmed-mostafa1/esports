@@ -80,6 +80,40 @@
             {{ $config['label'] }}
           </a>
         @endforeach
+
+        <!-- Divider -->
+        <div class="border-t border-gray-200 my-2"></div>
+        <div class="px-3 py-1">
+          <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Management</span>
+        </div>
+
+        <!-- Open Tournaments (Admin visibility & finish flow) -->
+        <a
+          href="{{ route('admin.tournaments.open') }}"
+          class="flex items-center gap-2 rounded-md px-3 py-2
+                 {{ request()->routeIs('admin.tournaments.open') ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-gray-100' }}
+                 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 7H7v10h6l5 3V4l-5 3z" />
+          </svg>
+          Open Tournaments
+        </a>
+
+        <!-- Tournament Cards (CRUD + reorder) -->
+        <a
+          href="{{ route('admin.tournament-cards.index') }}"
+          class="flex items-center gap-2 rounded-md px-3 py-2
+                 {{ request()->routeIs('admin.tournament-cards.*') ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-gray-100' }}
+                 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 7h18M3 12h18M3 17h18" />
+          </svg>
+          Tournament Cards
+        </a>
       </nav>
     </aside>
 

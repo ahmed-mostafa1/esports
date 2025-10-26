@@ -13,13 +13,6 @@
   $tournaments = \App\Models\TournamentCard::published()->ordered()->get();
   $partners = \App\Models\Partner::published()->ordered()->get();
   $testimonials = \App\Models\Testimonial::published()->ordered()->get();
-  $tournamentColumns = 3;
-  $itemsPerColumn = max(1, (int) ceil(($tournaments->count() ?: 1) / $tournamentColumns));
-  $chunkedTournaments = $tournaments->values()->chunk($itemsPerColumn);
-
-  while ($chunkedTournaments->count() < $tournamentColumns) {
-      $chunkedTournaments->push(collect());
-  }
 @endphp
 
 
@@ -144,7 +137,7 @@
 <section class="mp-section" data-reveal="fade-left" data-reveal-delay="150">
   <div class="container">
     <!-- Title + swoosh -->
-    <div class="mp-header">
+    <div class="mp-header mp-header--top">
       <div class="popular-title">
         <h2 class="title">{{ content('home.tournaments.title', 'Most Popular Tournaments') }}</h2>
         <div class="title-swoosh curved-underline">
@@ -165,48 +158,67 @@
         <!-- Subtitle -->
         <p class="subtitle">{{ content('home.tournaments.subtitle', 'Community Organizing Team') }}</p>
       </div>
-      <!-- Dots-->
-      <div class="dots">
-        @php($tournamentDotCount = max(1, min(5, $tournaments->count())))
-        @for($i = 0; $i < $tournamentDotCount; $i++)
-          <span class="dot {{ $i === 0 ? 'active' : '' }}"></span>
-        @endfor
-      </div>
-      <!-- nav btn -->
-      <div class="nav-arrows">
-        <button class="nav-btn prev" aria-label="Previous">
-          <span class="chev">&lsaquo;</span>
-        </button>
-        <button class="nav-btn next" aria-label="Next">
-          <span class="chev">&rsaquo;</span>
-        </button>
-      </div>
     </div>
-    <!-- 3-column list -->
-    <div class="list-grid">
-      @foreach($chunkedTournaments as $columnItems)
-        <ul class="mp-list">
-          @forelse($columnItems as $tournament)
-            <li class="mp-item">
-              <span class="badge"><img src="{{ asset('./img/badge.png') }}" alt="badge" /></span>
-              <div class="txt">
-                <div>
-                  <a class="txt" href="{{ route('tournaments.register', $tournament->slug) }}">
-                    {{ $tournament->titleFor($homeLocale) ?: 'Tournament' }}
-                  </a>
+
+    <div class="slider slider--tournaments" id="tr-slider" role="region" aria-label="Popular tournaments">
+      <div class="track" id="tr-track">
+        @forelse($tournaments as $t)
+          @php
+            $status = match($t->status) {
+              'open' => __('Open'),
+              'finished' => __('Finished'),
+              default => __('Closed'),
+            };
+            $statusClass = match($t->status) {
+              'open' => 'live--open',
+              'finished' => 'live--finished',
+              default => 'live--closed',
+            };
+          @endphp
+          <figure class="card-partner card-tournament">
+            <div class="media">
+              <img
+                src="{{ $t->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
+                alt="{{ $t->titleFor($homeLocale) ?: 'Tournament' }}"
+                loading="lazy" />
+
+              <span class="live {{ $statusClass }}">{{ $status }}</span>
+
+              <figcaption class="overlay">
+                <div class="meta-title">
+                  {{ optional($t->date)->format('d/m/Y') ?? __('Date TBD') }}
                 </div>
-              </div>
-            </li>
-          @empty
-            <li class="mp-item">
-              <span class="badge"><img src="{{ asset('./img/badge.png') }}" alt="badge" /></span>
-              <div class="txt">
-                <div>{{ __('Coming soon') }}</div>
-              </div>
-            </li>
-          @endforelse
-        </ul>
-      @endforeach
+                <div class="meta-sub">
+                  {{ $t->time ?: __('Time TBD') }} • {{ $t->prize ?: __('Prize TBD') }}
+                </div>
+              </figcaption>
+            </div>
+            <figcaption class="name">
+              <a href="{{ route('tournaments.register', $t->slug) }}">
+                {{ $t->titleFor($homeLocale) ?: 'Tournament' }}
+              </a>
+            </figcaption>
+          </figure>
+        @empty
+          <figure class="card-partner card-tournament card-tournament--empty">
+            <div class="media">
+              <div class="media-empty">{{ __('No tournaments available right now.') }}</div>
+            </div>
+            <figcaption class="name">{{ __('Check back soon for new tournaments') }}</figcaption>
+          </figure>
+        @endforelse
+      </div>
+
+      <div class="dots-partner" id="tr-dots" aria-label="Slider pagination"></div>
+
+      <div class="nav nav--tournaments">
+        <button class="pill light" id="tr-prev" aria-label="Previous">
+          <span class="chev">‹</span>
+        </button>
+        <button class="pill dark" id="tr-next" aria-label="Next">
+          <span class="chev">›</span>
+        </button>
+      </div>
     </div>
   </div>
 </section>
