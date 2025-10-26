@@ -685,14 +685,6 @@ body {
   padding: 20px;
 }
 
-.slider--tournaments .dots-partner {
-  bottom: 54px;
-}
-
-.slider--tournaments .nav {
-  bottom: 24px;
-}
-
 /* overlay text (lower left) */
 .overlay {
   position: absolute;
@@ -820,7 +812,8 @@ body {
   right: 24px;
   bottom: 34px;
 }
-.nav--partners {
+.nav--partners,
+.nav--tournaments {
   position: static;
   right: auto;
   bottom: auto;
@@ -828,7 +821,8 @@ body {
   margin-left: auto;
   flex: 0 0 auto;
 }
-.mp-header--controls .nav--partners {
+.mp-header--controls .nav--partners,
+.mp-header--controls .nav--tournaments {
   justify-content: flex-end;
 }
 .pill {

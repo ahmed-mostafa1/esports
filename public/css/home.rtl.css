@@ -751,7 +751,8 @@ body {
   right: 24px;
   bottom: 34px;
 }
-.nav--partners {
+.nav--partners,
+.nav--tournaments {
   position: static;
   right: auto;
   bottom: auto;
@@ -760,7 +761,8 @@ body {
   margin-left: 0;
   flex: 0 0 auto;
 }
-.mp-header--controls .nav--partners {
+.mp-header--controls .nav--partners,
+.mp-header--controls .nav--tournaments {
   justify-content: flex-end;
 }
 .pill {

@@ -208,9 +208,9 @@
           </figure>
         @endforelse
       </div>
-
-      <div class="dots-partner" id="tr-dots" aria-label="Slider pagination"></div>
-
+    </div>
+    <div class="mp-header mp-header--controls">
+      <div class="dots-partner dots-partner--inline" id="tr-dots" aria-label="Slider pagination"></div>
       <div class="nav nav--tournaments">
         <button class="pill light" id="tr-prev" aria-label="Previous">
           <span class="chev">‹</span>

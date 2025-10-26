@@ -3,9 +3,7 @@
 @section('title', 'Single Registeration')
 
 @push('styles')
-<!-- <link rel="stylesheet" href="{{ asset('css/style.css') }}" /> -->
 <link rel="stylesheet" href="{{ asset('css/reg-single.css') }}" />
-<!-- <link rel="stylesheet" href="{{ asset('css/auth-fixes.css') }}" /> -->
 @endpush
 
 @section('content')
