@@ -284,10 +284,10 @@
 
 
     </div>
-    <div class="mp-header">
+    <div class="mp-header mp-header--controls">
       <!-- Dots -->
       <div
-        class="dots-partner"
+        class="dots-partner dots-partner--inline"
         id="p-dots"
         aria-label="Slider pagination">
         @php($partnerDotCount = max(1, min(5, $partners->count())))
@@ -297,7 +297,7 @@
       </div>
 
       <!-- Arrow pills (bottom-right) -->
-      <div class="nav">
+      <div class="nav nav--partners">
         <button class="pill light" id="p-prev" aria-label="Previous">
           <span class="chev">‹</span>
         </button>

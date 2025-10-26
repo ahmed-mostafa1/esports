@@ -3,9 +3,9 @@
 @section('title', 'Single Registeration')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+<!-- <link rel="stylesheet" href="{{ asset('css/style.css') }}" /> -->
 <link rel="stylesheet" href="{{ asset('css/reg-single.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/auth-fixes.css') }}" />
+<!-- <link rel="stylesheet" href="{{ asset('css/auth-fixes.css') }}" /> -->
 @endpush
 
 @section('content')
@@ -87,7 +87,7 @@
             <input id="playerName" name="player_name" type="text" placeholder="Enter your name" value="{{ old('player_name') }}" required>
           </div>
 
-          <div class="field">
+          <div class="field right-field">
             <label for="ingameId">In-Game ID</label>
             <input id="ingameId" name="ingame_id" type="text" placeholder="Enter your in-game ID" value="{{ old('ingame_id') }}" required>
           </div>
@@ -99,7 +99,7 @@
             <input id="email" name="email" type="email" placeholder="Enter your email" value="{{ old('email') }}">
           </div>
 
-          <div class="field">
+          <div class="field right-field">
             <label for="phone">Phone Number</label>
             <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" value="{{ old('phone') }}">
           </div>

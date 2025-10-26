@@ -17,11 +17,7 @@
     </h2>
 
     <section class="our-news-section">
-      <h2 style="display:flex;justify-content:start">
-        <button class="secondary-btn" style="font-size:25px;padding:10px 40px;border-radius:5px!important;">
-          {{ content('tours-reg.section.title', 'Our News') }}
-        </button>
-      </h2>
+
 
       {{-- 2-column detail layout --}}
       <div class="tr-two-col">

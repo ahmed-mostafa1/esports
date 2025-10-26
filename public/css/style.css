@@ -283,7 +283,7 @@ body {
   border-radius: 6px;
   border: none;
   background: #ffffff;
-  color: #000000;
+  /* color: #000000; */
   outline: none;
 }
 
@@ -762,4 +762,6 @@ body {
     width: 100%;
   }
 }
+
+
 

@@ -356,7 +356,16 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* margin-bottom: 20px; */
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.mp-header--top {
+  align-items: flex-start;
+}
+.mp-header--controls {
+  margin-top: 32px;
+  justify-content: center;
 }
 .popular-title {
   text-align: start;
@@ -691,15 +700,32 @@ body {
   margin-inline: auto;
 }
 
-/* Dots (bottom center) */
+/* Dots */
 .dots-partner {
-  position: absolute;
-  left: 50%;
-  transform: translateX(50%);
-  bottom: 64px;
   display: flex;
   gap: 12px;
+  align-items: center;
 }
+.slider .dots-partner {
+  position: absolute;
+  left: 50%;
+  bottom: 64px;
+  transform: translateX(50%);
+}
+.dots-partner--inline {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  transform: none;
+  justify-content: center;
+  width: 100%;
+}
+.mp-header--controls .dots-partner--inline {
+  flex: 1 1 240px;
+  min-width: 180px;
+}
+
 .dot {
   width: 10px;
   height: 10px;
@@ -714,13 +740,28 @@ body {
   background: linear-gradient(#000, #fff);
 }
 
-/* Arrow pills (bottom left) */
+/* Arrow pills */
 .nav {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.slider .nav {
   position: absolute;
   right: 24px;
   bottom: 34px;
-  display: flex;
-  gap: 12px;
+}
+.nav--partners {
+  position: static;
+  right: auto;
+  bottom: auto;
+  margin-inline-start: auto;
+  margin-right: auto;
+  margin-left: 0;
+  flex: 0 0 auto;
+}
+.mp-header--controls .nav--partners {
+  justify-content: flex-end;
 }
 .pill {
   width: 44px;
