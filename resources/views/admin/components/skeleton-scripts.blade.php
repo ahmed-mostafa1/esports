@@ -13,6 +13,196 @@ const valueArField = document.getElementById('valueAr');
 const datetimeInputEl = document.getElementById('valueDatetime');
 const timezoneInputEl = document.getElementById('valueTimezone');
 const isoPreviewEl = document.getElementById('valueIsoPreview');
+const previewWrapperEl = document.getElementById('currentImagePreview');
+const previewImageEl = document.getElementById('currentImage');
+let previewVideoEl = null;
+
+function getPreviewVideoEl() {
+    if (previewVideoEl && document.body.contains(previewVideoEl)) {
+        return previewVideoEl;
+    }
+    if (!previewWrapperEl) {
+        return null;
+    }
+    previewVideoEl = document.createElement('video');
+    previewVideoEl.id = 'currentVideo';
+    previewVideoEl.controls = true;
+    if (previewImageEl) {
+        previewVideoEl.className = previewImageEl.className;
+    } else {
+        previewVideoEl.className = 'max-w-full h-auto max-h-48 rounded';
+    }
+    previewVideoEl.classList.add('hidden');
+    previewWrapperEl.appendChild(previewVideoEl);
+    return previewVideoEl;
+}
+
+function showMediaPreview(contentType, mediaUrl) {
+    if (!previewWrapperEl) {
+        return;
+    }
+
+    const videoEl = getPreviewVideoEl();
+
+    if (mediaUrl) {
+        previewWrapperEl.classList.remove('hidden');
+        if (contentType === 'video') {
+            if (previewImageEl) {
+                previewImageEl.classList.add('hidden');
+                previewImageEl.removeAttribute('src');
+            }
+            if (videoEl) {
+                videoEl.classList.remove('hidden');
+                videoEl.src = mediaUrl;
+                try {
+                    videoEl.load();
+                } catch (e) {
+                    console.warn('Unable to load video preview', e);
+                }
+            }
+        } else {
+            if (videoEl) {
+                videoEl.pause();
+                videoEl.classList.add('hidden');
+                videoEl.removeAttribute('src');
+                try {
+                    videoEl.load();
+                } catch (e) {
+                    // ignore
+                }
+            }
+            if (previewImageEl) {
+                previewImageEl.classList.remove('hidden');
+                previewImageEl.src = mediaUrl;
+            }
+        }
+    } else {
+        previewWrapperEl.classList.add('hidden');
+        if (previewImageEl) {
+            previewImageEl.classList.remove('hidden');
+            previewImageEl.removeAttribute('src');
+        }
+        if (videoEl) {
+            videoEl.pause();
+            videoEl.classList.add('hidden');
+            videoEl.removeAttribute('src');
+            try {
+                videoEl.load();
+            } catch (e) {
+                // ignore
+            }
+        }
+    }
+}
+
+function isLikelyJson(value) {
+    if (typeof value !== 'string') {
+        return false;
+    }
+    const trimmed = value.trim();
+    if (!trimmed) {
+        return false;
+    }
+    if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+        return true;
+    }
+    if (trimmed.startsWith('[') && trimmed.endsWith(']')) {
+        return true;
+    }
+    return false;
+}
+
+function parseContentValue(rawValue, contentType, node) {
+    if (rawValue === undefined || rawValue === null) {
+        if (contentType === 'text') {
+            const fallbackText = node?.textContent?.trim() ?? '';
+            return fallbackText ? { en: fallbackText } : {};
+        }
+        return {};
+    }
+
+    if (typeof rawValue !== 'string') {
+        return rawValue;
+    }
+
+    const trimmed = rawValue.trim();
+    if (!trimmed || trimmed.toLowerCase() === 'null') {
+        if (contentType === 'text') {
+            const fallbackText = node?.textContent?.trim() ?? '';
+            return fallbackText ? { en: fallbackText } : {};
+        }
+        return {};
+    }
+
+    if (isLikelyJson(trimmed)) {
+        try {
+            return JSON.parse(trimmed);
+        } catch (error) {
+            console.warn('Failed to parse JSON from data-content-value', {
+                key: node?.dataset?.contentKey,
+                error
+            });
+            return trimmed;
+        }
+    }
+
+    return trimmed;
+}
+
+function deriveExpectedFilename(contentKey, payload, contentType) {
+    if (!contentKey) {
+        return '';
+    }
+
+    const media = payload && typeof payload === 'object' ? payload : {};
+    let filename = media.filename || media.name || null;
+
+    const extractFromPath = (value) => {
+        if (!value || typeof value !== 'string') {
+            return null;
+        }
+        const sanitized = value.split(/[?#]/)[0];
+        const parts = sanitized.split('/');
+        const finalPart = parts.pop() || '';
+        return finalPart;
+    };
+
+    if (!filename) {
+        filename = extractFromPath(media.path) || extractFromPath(media.url);
+    }
+
+    const extensionFromMime = (mime) => {
+        if (!mime || typeof mime !== 'string') {
+            return null;
+        }
+        const segments = mime.split('/');
+        if (segments.length < 2) {
+            return null;
+        }
+        return segments[1];
+    };
+
+    const sanitizeExtension = (ext, fallback) => {
+        if (!ext || typeof ext !== 'string') {
+            return fallback;
+        }
+        const clean = ext.split(/[?#]/)[0].replace(/[^a-z0-9]/gi, '').toLowerCase();
+        return clean || fallback;
+    };
+
+    if (!filename) {
+        let extension = media.extension || media.ext || extensionFromMime(media.mime);
+        if (!extension) {
+            const pathExt = extractFromPath(media.path)?.split('.').pop();
+            extension = pathExt;
+        }
+        const fallbackExtension = contentType === 'video' ? 'mp4' : 'png';
+        extension = sanitizeExtension(extension, fallbackExtension);
+        filename = `${contentKey}.${extension}`;
+    }
+
+    return filename;
+}
 
 function normalizeTranslations(payload) {
     if (!payload) return {};
@@ -254,26 +444,34 @@ function openModal(contentKey, contentType, currentValue, imageUrl = null) {
                 valueArField.value = normalized.ar || '';
             }
         }
-    } else if (contentType === 'image') {
-        // Show image fields, hide text fields
+    } else if (contentType === 'image' || contentType === 'video') {
         deactivateCountdownFields();
         textFieldsEl?.classList.add('hidden');
         imageFieldsEl?.classList.remove('hidden');
-        
-        // Set expected filename
-        const expectedFilename = contentKey + '.png';
-        document.getElementById('expectedFilename').textContent = expectedFilename;
-        
-        // Show current image if exists
-        if (imageUrl) {
-            document.getElementById('currentImagePreview').classList.remove('hidden');
-            document.getElementById('currentImage').src = imageUrl;
-        } else {
-            document.getElementById('currentImagePreview').classList.add('hidden');
+
+        const mediaPayload = normalizeImagePayload(currentValue);
+        const expectedName = deriveExpectedFilename(contentKey, mediaPayload, contentType);
+        const expectedFilenameEl = document.getElementById('expectedFilename');
+        if (expectedFilenameEl) {
+            expectedFilenameEl.textContent = expectedName;
         }
-        
-        // Clear file input
-        document.getElementById('imageFile').value = '';
+
+        const fileInput = document.getElementById('imageFile');
+        if (fileInput) {
+            fileInput.value = '';
+            fileInput.accept = contentType === 'video' ? 'video/*' : 'image/*';
+        }
+
+        const resolvedPreviewUrl = imageUrl
+            || mediaPayload.url
+            || mediaPayload.path
+            || null;
+        showMediaPreview(contentType, resolvedPreviewUrl);
+    } else {
+        deactivateCountdownFields();
+        textFieldsEl?.classList.add('hidden');
+        imageFieldsEl?.classList.add('hidden');
+        showMediaPreview(contentType, null);
     }
     
     // Show modal
@@ -341,7 +539,7 @@ async function saveContent() {
                 formData.append('value[en]', valueEnField?.value ?? '');
                 formData.append('value[ar]', valueArField?.value ?? '');
             }
-        } else if (currentContentType === 'image') {
+        } else if (currentContentType === 'image' || currentContentType === 'video') {
             const fileInput = document.getElementById('imageFile');
             if (fileInput.files.length > 0) {
                 formData.append('image', fileInput.files[0]);
@@ -360,9 +558,17 @@ async function saveContent() {
         
         if (result.success) {
             showSuccessMessage(result.message);
+
+            const updatedType = result.contentType || currentContentType;
+            const updatedMediaUrl = result.mediaUrl || result.imageUrl || null;
             
             // Update the content in the skeleton view
-            updateSkeletonContent(currentContentKey, result.content, result.imageUrl, currentContentType);
+            updateSkeletonContent(currentContentKey, result.content, updatedMediaUrl, updatedType);
+            currentContentType = updatedType;
+            const contentTypeBadge = document.getElementById('contentType');
+            if (contentTypeBadge) {
+                contentTypeBadge.textContent = updatedType;
+            }
             
             // Close modal after short delay
             setTimeout(() => {
@@ -390,6 +596,11 @@ function updateSkeletonContent(key, content, imageUrl = null, specifiedType = nu
     const updateType = specifiedType || currentContentType;
 
     contentElements.forEach(element => {
+        if (updateType) {
+            element.setAttribute('data-content-type', updateType);
+            element.dataset.contentType = updateType;
+        }
+
         if (updateType === 'text') {
             const translations = normalizeTranslations(content);
             const currentLocale = document.documentElement.lang || 'en';
@@ -398,20 +609,55 @@ function updateSkeletonContent(key, content, imageUrl = null, specifiedType = nu
             const serialised = JSON.stringify(translations);
             element.setAttribute('data-content-value', serialised);
             element.dataset.contentValue = serialised;
-        } else if (updateType === 'image' && imageUrl) {
+        } else if (updateType === 'image' || updateType === 'video') {
             const payload = normalizeImagePayload(content);
+            const effectiveUrl = imageUrl || payload.url || payload.path || null;
             const serialised = JSON.stringify(payload);
             element.setAttribute('data-content-value', serialised);
             element.dataset.contentValue = serialised;
-            element.setAttribute('data-image-url', imageUrl);
-            element.dataset.imageUrl = imageUrl;
-
-            if (element.tagName === 'IMG') {
-                element.src = imageUrl;
+            if (effectiveUrl) {
+                element.setAttribute('data-image-url', effectiveUrl);
+                element.dataset.imageUrl = effectiveUrl;
             } else {
-                const img = element.querySelector('img');
-                if (img) {
-                    img.src = imageUrl;
+                element.removeAttribute('data-image-url');
+                if (element.dataset) {
+                    delete element.dataset.imageUrl;
+                }
+            }
+
+            if (updateType === 'video') {
+                if (element.tagName === 'VIDEO') {
+                    element.src = effectiveUrl || element.src;
+                    try {
+                        element.load();
+                    } catch (error) {
+                        console.warn('Unable to reload video element', error);
+                    }
+                } else {
+                    const video = element.querySelector('video');
+                    if (video) {
+                        video.src = effectiveUrl || video.src;
+                        try {
+                            video.load();
+                        } catch (error) {
+                            console.warn('Unable to reload nested video element', error);
+                        }
+                    }
+                    if (!effectiveUrl) {
+                        const img = element.tagName === 'IMG' ? element : element.querySelector('img');
+                        if (img) {
+                            img.removeAttribute('src');
+                        }
+                    }
+                }
+            } else if (effectiveUrl) {
+                if (element.tagName === 'IMG') {
+                    element.src = effectiveUrl;
+                } else {
+                    const img = element.querySelector('img');
+                    if (img) {
+                        img.src = effectiveUrl;
+                    }
                 }
             }
         }
@@ -427,6 +673,10 @@ function updateSkeletonContent(key, content, imageUrl = null, specifiedType = nu
         const translations = normalizeTranslations(content);
         const isoValue = translations.en ?? translations.default ?? translations.ar ?? '';
         activateCountdownFields(isoValue, translations);
+    } else if ((updateType === 'image' || updateType === 'video') && key === currentContentKey) {
+        const payload = normalizeImagePayload(content);
+        const previewUrl = imageUrl || payload.url || payload.path || null;
+        showMediaPreview(updateType, previewUrl);
     }
 }
 
@@ -467,50 +717,71 @@ document.getElementById('contentModal').addEventListener('click', function(event
 // Handle content node clicks
 document.addEventListener('click', async function(event) {
     const contentNode = event.target.closest('[data-content-key]');
-    if (!contentNode) {
+    if (!contentNode || contentNode.closest('#contentModal')) {
+        return;
+    }
+
+    const key = contentNode.dataset.contentKey || contentNode.getAttribute('data-content-key');
+    if (!key) {
         return;
     }
 
     event.preventDefault();
-        
-    const key = contentNode.getAttribute('data-content-key');
-    const type = contentNode.getAttribute('data-content-type');
-    const currentValue = contentNode.getAttribute('data-content-value');
-    const imageUrl = contentNode.getAttribute('data-image-url');
-    
-    // Parse current value if it's JSON
-    let parsedValue = currentValue;
-    try {
-        if (currentValue && currentValue.trim().startsWith('{')) {
-            parsedValue = JSON.parse(currentValue);
-        }
-    } catch (e) {
-        parsedValue = currentValue;
-    }
 
-    let fetchedValue = parsedValue;
-    let fetchedImageUrl = imageUrl;
+    const rawType = contentNode.dataset.contentType || contentNode.getAttribute('data-content-type') || 'text';
+    const rawValue = contentNode.dataset.contentValue ?? contentNode.getAttribute('data-content-value');
+    const rawImageUrl = contentNode.dataset.imageUrl ?? contentNode.getAttribute('data-image-url');
+
+    let resolvedType = rawType;
+    let resolvedValue = parseContentValue(rawValue, resolvedType, contentNode);
+    let resolvedImageUrl = rawImageUrl || null;
+    let resolvedMimeType = null;
 
     try {
         const response = await fetch(`/admin/contents/${encodeURIComponent(key)}/data`, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
-            }
+            },
+            cache: 'no-store'
         });
 
         if (response.ok) {
             const data = await response.json();
             if (data && data.success) {
-                fetchedValue = data.content ?? fetchedValue;
-                if (data.imageUrl) {
-                    fetchedImageUrl = data.imageUrl;
+                resolvedType = data.type || resolvedType;
+
+                if (data.content !== undefined) {
+                    resolvedValue = data.content;
                 }
+
+                if (data.mediaUrl || data.imageUrl) {
+                    resolvedImageUrl = data.mediaUrl || data.imageUrl || resolvedImageUrl;
+                }
+
+                if (data.mimeType) {
+                    resolvedMimeType = data.mimeType;
+                }
+            } else {
+                console.warn('Unexpected content response payload', data);
             }
+        } else {
+            console.warn(`Failed to fetch content data for ${key}: ${response.status}`);
         }
     } catch (error) {
         console.warn('Failed to fetch content data for', key, error);
     }
-    
-    openModal(key, type, fetchedValue, fetchedImageUrl);
+
+    if (resolvedType === 'image' || resolvedType === 'video') {
+        const normalizedMedia = normalizeImagePayload(resolvedValue);
+        if (resolvedMimeType) {
+            normalizedMedia.mime = resolvedMimeType;
+        }
+        resolvedValue = normalizedMedia;
+        if (!resolvedImageUrl) {
+            resolvedImageUrl = normalizedMedia.url || normalizedMedia.path || resolvedImageUrl || null;
+        }
+    }
+
+    openModal(key, resolvedType, resolvedValue, resolvedImageUrl);
 });
 </script>

@@ -3,21 +3,18 @@
 Server error: SplFileInfo::getSize(): stat failed for /tmp/php06e0ncf0iabccgFmApX
 
 
- in news skeleton page we will have another way to edit each card. 
+ in Gallery skeleton page we will have another way to edit each card. 
  the admin must have the ability to add / delete / modify each of them  
  and show dynamically in new page each card shows first 40 words of article.description
  also each news card in site/news page must have a button 'read more' when visitor click 
- redirect to a new page with same design of site/news.blade.php page but only show clicked
- card full text content and the card will cover full content width
- suggest me the bset way
+ redirect to a new page with same design of site/gallery.blade.php page but only show clicked
+ card content and the card will cover full content width. content will be video with text under the video
+ suggest me the bset way to do it
 
 
 lets improve user experience
-create a new page (site/tournament-reg.blade.php) that will be used to view a single tournament data and allow users to register
-site/tournament-reg.blade.php will take same style of (site/tours-reg.blade.php) but show only one card with data about 
-selected tournament and registeration buttons (single / team).
-when user click tournament card in homepage or tournaments page 
-    -> redirect the user to tournament-reg page with clicked tournament data 
-    then user cycle continue as planned before.
+(site/tournament-reg.blade.php) make it 2 column page.
+the left column shows tournament image 
+the right column shows tournament text data and registration buttons
 review my feature and give inhancements before planning deployment
 

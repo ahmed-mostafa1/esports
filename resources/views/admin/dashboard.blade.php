@@ -3,6 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
+<!-- stats -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
   <!-- Stats Cards -->
   <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg p-4">
