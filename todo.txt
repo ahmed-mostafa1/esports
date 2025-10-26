@@ -1,6 +1,5 @@
 -  edit modal: make modal load current data (arabic / english / image / video)
--in dashboard when i tried to uplaod a new image i got this error
-Server error: SplFileInfo::getSize(): stat failed for /tmp/php06e0ncf0iabccgFmApX
+
 
 
  in Gallery skeleton page we will have another way to edit each card. 
@@ -18,3 +17,6 @@ the left column shows tournament image
 the right column shows tournament text data and registration buttons
 review my feature and give inhancements before planning deployment
 
+
+in some cases i need to replace images with videos. 
+how can we make it accepted from dashboard ?

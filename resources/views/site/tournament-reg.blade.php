@@ -23,37 +23,41 @@
         </button>
       </h2>
 
-      <ul class="char-grid">
-        <li class="char-card theme-dark">
-          <div class="char-wrap">
-            <figure class="art">
-              <img
-                src="{{ $tournament->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
-                alt="{{ $tournament->titleFor(app()->getLocale()) ?: 'Tournament' }}" />
-            </figure>
+      {{-- 2-column detail layout --}}
+      <div class="tr-two-col">
+        {{-- LEFT: image --}}
+        <figure class="tr-media">
+          <img
+            src="{{ $tournament->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
+            alt="{{ $tournament->titleFor(app()->getLocale()) ?: 'Tournament' }}"
+            loading="eager" fetchpriority="high"
+          />
+        </figure>
 
-            <div class="vlabel">
-              <strong class="phoenix">{{ $tournament->titleFor(app()->getLocale()) }}</strong>
-              <em>{{ optional($tournament->date)->format('d/m/Y') ?? '--' }} • {{ $tournament->time ?: '--' }}</em>
-            </div>
-            <i class="accent" aria-hidden="true"></i>
+        {{-- RIGHT: text + CTAs --}}
+        <aside class="tr-aside">
+          <header class="tr-aside__head">
+            <h1 class="tr-title">{{ $tournament->titleFor(app()->getLocale()) }}</h1>
+            <ul class="tr-meta">
+              <li><span class="meta-k">{{ __('Date') }}</span> <span class="meta-v">{{ optional($tournament->date)->format('d/m/Y') ?? '--' }}</span></li>
+              <li><span class="meta-k">{{ __('Time') }}</span> <span class="meta-v">{{ $tournament->time ?: '--' }}</span></li>
+              @if(!empty($tournament->prize))
+              <li><span class="meta-k">{{ __('Prize') }}</span> <span class="meta-v">{{ $tournament->prize }}</span></li>
+              @endif
+            </ul>
+          </header>
 
-            <div class="abilities">
-              <span class="under" aria-hidden="true"></span>
-            </div>
-          </div>
-
-          <div class="cta">
+          <div class="tr-cta">
             @if($tournament->status === 'open')
-              <button class="btn-register" type="button">
+              <button class="btn-register" type="button" aria-label="Register now">
                 {{ content('tours-reg.card.register_button', 'Register - now') }}
               </button>
               <div class="segmented">
                 @auth
-                  <a href="{{ route('register.single') }}?t={{ $tournament->id }}" class="mini">
+                  <a href="{{ route('register.single') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as single">
                     {{ content('tours-reg.links.single', 'Single') }}
                   </a>
-                  <a href="{{ route('register.team') }}?t={{ $tournament->id }}" class="mini">
+                  <a href="{{ route('register.team') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as team">
                     {{ content('tours-reg.links.team', 'Team') }}
                   </a>
                 @else
@@ -77,8 +81,13 @@
               </span>
             @endif
           </div>
-        </li>
-      </ul>
+
+          {{-- Optional: a short blurb (CMS-driven) --}}
+          <p class="tr-note">
+            {{ content('tournaments.register.note', 'Make sure you meet the requirements before registering.') }}
+          </p>
+        </aside>
+      </div>
     </section>
   </section>
 @endsection

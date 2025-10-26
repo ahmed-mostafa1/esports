@@ -113,20 +113,22 @@
           
           <div>
             <label for="imageFile" class="block text-sm font-medium text-gray-300 mb-2">
-              Upload New Image
+              Upload New Media
             </label>
             <input 
               type="file" 
               id="imageFile" 
               name="image" 
-              accept="image/*"
+              accept="image/*,video/*"
               class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-            <p class="text-xs text-gray-500 mt-1">Accepted formats: PNG, JPG, JPEG, WebP (max 2MB)</p>
+            <p class="text-xs text-gray-500 mt-1">
+              Accepted images: PNG, JPG, JPEG, WebP, GIF. Accepted videos: MP4, MOV, WebM, MKV, OGG.
+            </p>
           </div>
           
-          <!-- Current Image Preview -->
+          <!-- Current Media Preview -->
           <div id="currentImagePreview" class="hidden">
-            <label class="block text-sm font-medium text-gray-300 mb-2">Current Image</label>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Current Media</label>
             <div class="border border-neutral-700 rounded-md p-4 bg-neutral-800">
               <img id="currentImage" src="" alt="Current image" class="max-w-full h-auto max-h-48 rounded">
             </div>

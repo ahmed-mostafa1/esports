@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\ContentController;
+use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\NewsArticleController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\TournamentAdminController;
 use App\Http\Controllers\Admin\TournamentCardController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TournamentController;
@@ -30,7 +32,8 @@ Route::get('/lang/{locale}', function (string $locale) {
 
 // The rest of pages
 Route::view('/about', 'site.about')->name('about');
-Route::view('/gallery', 'site.gallery')->name('gallery');
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
+Route::get('/gallery/{item:slug}', [GalleryController::class, 'show'])->name('gallery.show');
 Route::view('/partners', 'site.partners')->name('partners');
 Route::view('/privacy', 'site.privacy')->name('privacy');
 Route::view('/services', 'site.services')->name('services');
@@ -107,6 +110,12 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::resource('news-articles', NewsArticleController::class)->except(['show']);
         Route::post('news-articles/reorder', [NewsArticleController::class, 'reorder'])
             ->name('news-articles.reorder');
+
+        Route::resource('gallery-items', GalleryItemController::class)
+            ->parameters(['gallery-items' => 'gallery_item'])
+            ->except(['show']);
+        Route::post('gallery-items/reorder', [GalleryItemController::class, 'reorder'])
+            ->name('gallery-items.reorder');
 
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
         Route::post('testimonials/reorder', [TestimonialController::class, 'reorder'])
