@@ -3,6 +3,11 @@
 @section('title', 'Tournament Overview')
 
 @section('content')
+@php
+  $resolveLogoUrl = static function (?string $url, ?string $path) {
+      return $url ?? \App\Models\TeamRegistration::logoPathToUrl($path);
+  };
+@endphp
 <div class="px-6 py-4 space-y-6">
   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
     <div>
@@ -65,7 +70,9 @@
       <div>
         <h2 class="text-lg font-semibold text-white mb-2">Winner Snapshot</h2>
         @if($winner)
-          @php($snap = $winner->snapshot ?? [])
+          @php
+            $snap = $winner->snapshot ?? [];
+          @endphp
           <div class="space-y-3 text-sm text-gray-300">
             <div>
               <span class="text-gray-400 uppercase text-xs">Kind</span>
@@ -84,6 +91,20 @@
               <div class="bg-neutral-800 rounded p-3 space-y-2">
                 <div class="text-xs text-gray-400 uppercase mb-1">Team Winner</div>
                 <div class="font-semibold">{{ $snap['team']['team_name'] ?? '' }}</div>
+                @php
+                  $teamLogoUrl = $resolveLogoUrl($snap['team']['team_logo_url'] ?? null, $snap['team']['team_logo_path'] ?? null);
+                  $captainLogoUrl = $resolveLogoUrl($snap['team']['captain_logo_url'] ?? null, $snap['team']['captain_logo_path'] ?? null);
+                @endphp
+                @if($teamLogoUrl || $captainLogoUrl)
+                  <div class="flex items-center gap-3 pt-1">
+                    @if($teamLogoUrl)
+                      <img src="{{ $teamLogoUrl }}" alt="Team logo" class="w-16 h-16 object-cover rounded">
+                    @endif
+                    @if($captainLogoUrl)
+                      <img src="{{ $captainLogoUrl }}" alt="Captain logo" class="w-16 h-16 object-cover rounded">
+                    @endif
+                  </div>
+                @endif
                 @if(!empty($snap['team']['captain_name']))
                   <div class="text-gray-400 text-xs">Captain: {{ $snap['team']['captain_name'] }}</div>
                 @endif
@@ -107,7 +128,9 @@
       @if($tournament->status !== 'finished')
         <div class="bg-neutral-900 border border-neutral-800 rounded p-5">
           <h2 class="text-lg font-semibold text-white mb-4">Mark Tournament as Finished</h2>
-          @php($selectedKind = old('kind', 'single'))
+          @php
+            $selectedKind = old('kind', 'single');
+          @endphp
           <form action="{{ route('admin.tournaments.finish', $tournament) }}" method="POST" class="space-y-4">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -195,6 +218,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           @forelse($teamRegistrations as $team)
             <article class="bg-neutral-900/40 border border-neutral-800 rounded p-4 space-y-2">
+              @if($team->team_logo_url || $team->captain_logo_url)
+                <div class="flex items-center gap-4">
+                  @if($team->team_logo_url)
+                    <img src="{{ $team->team_logo_url }}" alt="{{ $team->team_name }} team logo" class="w-16 h-16 object-cover rounded">
+                  @endif
+                  @if($team->captain_logo_url)
+                    <img src="{{ $team->captain_logo_url }}" alt="{{ $team->captain_name }} logo" class="w-16 h-16 object-cover rounded">
+                  @endif
+                </div>
+              @endif
               <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-white">{{ $team->team_name }}</h3>
                 <span class="text-xs text-gray-400">{{ $team->game_id ?: 'N/A' }}</span>

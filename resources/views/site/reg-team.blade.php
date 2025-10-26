@@ -90,7 +90,7 @@
           <input id="captainEmail" name="captainEmail" type="email" placeholder="Enter  captain's email" value="{{ old('captainEmail') }}">
         </div>
           <div class="field" style="margin-left: 40px;">
-          <label for="teamLogo">Captain's Logo</label>
+          <label for="teamLogo">Team's Logo</label>
           <label class="file-field">
             <input id="teamLogo" name="teamLogo" type="file" accept="image/*">
             <span class="file-placeholder">click to upload</span>

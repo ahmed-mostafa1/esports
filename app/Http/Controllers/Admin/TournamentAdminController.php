@@ -89,7 +89,9 @@ class TournamentAdminController extends Controller
                     'captain_name' => $team->captain_name,
                     'game_id' => $team->game_id,
                     'team_logo_path' => $team->team_logo_path,
+                    'team_logo_url' => $team->team_logo_url,
                     'captain_logo_path' => $team->captain_logo_path,
+                    'captain_logo_url' => $team->captain_logo_url,
                     'members' => $team->members->map(function ($member) {
                         return [
                             'member_name' => $member->member_name,

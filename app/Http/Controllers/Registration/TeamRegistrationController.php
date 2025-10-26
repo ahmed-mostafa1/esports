@@ -87,8 +87,6 @@ class TeamRegistrationController extends Controller
 
     private function storeLogo($file): string
     {
-        $path = $file->store('content-images/teams', 'public');
-
-        return 'storage/' . ltrim($path, '/');
+        return $file->store('content-images/teams', 'public');
     }
 }

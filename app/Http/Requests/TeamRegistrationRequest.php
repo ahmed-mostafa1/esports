@@ -35,7 +35,7 @@ class TeamRegistrationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'members.required' => __('At least one team member is required.'),
+            'members' => __('At least one team member is required.'),
             'website.max' => 'Invalid submission.',
         ];
     }
