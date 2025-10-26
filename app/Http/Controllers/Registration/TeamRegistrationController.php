@@ -40,13 +40,26 @@ class TeamRegistrationController extends Controller
         unset($data['members']);
         unset($data['team_logo'], $data['captain_logo']);
 
+        $tournamentId = TournamentCard::published()
+            ->open()
+            ->ordered()
+            ->value('id');
+
+        if (! $tournamentId) {
+            return back()
+                ->withErrors(['tournament' => __('No tournaments available at the moment.')])
+                ->withInput();
+        }
+
+        $data['tournament_card_id'] = $tournamentId;
+
         DB::transaction(function () use ($request, &$data, $members) {
-            if ($request->hasFile('team_logo')) {
-                $data['team_logo_path'] = $this->storeLogo($request->file('team_logo'));
+            if ($request->hasFile('teamLogo')) {
+                $data['team_logo_path'] = $this->storeLogo($request->file('teamLogo'));
             }
 
-            if ($request->hasFile('captain_logo')) {
-                $data['captain_logo_path'] = $this->storeLogo($request->file('captain_logo'));
+            if ($request->hasFile('captainLogo')) {
+                $data['captain_logo_path'] = $this->storeLogo($request->file('captainLogo'));
             }
 
             $data['meta'] = [

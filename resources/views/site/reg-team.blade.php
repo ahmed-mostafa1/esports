@@ -61,109 +61,79 @@
         </div>
       @endif
 
-      <form class="team-form" action="{{ route('register.team.store') }}" method="post" enctype="multipart/form-data" novalidate>
+      <form class="team-form" action="{{ route('register.team.store') }}" method="post" enctype="multipart/form-data" novalidate="">
         @csrf
-        <input type="text" name="website" value="" style="display:none;">
+        <!-- Row 1 -->
+        <div class="field">
+          <label for="teamName">Team Name</label>
+          <input id="teamName" name="teamName" type="text" placeholder="Enter  your team name" value="{{ old('teamName') }}">
+        </div>
+<div>
+  <!-- ! to keep space -->
+</div>
 
-        <div class="form-row">
-          <div class="field full-width">
-            <label for="tournamentId">{{ content('team_registration.form.tournament', 'Choose Tournament') }}</label>
-            @php($selectedTournament = old('tournament_card_id', $selectedTournamentId ?? null))
-            <select id="tournamentId" name="tournament_card_id" required>
-              <option value="">{{ content('team_registration.form.tournament_placeholder', 'Select...') }}</option>
-              @foreach($tournaments as $tournament)
-                @php($title = $tournament->title[app()->getLocale()] ?? $tournament->title['en'] ?? __('Tournament'))
-                <option value="{{ $tournament->id }}" {{ (int) $selectedTournament === $tournament->id ? 'selected' : '' }}>
-                  {{ $title }}
-                </option>
-              @endforeach
-            </select>
-          </div>
+        <!-- Row 2 -->
+        <div class="field">
+         <label for="captainName">Captain's Name</label>
+          <input id="captainName" name="captainName" type="text" placeholder="Enter  captain's name" value="{{ old('captainName') }}">
+        </div>
+          <div class="field" style="margin-left: 40px;">
+          <label for="captainLogo">Captain's Logo</label>
+          <label class="file-field">
+            <input id="captainLogo" name="captainLogo" type="file" accept="image/*">
+            <span class="file-placeholder">click to upload</span>
+          </label>
+        </div>
+        <!-- Row 3 -->
+        <div class="field">
+          <label for="captainEmail">Captain's Email</label>
+          <input id="captainEmail" name="captainEmail" type="email" placeholder="Enter  captain's email" value="{{ old('captainEmail') }}">
+        </div>
+          <div class="field" style="margin-left: 40px;">
+          <label for="teamLogo">Captain's Logo</label>
+          <label class="file-field">
+            <input id="teamLogo" name="teamLogo" type="file" accept="image/*">
+            <span class="file-placeholder">click to upload</span>
+          </label>
         </div>
 
-        <!-- Team Name -->
-        <div class="form-row">
-          <div class="field full-width">
-            <label for="teamName">{{ content('team_registration.form.team_name', 'Team Name') }}</label>
-            <input id="teamName" name="team_name" type="text" placeholder="{{ content('team_registration.form.team_name_placeholder', 'Enter your team name') }}" value="{{ old('team_name') }}" required>
-          </div>
+
+        <div class="field">
+          <label for="captainPhone">Captain's Phone</label>
+          <input id="captainPhone" name="captainPhone" type="tel" placeholder="Enter  captain's phone" value="{{ old('captainPhone') }}">
+        </div>
+        <div class="field" style="margin-left: 40px;">
+          <label for="gameId">Game  -ID</label>
+          <input id="gameId" name="gameId" type="text" placeholder="Enter  Game ID" value="{{ old('gameId') }}">
         </div>
 
-        <!-- Captain Info Row 1 -->
-        <div class="form-row">
-          <div class="field">
-            <label for="captainName">{{ content('team_registration.form.captain_name', 'Captain\'s Name') }}</label>
-            <input id="captainName" name="captain_name" type="text" placeholder="{{ content('team_registration.form.captain_name_placeholder', 'Enter captain\'s name') }}" value="{{ old('captain_name') }}" required>
-          </div>
-          <div class="field">
-            <label for="captainLogo">{{ content('team_registration.form.captain_logo', 'Captain\'s Logo') }}</label>
-            <label class="file-field">
-              <input id="captainLogo" name="captain_logo" type="file" accept="image/*">
-              <span class="file-placeholder">{{ content('team_registration.form.upload_placeholder', 'Click to upload') }}</span>
-            </label>
-          </div>
+        <!-- Subheading -->
+        <div class="full">
+          <h3 class="subhead">Team Members</h3>
         </div>
 
-        <!-- Captain Info Row 2 -->
-        <div class="form-row">
-          <div class="field">
-            <label for="captainEmail">{{ content('team_registration.form.captain_email', 'Captain\'s Email') }}</label>
-            <input id="captainEmail" name="captain_email" type="email" placeholder="{{ content('team_registration.form.captain_email_placeholder', 'Enter captain\'s email') }}" value="{{ old('captain_email') }}" required>
-          </div>
-          <div class="field">
-            <label for="teamLogo">{{ content('team_registration.form.team_logo', 'Team Logo') }}</label>
-            <label class="file-field">
-              <input id="teamLogo" name="team_logo" type="file" accept="image/*">
-              <span class="file-placeholder">{{ content('team_registration.form.upload_placeholder', 'Click to upload') }}</span>
-            </label>
-          </div>
+        <!-- Members (2 columns) -->
+        <div class="field">
+          <label for="m1">Member 1</label>
+          <input id="m1" name="m1" type="text" placeholder="Enter  member 1's name" value="{{ old('m1') }}">
+        </div>
+        <div class="field" style="margin-left: 40px;">
+          <label for="m2">Member 2</label>
+          <input id="m2" name="m2" type="text" placeholder="Enter  member 2's name" value="{{ old('m2') }}">
         </div>
 
-        <!-- Captain Info Row 3 -->
-        <div class="form-row">
-          <div class="field">
-            <label for="captainPhone">{{ content('team_registration.form.captain_phone', 'Captain\'s Phone') }}</label>
-            <input id="captainPhone" name="captain_phone" type="tel" placeholder="{{ content('team_registration.form.captain_phone_placeholder', 'Enter captain\'s phone') }}" value="{{ old('captain_phone') }}" required>
-          </div>
-          <div class="field">
-            <label for="gameId">{{ content('team_registration.form.game_id', 'Game ID') }}</label>
-            <input id="gameId" name="game_id" type="text" placeholder="{{ content('team_registration.form.game_id_placeholder', 'Enter Game ID') }}" value="{{ old('game_id') }}">
-          </div>
+        <div class="field">
+          <label for="m3">Member 3</label>
+          <input id="m3" name="m3" type="text" placeholder="Enter  member 3's name" value="{{ old('m3') }}">
+        </div>
+        <div class="field" style="margin-left: 40px;">
+          <label for="m4">Member 4</label>
+          <input id="m4" name="m4" type="text" placeholder="Enter  member 4's name" value="{{ old('m4') }}">
         </div>
 
-        <!-- Team Members Section -->
-        <div class="members-section">
-          <h3 class="section-title">{{ content('team_registration.form.team_members', 'Team Members') }}</h3>
-          @php($memberOld = old('members', []))
-          @foreach(range(0,3) as $index)
-            <div class="form-row">
-              <div class="field">
-                <label for="member-name-{{ $index }}">{{ __('Member') }} {{ $index + 1 }}</label>
-                <input
-                  id="member-name-{{ $index }}"
-                  name="members[{{ $index }}][name]"
-                  type="text"
-                  placeholder="{{ content('team_registration.form.member' . ($index + 1), 'Member ' . ($index + 1)) }}"
-                  value="{{ $memberOld[$index]['name'] ?? '' }}"
-                >
-              </div>
-              <div class="field">
-                <label for="member-id-{{ $index }}">{{ __('In-Game ID') }}</label>
-                <input
-                  id="member-id-{{ $index }}"
-                  name="members[{{ $index }}][ingame_id]"
-                  type="text"
-                  placeholder="{{ __('Enter in-game ID') }}"
-                  value="{{ $memberOld[$index]['ingame_id'] ?? '' }}"
-                >
-              </div>
-            </div>
-          @endforeach
-        </div>
-
-        <!-- Form Actions -->
-        <div class="form-actions">
-          <button class="btn-register" type="submit">{{ content('team_registration.form.register_button', 'Register Team') }}</button>
+        <!-- CTA -->
+        <div class="full actions">
+          <button class="btn-register" type="submit">Register Team</button>
         </div>
       </form>
     </div>

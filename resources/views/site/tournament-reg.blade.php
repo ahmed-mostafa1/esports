@@ -49,23 +49,12 @@
                 {{ content('tours-reg.card.register_button', 'Register - now') }}
               </button>
               <div class="segmented">
-                @auth
-                  <a href="{{ route('register.single') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as single">
-                    {{ content('tours-reg.links.single', 'Single') }}
-                  </a>
-                  <a href="{{ route('register.team') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as team">
-                    {{ content('tours-reg.links.team', 'Team') }}
-                  </a>
-                @else
-                  <a href="{{ route('login') }}" class="mini"
-                     onclick="sessionStorage.setItem('loginMessage','You must login to register');return true;">
-                    {{ content('tours-reg.links.single', 'Single') }}
-                  </a>
-                  <a href="{{ route('login') }}" class="mini"
-                     onclick="sessionStorage.setItem('loginMessage','You must login to register');return true;">
-                    {{ content('tours-reg.links.team', 'Team') }}
-                  </a>
-                @endauth
+                <a href="{{ route('register.single') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as single">
+                  {{ content('tours-reg.links.single', 'Single') }}
+                </a>
+                <a href="{{ route('register.team') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as team">
+                  {{ content('tours-reg.links.team', 'Team') }}
+                </a>
               </div>
             @elseif($tournament->status === 'finished')
               <a class="mini" href="{{ route('winners.show', $tournament->slug) }}">

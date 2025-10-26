@@ -17,21 +17,17 @@ class TeamRegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tournament_card_id' => [
-                'required',
-                'integer',
-                \Illuminate\Validation\Rule::exists('tournament_cards', 'id')->where('status', 'open'),
-            ],
-            'team_name' => ['required', 'string', 'max:255'],
-            'captain_name' => ['required', 'string', 'max:255'],
-            'captain_email' => ['required', 'email', 'max:255'],
-            'captain_phone' => ['required', 'string', 'max:50'],
-            'team_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'captain_logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
-            'game_id' => ['nullable', 'string', 'max:255'],
-            'members' => ['array'],
-            'members.*.name' => ['nullable', 'string', 'max:255'],
-            'members.*.ingame_id' => ['nullable', 'string', 'max:255'],
+            'teamName' => ['required', 'string', 'max:255'],
+            'captainName' => ['required', 'string', 'max:255'],
+            'captainEmail' => ['required', 'email', 'max:255'],
+            'captainPhone' => ['required', 'string', 'max:50'],
+            'teamLogo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'captainLogo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+            'gameId' => ['nullable', 'string', 'max:255'],
+            'm1' => ['nullable', 'string', 'max:255'],
+            'm2' => ['nullable', 'string', 'max:255'],
+            'm3' => ['nullable', 'string', 'max:255'],
+            'm4' => ['nullable', 'string', 'max:255'],
             'website' => ['nullable', 'string', 'max:0'],
         ];
     }
@@ -46,34 +42,29 @@ class TeamRegistrationRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $members = [];
-        $rawMembers = $this->input('members', []);
-
-        foreach ($rawMembers as $index => $member) {
-            $name = trim((string) ($member['name'] ?? ''));
-            $ingame = trim((string) ($member['ingame_id'] ?? ''));
-
-            $members[$index] = [
-                'name' => $name,
-                'ingame_id' => $ingame,
-            ];
-        }
-
         $this->merge([
-            'team_name' => trim((string) $this->input('team_name')),
-            'captain_name' => trim((string) $this->input('captain_name')),
-            'game_id' => trim((string) $this->input('game_id')),
-            'captain_phone' => trim((string) $this->input('captain_phone')),
+            'teamName' => trim((string) $this->input('teamName')),
+            'captainName' => trim((string) $this->input('captainName')),
+            'captainEmail' => trim((string) $this->input('captainEmail')),
+            'captainPhone' => trim((string) $this->input('captainPhone')),
+            'gameId' => trim((string) $this->input('gameId')),
+            'm1' => trim((string) $this->input('m1')),
+            'm2' => trim((string) $this->input('m2')),
+            'm3' => trim((string) $this->input('m3')),
+            'm4' => trim((string) $this->input('m4')),
             'website' => trim((string) $this->input('website')),
-            'members' => $members,
         ]);
     }
 
     public function withValidator($validator): void
     {
         $validator->after(function ($validator) {
-            $members = collect($this->input('members', []))
-                ->filter(fn ($member) => filled($member['name'] ?? null));
+            $members = collect([
+                $this->input('m1'),
+                $this->input('m2'),
+                $this->input('m3'),
+                $this->input('m4'),
+            ])->filter(fn ($member) => filled($member));
 
             if ($members->isEmpty()) {
                 $validator->errors()->add('members', __('At least one team member is required.'));
@@ -85,17 +76,37 @@ class TeamRegistrationRequest extends FormRequest
     {
         $data = parent::validated($key, $default);
 
-        $data['members'] = collect($data['members'] ?? [])
-            ->filter(fn ($member) => filled($member['name'] ?? null))
+        $members = collect([
+            $data['m1'] ?? null,
+            $data['m2'] ?? null,
+            $data['m3'] ?? null,
+            $data['m4'] ?? null,
+        ])
+            ->filter()
             ->map(fn ($member) => [
-                'member_name' => $member['name'],
-                'member_ingame_id' => $member['ingame_id'] ?? null,
+                'member_name' => $member,
+                'member_ingame_id' => null,
             ])
             ->values()
             ->all();
 
-        unset($data['website']);
+        $payload = [
+            'team_name' => $data['teamName'],
+            'captain_name' => $data['captainName'],
+            'captain_email' => $data['captainEmail'],
+            'captain_phone' => $data['captainPhone'],
+            'game_id' => $data['gameId'] ?? null,
+            'members' => $members,
+        ];
 
-        return $data;
+        if (isset($data['teamLogo'])) {
+            $payload['team_logo'] = $data['teamLogo'];
+        }
+
+        if (isset($data['captainLogo'])) {
+            $payload['captain_logo'] = $data['captainLogo'];
+        }
+
+        return $payload;
     }
 }
