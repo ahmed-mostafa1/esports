@@ -58,7 +58,7 @@
               </div>
 
               @if($card->status === 'open')
-                <a href="{{ $card->register_url ?: route('tours-reg') }}" class="ot-btn">
+                <a href="{{ route('tournaments.register', $card->slug) }}" class="ot-btn">
                   {{ content('tournaments.card.register', 'REGISTER') }}
                 </a>
               @elseif($card->status === 'finished')

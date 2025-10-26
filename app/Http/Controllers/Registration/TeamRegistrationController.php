@@ -6,19 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamRegistrationRequest;
 use App\Models\TeamRegistration;
 use App\Models\TournamentCard;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class TeamRegistrationController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
         $tournaments = TournamentCard::published()
             ->open()
             ->ordered()
             ->get(['id', 'title', 'slug']);
 
-        return view('site.reg-team', compact('tournaments'));
+        $selectedTournamentId = $request->query('t');
+        if ($selectedTournamentId !== null) {
+            $selectedTournamentId = (int) $selectedTournamentId;
+            if (! $tournaments->firstWhere('id', $selectedTournamentId)) {
+                $selectedTournamentId = null;
+            }
+        }
+
+        return view('site.reg-team', [
+            'tournaments' => $tournaments,
+            'selectedTournamentId' => $selectedTournamentId,
+        ]);
     }
 
     public function store(TeamRegistrationRequest $request)

@@ -12,4 +12,12 @@ Server error: SplFileInfo::getSize(): stat failed for /tmp/php06e0ncf0iabccgFmAp
  suggest me the bset way
 
 
+lets improve user experience
+create a new page (site/tournament-reg.blade.php) that will be used to view a single tournament data and allow users to register
+site/tournament-reg.blade.php will take same style of (site/tours-reg.blade.php) but show only one card with data about 
+selected tournament and registeration buttons (single / team).
+when user click tournament card in homepage or tournaments page 
+    -> redirect the user to tournament-reg page with clicked tournament data 
+    then user cycle continue as planned before.
+review my feature and give inhancements before planning deployment
 

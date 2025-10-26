@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\TournamentAdminController;
 use App\Http\Controllers\Admin\TournamentCardController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\Registration\SingleRegistrationController;
 use App\Http\Controllers\Registration\TeamRegistrationController;
 use App\Http\Controllers\WinnersController;
@@ -35,6 +36,8 @@ Route::view('/privacy', 'site.privacy')->name('privacy');
 Route::view('/services', 'site.services')->name('services');
 Route::view('/terms', 'site.terms')->name('terms');
 Route::view('/tournaments', 'site.tournaments')->name('tournaments');
+Route::get('/tournaments/{tournament:slug}/register', [TournamentController::class, 'register'])
+    ->name('tournaments.register');
 Route::view('/tours-reg', 'site.tours-reg')->name('tours-reg');
 Route::view('/team', 'site.team')->name('team');
 

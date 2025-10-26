@@ -21,12 +21,9 @@
         <a href="{{ route('about') }}" {{ request()->routeIs('about') ? 'aria-current=page' : '' }}>{{ content('nav.about', 'About Us') }}</a>
         <a href="{{ route('services') }}" {{ request()->routeIs('services') ? 'aria-current=page' : '' }}>{{ content('nav.services', 'Our Services') }}</a>
         <a href="{{ route('tournaments') }}" {{ request()->routeIs('tournaments') ? 'aria-current=page' : '' }}>{{ content('nav.esports', 'E-Sports') }}</a>
-        <a href="{{ route('tours-reg') }}" {{ request()->routeIs('tours-reg') ? 'aria-current=page' : '' }}>{{ content('nav.events', 'Events Management') }}</a>
+        <a href="{{ route('news') }}" {{ request()->routeIs('news') ? 'aria-current=page' : '' }}>{{ content('', 'News') }}</a>
         <a href="{{ route('team') }}" {{ request()->routeIs('team') ? 'aria-current=page' : '' }}>{{ content('nav.team', 'Our Team') }}</a>
         @auth
-          <a href="{{ route('profile.edit') }}" {{ request()->routeIs('profile.*') ? 'aria-current=page' : '' }}>
-            {{ content('nav.profile', 'My Profile') }}
-          </a>
           <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
             @csrf
             <button type="submit">

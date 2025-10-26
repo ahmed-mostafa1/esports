@@ -6,17 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SingleRegistrationRequest;
 use App\Models\SingleRegistration;
 use App\Models\TournamentCard;
+use Illuminate\Http\Request;
 
 class SingleRegistrationController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
         $tournaments = TournamentCard::published()
             ->open()
             ->ordered()
             ->get(['id', 'title', 'slug']);
 
-        return view('site.reg-single', compact('tournaments'));
+        $selectedTournamentId = $request->query('t');
+        if ($selectedTournamentId !== null) {
+            $selectedTournamentId = (int) $selectedTournamentId;
+            if (! $tournaments->firstWhere('id', $selectedTournamentId)) {
+                $selectedTournamentId = null;
+            }
+        }
+
+        return view('site.reg-single', [
+            'tournaments' => $tournaments,
+            'selectedTournamentId' => $selectedTournamentId,
+        ]);
     }
 
     public function store(SingleRegistrationRequest $request)

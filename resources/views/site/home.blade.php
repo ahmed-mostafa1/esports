@@ -191,7 +191,7 @@
               <span class="badge"><img src="{{ asset('./img/badge.png') }}" alt="badge" /></span>
               <div class="txt">
                 <div>
-                  <a class="txt" href="{{ route('tours-reg') }}">
+                  <a class="txt" href="{{ route('tournaments.register', $tournament->slug) }}">
                     {{ $tournament->titleFor($homeLocale) ?: 'Tournament' }}
                   </a>
                 </div>
