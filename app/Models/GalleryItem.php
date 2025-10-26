@@ -83,12 +83,13 @@ class GalleryItem extends Model
         return Str::words($this->t('description', $locale), $words);
     }
 
-    public function embedHtml(): HtmlString
+    public function embedHtml(bool $autoplay = false): HtmlString
     {
         $class = 'w-full aspect-video rounded-lg overflow-hidden';
 
         if ($this->video_type === self::VIDEO_TYPE_YOUTUBE && $this->video_url) {
             $src = $this->transformYoutubeUrl($this->video_url);
+            $src .= $autoplay ? (str_contains($src, '?') ? '&' : '?') . 'autoplay=1&mute=1&playsinline=1' : '';
             $html = sprintf(
                 '<iframe src="%s" class="%s" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
                 e($src),
@@ -100,6 +101,7 @@ class GalleryItem extends Model
 
         if ($this->video_type === self::VIDEO_TYPE_VIMEO && $this->video_url) {
             $src = $this->transformVimeoUrl($this->video_url);
+            $src .= $autoplay ? (str_contains($src, '?') ? '&' : '?') . 'autoplay=1&muted=1&playsinline=1' : '';
             $html = sprintf(
                 '<iframe src="%s" class="%s" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>',
                 e($src),
@@ -111,9 +113,10 @@ class GalleryItem extends Model
 
         if ($this->video_type === self::VIDEO_TYPE_FILE && $this->video_path) {
             $html = sprintf(
-                '<video src="%s" class="%s" controls preload="metadata"></video>',
+                '<video src="%s" class="%s"%s controls preload="metadata"></video>',
                 e(asset($this->video_path)),
-                str_replace('aspect-video ', '', $class)
+                str_replace('aspect-video ', '', $class),
+                $autoplay ? ' autoplay muted playsinline' : ''
             );
 
             return new HtmlString($html);

@@ -64,7 +64,7 @@
 </div>
 
 <!-- Page Quick Access -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+<div class="grid grid-cols-1mb-8">
   <!-- Skeleton Editor -->
   <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg">
     <div class="px-6 py-4 border-b border-neutral-800">

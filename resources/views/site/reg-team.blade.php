@@ -43,11 +43,13 @@
         <img src="{{ content_media('team_registration.avatar_image', 'img/reg-sinle.png') }}" alt="Team avatar / logo">
       </div>
 
-      @if(session('status'))
+      @if(session('status') && ! session('registration_success'))
         <div class="alert success">
           {{ session('status') }}
         </div>
       @endif
+
+      @include('components.registration-success-modal', ['redirectUrl' => route('home')])
 
       @if($errors->any())
         <div class="alert error">

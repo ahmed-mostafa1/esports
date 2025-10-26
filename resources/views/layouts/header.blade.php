@@ -20,7 +20,7 @@
         <a href="{{ route('home') }}" {{ request()->routeIs('home') ? 'aria-current=page' : '' }}>{{ content('nav.home', 'Home') }}</a>
         <a href="{{ route('about') }}" {{ request()->routeIs('about') ? 'aria-current=page' : '' }}>{{ content('nav.about', 'About Us') }}</a>
         <a href="{{ route('services') }}" {{ request()->routeIs('services') ? 'aria-current=page' : '' }}>{{ content('nav.services', 'Our Services') }}</a>
-        <a href="{{ route('tournaments') }}" {{ request()->routeIs('tournaments') ? 'aria-current=page' : '' }}>{{ content('nav.esports', 'E-Sports') }}</a>
+        <a href="{{ route('tournaments') }}" {{ request()->routeIs('tournaments') ? 'aria-current=page' : '' }}>{{ content('nav.esports', 'Tournaments') }}</a>
         <a href="{{ route('gallery') }}" {{ request()->routeIs('gallery') || request()->routeIs('gallery.show') ? 'aria-current=page' : '' }}>
           {{ app()->getLocale() === 'ar' ? 'المعرض' : 'Gallery' }}
         </a>

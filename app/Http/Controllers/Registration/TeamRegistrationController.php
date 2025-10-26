@@ -62,9 +62,14 @@ class TeamRegistrationController extends Controller
             }
         });
 
+        $message = __('Thank you! Your team registration has been received.');
+
         return redirect()
             ->route('register.team')
-            ->with('status', __('Thank you! Your team registration has been received.'));
+            ->with([
+                'status' => $message,
+                'registration_success' => $message,
+            ]);
     }
 
     private function storeLogo($file): string

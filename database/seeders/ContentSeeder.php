@@ -1036,8 +1036,8 @@ class ContentSeeder extends Seeder
                 'type' => 'text',
                 'group' => 'navigation',
                 'value' => [
-                    'en' => 'E-Sports',
-                    'ar' => 'الرياضات الإلكترونية'
+                    'en' => 'Tournaments',
+                    'ar' => 'البطولات'
                 ]
             ],
             [

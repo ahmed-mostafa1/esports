@@ -42,8 +42,13 @@ class SingleRegistrationController extends Controller
 
         SingleRegistration::create($data);
 
+        $message = __('Thank you! Your registration has been received.');
+
         return redirect()
             ->route('register.single')
-            ->with('status', __('Thank you! Your registration has been received.'));
+            ->with([
+                'status' => $message,
+                'registration_success' => $message,
+            ]);
     }
 }
