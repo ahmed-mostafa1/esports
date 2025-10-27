@@ -46,67 +46,138 @@ class TournamentAdminController extends Controller
 
         $data = $request->validate([
             'kind' => ['required', Rule::in(['single', 'team', 'mixed'])],
-            'single_registration_id' => ['nullable', 'integer', Rule::exists('single_registrations', 'id')->where('tournament_card_id', $tournament->id)],
-            'team_registration_id' => ['nullable', 'integer', Rule::exists('team_registrations', 'id')->where('tournament_card_id', $tournament->id)],
+            'single_registration_ids' => ['nullable', 'array'],
+            'single_registration_ids.*' => ['integer', Rule::exists('single_registrations', 'id')->where('tournament_card_id', $tournament->id)],
+            'team_registration_ids' => ['nullable', 'array'],
+            'team_registration_ids.*' => ['integer', Rule::exists('team_registrations', 'id')->where('tournament_card_id', $tournament->id)],
         ]);
 
-        $hasSingle = filled($data['single_registration_id'] ?? null);
-        $hasTeam = filled($data['team_registration_id'] ?? null);
+        $singleIds = collect($data['single_registration_ids'] ?? [])
+            ->filter(fn ($value) => filled($value))
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values();
 
-        if ($data['kind'] === 'single' && !$hasSingle) {
-            return back()->withErrors(['single_registration_id' => __('Please select a single registration winner.')]);
-        }
+        $teamIds = collect($data['team_registration_ids'] ?? [])
+            ->filter(fn ($value) => filled($value))
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values();
 
-        if ($data['kind'] === 'team' && !$hasTeam) {
-            return back()->withErrors(['team_registration_id' => __('Please select a team registration winner.')]);
-        }
+        $hasSingle = $singleIds->isNotEmpty();
+        $hasTeam = $teamIds->isNotEmpty();
 
-        if ($data['kind'] === 'mixed' && !($hasSingle || $hasTeam)) {
-            return back()->withErrors(['single_registration_id' => __('Select at least one winner.')]);
-        }
-
-        DB::transaction(function () use ($data, $tournament, $hasSingle, $hasTeam) {
-            $snapshot = [];
-            $singleId = null;
-            $teamId = null;
-
-            if ($hasSingle) {
-                /** @var SingleRegistration $single */
-                $single = SingleRegistration::with('tournament')->find($data['single_registration_id']);
-                $singleId = $single->id;
-                $snapshot['single'] = [
-                    'player_name' => $single->player_name,
-                    'ingame_id' => $single->ingame_id,
-                ];
+        if ($data['kind'] === 'single') {
+            if (!$hasSingle) {
+                return back()->withErrors(['single_registration_ids' => __('Please select at least one single registration winner.')])->withInput();
             }
 
             if ($hasTeam) {
-                /** @var TeamRegistration $team */
-                $team = TeamRegistration::with('members')->find($data['team_registration_id']);
-                $teamId = $team->id;
-                $snapshot['team'] = [
-                    'team_name' => $team->team_name,
-                    'captain_name' => $team->captain_name,
-                    'game_id' => $team->game_id,
-                    'team_logo_path' => $team->team_logo_path,
-                    'team_logo_url' => $team->team_logo_url,
-                    'captain_logo_path' => $team->captain_logo_path,
-                    'captain_logo_url' => $team->captain_logo_url,
-                    'members' => $team->members->map(function ($member) {
-                        return [
-                            'member_name' => $member->member_name,
-                            'member_ingame_id' => $member->member_ingame_id,
-                        ];
-                    })->values()->all(),
-                ];
+                return back()->withErrors(['team_registration_ids' => __('Single winner mode does not accept team selections.')])->withInput();
+            }
+        }
+
+        if ($data['kind'] === 'team') {
+            if (!$hasTeam) {
+                return back()->withErrors(['team_registration_ids' => __('Please select at least one team registration winner.')])->withInput();
+            }
+
+            if ($hasSingle) {
+                return back()->withErrors(['single_registration_ids' => __('Team winner mode does not accept single selections.')])->withInput();
+            }
+        }
+
+        if ($data['kind'] === 'mixed' && !($hasSingle || $hasTeam)) {
+            return back()->withErrors(['single_registration_ids' => __('Select at least one winner.')])->withInput();
+        }
+
+        $finalKind = match (true) {
+            $hasSingle && $hasTeam => 'mixed',
+            $hasSingle => 'single',
+            $hasTeam => 'team',
+            default => $data['kind'],
+        };
+
+        DB::transaction(function () use ($tournament, $singleIds, $teamIds, $hasSingle, $hasTeam, $finalKind) {
+            $snapshot = [];
+
+            $singleSnapshots = collect();
+            $teamSnapshots = collect();
+
+            if ($hasSingle) {
+                $singles = SingleRegistration::where('tournament_card_id', $tournament->id)
+                    ->whereIn('id', $singleIds)
+                    ->get()
+                    ->keyBy('id');
+
+                $singleSnapshots = $singleIds->map(function ($id) use ($singles) {
+                    /** @var SingleRegistration $single */
+                    $single = $singles->get($id);
+
+                    if (!$single) {
+                        return null;
+                    }
+
+                    return [
+                        'id' => $single->id,
+                        'player_name' => $single->player_name,
+                        'ingame_id' => $single->ingame_id,
+                        'email' => $single->email,
+                        'phone' => $single->phone,
+                    ];
+                })->filter()->values();
+
+                if ($singleSnapshots->isNotEmpty()) {
+                    $snapshot['single'] = $singleSnapshots->first();
+                    $snapshot['singles'] = $singleSnapshots->all();
+                }
+            }
+
+            if ($hasTeam) {
+                $teams = TeamRegistration::with('members')
+                    ->where('tournament_card_id', $tournament->id)
+                    ->whereIn('id', $teamIds)
+                    ->get()
+                    ->keyBy('id');
+
+                $teamSnapshots = $teamIds->map(function ($id) use ($teams) {
+                    /** @var TeamRegistration $team */
+                    $team = $teams->get($id);
+
+                    if (!$team) {
+                        return null;
+                    }
+
+                    return [
+                        'id' => $team->id,
+                        'team_name' => $team->team_name,
+                        'captain_name' => $team->captain_name,
+                        'game_id' => $team->game_id,
+                        'team_logo_path' => $team->team_logo_path,
+                        'team_logo_url' => $team->team_logo_url,
+                        'captain_logo_path' => $team->captain_logo_path,
+                        'captain_logo_url' => $team->captain_logo_url,
+                        'members' => $team->members->map(function ($member) {
+                            return [
+                                'member_name' => $member->member_name,
+                                'member_ingame_id' => $member->member_ingame_id,
+                            ];
+                        })->values()->all(),
+                    ];
+                })->filter()->values();
+
+                if ($teamSnapshots->isNotEmpty()) {
+                    $snapshot['team'] = $teamSnapshots->first();
+                    $snapshot['teams'] = $teamSnapshots->all();
+                }
             }
 
             Winner::updateOrCreate(
                 ['tournament_card_id' => $tournament->id],
                 [
-                    'kind' => $data['kind'],
-                    'single_registration_id' => $singleId,
-                    'team_registration_id' => $teamId,
+                    'kind' => $finalKind,
+                    'single_registration_id' => $singleIds->first(),
+                    'team_registration_id' => $teamIds->first(),
                     'snapshot' => $snapshot,
                 ]
             );

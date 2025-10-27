@@ -72,49 +72,69 @@
         @if($winner)
           @php
             $snap = $winner->snapshot ?? [];
+            $singleEntries = collect($snap['singles'] ?? []);
+            if ($singleEntries->isEmpty() && !empty($snap['single'])) {
+              $singleEntries = collect([$snap['single']]);
+            }
+            $teamEntries = collect($snap['teams'] ?? []);
+            if ($teamEntries->isEmpty() && !empty($snap['team'])) {
+              $teamEntries = collect([$snap['team']]);
+            }
           @endphp
           <div class="space-y-3 text-sm text-gray-300">
             <div>
               <span class="text-gray-400 uppercase text-xs">Kind</span>
               <div class="font-semibold text-white">{{ ucfirst($winner->kind) }}</div>
             </div>
-            @if(!empty($snap['single']))
-              <div class="bg-neutral-800 rounded p-3">
-                <div class="text-xs text-gray-400 uppercase mb-1">Single Winner</div>
-                <div class="font-semibold">{{ $snap['single']['player_name'] ?? '' }}</div>
-                @if(!empty($snap['single']['ingame_id']))
-                  <div class="text-gray-400 text-xs">{{ $snap['single']['ingame_id'] }}</div>
-                @endif
+            @if($singleEntries->isNotEmpty())
+              <div class="bg-neutral-800 rounded p-3 space-y-2">
+                <div class="text-xs text-gray-400 uppercase">Single Winners</div>
+                <div class="space-y-2">
+                  @foreach($singleEntries as $single)
+                    <div class="border border-neutral-700 rounded p-2">
+                      <div class="font-semibold text-white">{{ $single['player_name'] ?? '' }}</div>
+                      @if(!empty($single['ingame_id']))
+                        <div class="text-gray-400 text-xs">{{ $single['ingame_id'] }}</div>
+                      @endif
+                    </div>
+                  @endforeach
+                </div>
               </div>
             @endif
-            @if(!empty($snap['team']))
-              <div class="bg-neutral-800 rounded p-3 space-y-2">
-                <div class="text-xs text-gray-400 uppercase mb-1">Team Winner</div>
-                <div class="font-semibold">{{ $snap['team']['team_name'] ?? '' }}</div>
-                @php
-                  $teamLogoUrl = $resolveLogoUrl($snap['team']['team_logo_url'] ?? null, $snap['team']['team_logo_path'] ?? null);
-                  $captainLogoUrl = $resolveLogoUrl($snap['team']['captain_logo_url'] ?? null, $snap['team']['captain_logo_path'] ?? null);
-                @endphp
-                @if($teamLogoUrl || $captainLogoUrl)
-                  <div class="flex items-center gap-3 pt-1">
-                    @if($teamLogoUrl)
-                      <img src="{{ $teamLogoUrl }}" alt="Team logo" class="w-16 h-16 object-cover rounded">
-                    @endif
-                    @if($captainLogoUrl)
-                      <img src="{{ $captainLogoUrl }}" alt="Captain logo" class="w-16 h-16 object-cover rounded">
-                    @endif
-                  </div>
-                @endif
-                @if(!empty($snap['team']['captain_name']))
-                  <div class="text-gray-400 text-xs">Captain: {{ $snap['team']['captain_name'] }}</div>
-                @endif
-                @if(!empty($snap['team']['members']))
-                  <ul class="text-xs text-gray-300 space-y-1">
-                    @foreach($snap['team']['members'] as $member)
-                      <li>{{ $member['member_name'] ?? '' }} <span class="text-gray-500">{{ $member['member_ingame_id'] ?? '' }}</span></li>
-                    @endforeach
-                  </ul>
-                @endif
+            @if($teamEntries->isNotEmpty())
+              <div class="bg-neutral-800 rounded p-3 space-y-3">
+                <div class="text-xs text-gray-400 uppercase">Team Winners</div>
+                <div class="space-y-3">
+                  @foreach($teamEntries as $team)
+                    @php
+                      $teamLogoUrl = $resolveLogoUrl($team['team_logo_url'] ?? null, $team['team_logo_path'] ?? null);
+                      $captainLogoUrl = $resolveLogoUrl($team['captain_logo_url'] ?? null, $team['captain_logo_path'] ?? null);
+                    @endphp
+                    <div class="border border-neutral-700 rounded p-3 space-y-2">
+                      <div class="font-semibold text-white">{{ $team['team_name'] ?? '' }}</div>
+                      @if($teamLogoUrl || $captainLogoUrl)
+                        <div class="flex items-center gap-3 pt-1">
+                          @if($teamLogoUrl)
+                            <img src="{{ $teamLogoUrl }}" alt="Team logo" class="w-16 h-16 object-cover rounded">
+                          @endif
+                          @if($captainLogoUrl)
+                            <img src="{{ $captainLogoUrl }}" alt="Captain logo" class="w-16 h-16 object-cover rounded">
+                          @endif
+                        </div>
+                      @endif
+                      @if(!empty($team['captain_name']))
+                        <div class="text-gray-400 text-xs">{{ __('Captain:') }} {{ $team['captain_name'] }}</div>
+                      @endif
+                      @if(!empty($team['members']))
+                        <ul class="text-xs text-gray-300 space-y-1">
+                          @foreach($team['members'] as $member)
+                            <li>{{ $member['member_name'] ?? '' }} <span class="text-gray-500">{{ $member['member_ingame_id'] ?? '' }}</span></li>
+                          @endforeach
+                        </ul>
+                      @endif
+                    </div>
+                  @endforeach
+                </div>
               </div>
             @endif
           </div>
@@ -133,6 +153,10 @@
           @endphp
           <form action="{{ route('admin.tournaments.finish', $tournament) }}" method="POST" class="space-y-4">
             @csrf
+            @php
+              $oldSingles = collect(old('single_registration_ids', []))->map(fn ($id) => (int) $id)->all();
+              $oldTeams = collect(old('team_registration_ids', []))->map(fn ($id) => (int) $id)->all();
+            @endphp
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div class="col-span-1 md:col-span-1">
                 <label class="block text-sm text-gray-300 mb-1">Winner Type</label>
@@ -143,29 +167,27 @@
                 </select>
               </div>
               <div>
-                <label class="block text-sm text-gray-300 mb-1">Single Registration</label>
-                <select name="single_registration_id" class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
-                  <option value="">-- Select --</option>
+                <label class="block text-sm text-gray-300 mb-1">Single Registrations</label>
+                <select name="single_registration_ids[]" multiple class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
                   @foreach($singleRegistrations as $registration)
-                    <option value="{{ $registration->id }}" {{ old('single_registration_id') == $registration->id ? 'selected' : '' }}>
+                    <option value="{{ $registration->id }}" {{ in_array($registration->id, $oldSingles, true) ? 'selected' : '' }}>
                       {{ $registration->player_name }} ({{ $registration->ingame_id }})
                     </option>
                   @endforeach
                 </select>
               </div>
               <div>
-                <label class="block text-sm text-gray-300 mb-1">Team Registration</label>
-                <select name="team_registration_id" class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
-                  <option value="">-- Select --</option>
+                <label class="block text-sm text-gray-300 mb-1">Team Registrations</label>
+                <select name="team_registration_ids[]" multiple class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
                   @foreach($teamRegistrations as $registration)
-                    <option value="{{ $registration->id }}" {{ old('team_registration_id') == $registration->id ? 'selected' : '' }}>
+                    <option value="{{ $registration->id }}" {{ in_array($registration->id, $oldTeams, true) ? 'selected' : '' }}>
                       {{ $registration->team_name }}
                     </option>
                   @endforeach
                 </select>
               </div>
             </div>
-            <p class="text-xs text-gray-500">Choose at least one winner entry. Mixed allows selecting both a single player and a team.</p>
+            <p class="text-xs text-gray-500">Choose the winners for this tournament. Hold Ctrl (Windows) or Cmd (Mac) to select multiple entries.</p>
             <div class="flex justify-end">
               <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition">
                 Finish Tournament

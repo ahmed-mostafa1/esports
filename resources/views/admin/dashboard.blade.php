@@ -63,6 +63,32 @@
   </div>
 </div>
 
+<!-- Quick Modules -->
+<div class="mb-8">
+  <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg">
+    <div class="px-6 py-4 border-b border-neutral-800">
+      <h3 class="text-lg font-semibold text-white">🚀 Quick Modules</h3>
+      <p class="text-gray-400 text-sm">Jump straight into frequent management areas</p>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
+        <a href="{{ route('admin.testimonials.index') }}"
+           class="block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white rounded transition-all transform hover:scale-105">
+          💬 Manage Testimonials
+        </a>
+        <a href="{{ route('admin.contents.skeleton', 'reg-single') }}"
+           class="block px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded transition-all transform hover:scale-105">
+          👤 Edit Reg-Single Page
+        </a>
+        <a href="{{ route('admin.contents.skeleton', 'reg-team') }}"
+           class="block px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded transition-all transform hover:scale-105">
+          👥 Edit Reg-Teams Page
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Page Quick Access -->
 <div class="grid grid-cols-1mb-8">
   <!-- Skeleton Editor -->
@@ -81,16 +107,12 @@
           'tournaments' => ['label' => 'Tournaments Page Editor', 'emoji' => '🏆', 'gradient' => 'from-green-600 to-green-700', 'hover' => 'hover:from-green-700 hover:to-green-800'],
           'partners' => ['label' => 'Partners Page Editor', 'emoji' => '🤝', 'gradient' => 'from-purple-600 to-purple-700', 'hover' => 'hover:from-purple-700 hover:to-purple-800'],
           'gallery' => ['label' => 'Gallery Page Editor', 'emoji' => '🖼️', 'gradient' => 'from-pink-600 to-pink-700', 'hover' => 'hover:from-pink-700 hover:to-pink-800'],
-          'reg-team' => ['label' => 'Team Registration (Custom)', 'emoji' => '👥', 'gradient' => 'from-red-500 to-red-600', 'hover' => 'hover:from-red-600 hover:to-red-700'],
-          'reg-single' => ['label' => 'Single Player Registration (Custom)', 'emoji' => '👤', 'gradient' => 'from-blue-500 to-blue-600', 'hover' => 'hover:from-blue-600 hover:to-blue-700'],
-          'tours-reg' => ['label' => 'Tours Registration', 'emoji' => '🧭', 'gradient' => 'from-amber-500 to-amber-600', 'hover' => 'hover:from-amber-600 hover:to-amber-700'],
-        ];
+          ];
 
         $availableSkeletons = collect($skeletonPages ?? []);
 
         $sectionConfigs = collect([
           ['title' => '📄 Main Website Pages', 'pages' => ['home', 'about', 'services', 'news', 'tournaments', 'partners', 'gallery']],
-          ['title' => '📝 Registration Forms', 'pages' => ['reg-team', 'reg-single', 'tours-reg']],
         ]);
 
         $sections = $sectionConfigs->map(function ($config) use ($availableSkeletons) {
@@ -126,27 +148,6 @@
           </div>
         @endif
       @endforeach
-
-      @if($additionalSkeletons->isNotEmpty())
-        <div class="space-y-3 mb-4">
-          <div class="text-sm font-medium text-gray-300 mb-2">🧩 Additional Editors</div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            @foreach($additionalSkeletons as $page)
-              @php
-                $meta = $skeletonMeta[$page] ?? [];
-                $gradient = $meta['gradient'] ?? 'from-slate-600 to-slate-700';
-                $hoverGradient = $meta['hover'] ?? 'hover:from-slate-700 hover:to-slate-800';
-                $emoji = $meta['emoji'] ?? '📄';
-                $label = $meta['label'] ?? (\Illuminate\Support\Str::headline($page) . ' Editor');
-              @endphp
-              <a href="{{ route('admin.contents.skeleton', $page) }}" 
-                 class="block px-4 py-2 bg-gradient-to-r {{ $gradient }} {{ $hoverGradient }} text-white rounded transition-all transform hover:scale-105">
-                {{ $emoji }} {{ $label }}
-              </a>
-            @endforeach
-          </div>
-        </div>
-      @endif
 
       @php
         $customSkeletons = collect(['reg-team', 'reg-single', 'tours-reg'])->filter(fn ($page) => $availableSkeletons->contains($page));
