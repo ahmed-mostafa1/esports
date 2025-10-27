@@ -120,7 +120,20 @@
     <!-- Main -->
     <main class="flex-1">
       <header class="px-6 py-4 border-b border-gray-800 sticky top-0 bg-black/80 backdrop-blur">
-        <h1 class="text-xl md:text-2xl font-semibold text-white">@yield('title')</h1>
+        <div class="flex items-center justify-between gap-4">
+          <h1 class="text-xl md:text-2xl font-semibold text-white">@yield('title')</h1>
+          @if(request()->routeIs('admin.contents.skeleton'))
+            <a
+              href="{{ route('admin.dashboard') }}"
+              class="inline-flex items-center gap-2 rounded-md border border-red-600 px-3 py-2 text-sm text-red-400 hover:bg-red-600 hover:text-white transition"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to Dashboard
+            </a>
+          @endif
+        </div>
       </header>
 
       <section class="px-6 py-6 text-white">

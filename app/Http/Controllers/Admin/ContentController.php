@@ -10,6 +10,8 @@ use App\Models\TournamentCard;
 use App\Support\ContentRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ContentController extends Controller
 {
@@ -28,7 +30,15 @@ class ContentController extends Controller
                              ->limit(10)
                              ->get();
         
-        return view('admin.dashboard', compact('stats', 'recentEdits'));
+        $skeletonPages = collect(File::files(resource_path('views/admin/skeletons')))
+            ->filter(fn($file) => Str::endsWith($file->getFilename(), '.blade.php'))
+            ->map(function ($file) {
+                return Str::before($file->getFilename(), '.blade.php');
+            })
+            ->sort()
+            ->values();
+        
+        return view('admin.dashboard', compact('stats', 'recentEdits', 'skeletonPages'));
     }
     
     public function page(string $group)

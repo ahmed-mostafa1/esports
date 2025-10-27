@@ -72,63 +72,98 @@
       <p class="text-gray-400 text-sm">Visual page-based content editing - ALL PAGES AVAILABLE</p>
     </div>
     <div class="p-6">
-      <!-- Main Pages -->
-      <div class="space-y-3 mb-6">
-        <div class="text-sm font-medium text-gray-300 mb-2">📄 Main Website Pages</div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <a href="{{ route('admin.contents.skeleton', 'home') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white rounded transition-all transform hover:scale-105">
-            🏠 Home Page Editor
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'about') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded transition-all transform hover:scale-105">
-            📄 About Page Editor
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'services') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white rounded transition-all transform hover:scale-105">
-            🛠️ Services Page Editor
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'news') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded transition-all transform hover:scale-105">
-            📰 News Page Editor
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'tournaments') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded transition-all transform hover:scale-105">
-            🏆 Tournaments Page Editor
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'partners') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded transition-all transform hover:scale-105">
-            🤝 Partners Page Editor
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'gallery') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white rounded transition-all transform hover:scale-105">
-            🖼️ Gallery Page Editor
-          </a>
-        </div>
-      </div>
+      @php
+        $skeletonMeta = [
+          'home' => ['label' => 'Home Page Editor', 'emoji' => '🏠', 'gradient' => 'from-red-600 to-red-700', 'hover' => 'hover:from-red-700 hover:to-red-800'],
+          'about' => ['label' => 'About Page Editor', 'emoji' => '📄', 'gradient' => 'from-blue-600 to-blue-700', 'hover' => 'hover:from-blue-700 hover:to-blue-800'],
+          'services' => ['label' => 'Services Page Editor', 'emoji' => '🛠️', 'gradient' => 'from-yellow-600 to-yellow-700', 'hover' => 'hover:from-yellow-700 hover:to-yellow-800'],
+          'news' => ['label' => 'News Page Editor', 'emoji' => '📰', 'gradient' => 'from-indigo-600 to-indigo-700', 'hover' => 'hover:from-indigo-700 hover:to-indigo-800'],
+          'tournaments' => ['label' => 'Tournaments Page Editor', 'emoji' => '🏆', 'gradient' => 'from-green-600 to-green-700', 'hover' => 'hover:from-green-700 hover:to-green-800'],
+          'partners' => ['label' => 'Partners Page Editor', 'emoji' => '🤝', 'gradient' => 'from-purple-600 to-purple-700', 'hover' => 'hover:from-purple-700 hover:to-purple-800'],
+          'gallery' => ['label' => 'Gallery Page Editor', 'emoji' => '🖼️', 'gradient' => 'from-pink-600 to-pink-700', 'hover' => 'hover:from-pink-700 hover:to-pink-800'],
+          'reg-team' => ['label' => 'Team Registration (Custom)', 'emoji' => '👥', 'gradient' => 'from-red-500 to-red-600', 'hover' => 'hover:from-red-600 hover:to-red-700'],
+          'reg-single' => ['label' => 'Single Player Registration (Custom)', 'emoji' => '👤', 'gradient' => 'from-blue-500 to-blue-600', 'hover' => 'hover:from-blue-600 hover:to-blue-700'],
+          'tours-reg' => ['label' => 'Tours Registration', 'emoji' => '🧭', 'gradient' => 'from-amber-500 to-amber-600', 'hover' => 'hover:from-amber-600 hover:to-amber-700'],
+        ];
 
-      <!-- Registration Pages -->
-      <div class="space-y-3 mb-4">
-        <div class="text-sm font-medium text-gray-300 mb-2">📝 Registration Forms</div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          <a href="{{ route('admin.contents.skeleton', 'reg-team') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded transition-all transform hover:scale-105">
-            👥 Team Registration (Custom)
-          </a>
-          <a href="{{ route('admin.contents.skeleton', 'reg-single') }}" 
-             class="block px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded transition-all transform hover:scale-105">
-            👤 Single Player Registration (Custom)
-          </a>
+        $availableSkeletons = collect($skeletonPages ?? []);
+
+        $sectionConfigs = collect([
+          ['title' => '📄 Main Website Pages', 'pages' => ['home', 'about', 'services', 'news', 'tournaments', 'partners', 'gallery']],
+          ['title' => '📝 Registration Forms', 'pages' => ['reg-team', 'reg-single', 'tours-reg']],
+        ]);
+
+        $sections = $sectionConfigs->map(function ($config) use ($availableSkeletons) {
+          return [
+            'title' => $config['title'],
+            'pages' => collect($config['pages'])->filter(fn ($page) => $availableSkeletons->contains($page))->values(),
+          ];
+        });
+
+        $displayedPages = $sections->pluck('pages')->flatten();
+        $additionalSkeletons = $availableSkeletons->diff($displayedPages);
+      @endphp
+
+      @foreach($sections as $section)
+        @if($section['pages']->isNotEmpty())
+          <div class="space-y-3 mb-6 last:mb-4">
+            <div class="text-sm font-medium text-gray-300 mb-2">{{ $section['title'] }}</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              @foreach($section['pages'] as $page)
+                @php
+                  $meta = $skeletonMeta[$page] ?? [];
+                  $gradient = $meta['gradient'] ?? 'from-slate-600 to-slate-700';
+                  $hoverGradient = $meta['hover'] ?? 'hover:from-slate-700 hover:to-slate-800';
+                  $emoji = $meta['emoji'] ?? '📄';
+                  $label = $meta['label'] ?? (\Illuminate\Support\Str::headline($page) . ' Editor');
+                @endphp
+                <a href="{{ route('admin.contents.skeleton', $page) }}" 
+                   class="block px-4 py-2 bg-gradient-to-r {{ $gradient }} {{ $hoverGradient }} text-white rounded transition-all transform hover:scale-105">
+                  {{ $emoji }} {{ $label }}
+                </a>
+              @endforeach
+            </div>
+          </div>
+        @endif
+      @endforeach
+
+      @if($additionalSkeletons->isNotEmpty())
+        <div class="space-y-3 mb-4">
+          <div class="text-sm font-medium text-gray-300 mb-2">🧩 Additional Editors</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            @foreach($additionalSkeletons as $page)
+              @php
+                $meta = $skeletonMeta[$page] ?? [];
+                $gradient = $meta['gradient'] ?? 'from-slate-600 to-slate-700';
+                $hoverGradient = $meta['hover'] ?? 'hover:from-slate-700 hover:to-slate-800';
+                $emoji = $meta['emoji'] ?? '📄';
+                $label = $meta['label'] ?? (\Illuminate\Support\Str::headline($page) . ' Editor');
+              @endphp
+              <a href="{{ route('admin.contents.skeleton', $page) }}" 
+                 class="block px-4 py-2 bg-gradient-to-r {{ $gradient }} {{ $hoverGradient }} text-white rounded transition-all transform hover:scale-105">
+                {{ $emoji }} {{ $label }}
+              </a>
+            @endforeach
+          </div>
         </div>
-      </div>
+      @endif
+
+      @php
+        $customSkeletons = collect(['reg-team', 'reg-single', 'tours-reg'])->filter(fn ($page) => $availableSkeletons->contains($page));
+        $standardSkeletons = $availableSkeletons->diff($customSkeletons);
+      @endphp
 
       <div class="text-xs text-gray-500 p-3 bg-green-900/20 border border-green-700 rounded">
-        ✅ <strong>AVAILABLE EDITORS:</strong> 2 custom skeleton editors + standard skeleton editors for all pages!
+        ✅ <strong>AVAILABLE EDITORS:</strong> {{ $availableSkeletons->count() }} skeleton {{ \Illuminate\Support\Str::plural('page', $availableSkeletons->count()) }}
         <br>
-        🎆 <strong>Custom Skeleton Editors:</strong> Team Registration, Single Player Registration (with auto-save & batch update)
-        <br>
-        📋 <strong>Standard Skeleton Editors:</strong> Home, About, Services, News, Tournaments, Partners, Gallery
-        <br>
+        @if($customSkeletons->isNotEmpty())
+          🎆 <strong>Custom Skeleton Editors:</strong> {{ $customSkeletons->map(fn ($page) => $skeletonMeta[$page]['label'] ?? \Illuminate\Support\Str::headline($page))->implode(', ') }}
+          <br>
+        @endif
+        @if($standardSkeletons->isNotEmpty())
+          📋 <strong>Standard Skeleton Editors:</strong> {{ $standardSkeletons->map(fn ($page) => $skeletonMeta[$page]['label'] ?? \Illuminate\Support\Str::headline($page))->implode(', ') }}
+          <br>
+        @endif
         💡 <strong>Tip:</strong> Custom skeleton editors include comprehensive form sections with real-time editing!
       </div>
     </div>
