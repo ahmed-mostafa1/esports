@@ -13,6 +13,23 @@
   $tournaments = \App\Models\TournamentCard::published()->ordered()->get();
   $partners = \App\Models\Partner::published()->ordered()->get();
   $testimonials = \App\Models\Testimonial::published()->ordered()->get();
+  $heroRecord = \App\Models\Content::where('key', 'home.hero.image')->first();
+  $heroMediaUrl = content_media('home.hero.image', 'img/home.png');
+  $heroType = $heroRecord?->type;
+  $heroIsVideo = $heroType === 'video';
+  $heroEmbedUrl = null;
+
+  if ($heroIsVideo && is_string($heroMediaUrl)) {
+    if (preg_match('~youtu\.be/([^?]+)~i', $heroMediaUrl, $matches)) {
+      $heroEmbedUrl = 'https://www.youtube.com/embed/' . $matches[1];
+    } elseif (preg_match('~youtube\.com.*[?&]v=([^&]+)~i', $heroMediaUrl, $matches)) {
+      $heroEmbedUrl = 'https://www.youtube.com/embed/' . $matches[1];
+    } elseif (preg_match('~youtube\.com/embed/([^?]+)~i', $heroMediaUrl, $matches)) {
+      $heroEmbedUrl = 'https://www.youtube.com/embed/' . $matches[1];
+    } elseif (preg_match('~vimeo\.com/(\d+)~i', $heroMediaUrl, $matches)) {
+      $heroEmbedUrl = 'https://player.vimeo.com/video/' . $matches[1];
+    }
+  }
 @endphp
 
 
@@ -58,11 +75,28 @@
     <!-- Right -->
     <div class="hero-right">
       <div class="hero-media">
-        <img
-          src="{{ content_media('home.hero.image', 'img/home.png') }}"
-          class="hero-img"
-          alt="Esports showcase" />
-        <button class="play" aria-label="Play"></button>
+        @if($heroIsVideo)
+          @if($heroEmbedUrl)
+            <iframe
+              src="{{ $heroEmbedUrl }}"
+              class="hero-media-el hero-media-iframe"
+              title="Hero video"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+          @else
+            <video
+              src="{{ $heroMediaUrl }}"
+              class="hero-media-el hero-media-video"
+              controls
+              playsinline></video>
+          @endif
+        @else
+          <img
+            src="{{ $heroMediaUrl }}"
+            class="hero-media-el"
+            alt="Esports showcase" />
+        @endif
         <div class="hero-tag">
           <small>Ready For The</small>
           <strong>
@@ -258,7 +292,7 @@
                 </div>
               @endif
               <span class="live">{{ content('home.partners.live_indicator', '● Live') }}</span>
-              <button class="play" aria-label="Play"></button>
+              
               <figcaption class="overlay">
                 <div class="meta-title">{{ content('home.partners.live_title', 'LIVE: Nemiga vs Fornite') }}</div>
                 <div class="meta-sub">{{ content('home.partners.live_subtitle', 'Agung Zero Dark Channel') }}</div>

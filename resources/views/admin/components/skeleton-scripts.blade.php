@@ -16,6 +16,7 @@ const isoPreviewEl = document.getElementById('valueIsoPreview');
 const previewWrapperEl = document.getElementById('currentImagePreview');
 const previewImageEl = document.getElementById('currentImage');
 let previewVideoEl = null;
+let previewIframeEl = null;
 
 function getPreviewVideoEl() {
     if (previewVideoEl && document.body.contains(previewVideoEl)) {
@@ -37,12 +38,34 @@ function getPreviewVideoEl() {
     return previewVideoEl;
 }
 
+function getPreviewIframeEl() {
+    if (previewIframeEl && document.body.contains(previewIframeEl)) {
+        return previewIframeEl;
+    }
+    if (!previewWrapperEl) {
+        return null;
+    }
+    previewIframeEl = document.createElement('iframe');
+    previewIframeEl.id = 'currentIframe';
+    if (previewImageEl) {
+        previewIframeEl.className = previewImageEl.className;
+    } else {
+        previewIframeEl.className = 'w-full h-auto max-h-48 rounded';
+    }
+    previewIframeEl.classList.add('hidden');
+    previewIframeEl.setAttribute('frameborder', '0');
+    previewIframeEl.setAttribute('allowfullscreen', 'true');
+    previewWrapperEl.appendChild(previewIframeEl);
+    return previewIframeEl;
+}
+
 function showMediaPreview(contentType, mediaUrl) {
     if (!previewWrapperEl) {
         return;
     }
 
     const videoEl = getPreviewVideoEl();
+    const iframeEl = getPreviewIframeEl();
 
     if (mediaUrl) {
         previewWrapperEl.classList.remove('hidden');
@@ -51,13 +74,66 @@ function showMediaPreview(contentType, mediaUrl) {
                 previewImageEl.classList.add('hidden');
                 previewImageEl.removeAttribute('src');
             }
+            const isExternal = typeof mediaUrl === 'string' && /^https?:\/\//i.test(mediaUrl);
+            const isYouTube = isExternal && /(youtube\.com|youtu\.be)/i.test(mediaUrl);
+            const isVimeo = isExternal && /(vimeo\.com)/i.test(mediaUrl);
+
+            if (iframeEl) {
+                if (isYouTube || isVimeo) {
+                    const embedUrl = (function (u) {
+                        try {
+                            const url = new URL(u);
+                            if (/youtu\.be/i.test(url.hostname)) {
+                                return `https://www.youtube.com/embed/${url.pathname.replace('/', '')}`;
+                            }
+                            if (/youtube\.com/i.test(url.hostname)) {
+                                const id = url.searchParams.get('v');
+                                if (id) {
+                                    return `https://www.youtube.com/embed/${id}`;
+                                }
+                                if (url.pathname.includes('/embed/')) {
+                                    return url.toString();
+                                }
+                            }
+                            if (/vimeo\.com/i.test(url.hostname)) {
+                                const segments = url.pathname.split('/').filter(Boolean);
+                                const id = segments.pop();
+                                if (id) {
+                                    return `https://player.vimeo.com/video/${id}`;
+                                }
+                            }
+                        } catch (e) {
+                            // ignore parsing errors and fallback to provided URL
+                        }
+                        return u;
+                    })(mediaUrl);
+                    iframeEl.classList.remove('hidden');
+                    iframeEl.src = embedUrl;
+                } else {
+                    iframeEl.classList.add('hidden');
+                    iframeEl.removeAttribute('src');
+                }
+            }
+
             if (videoEl) {
-                videoEl.classList.remove('hidden');
-                videoEl.src = mediaUrl;
-                try {
-                    videoEl.load();
-                } catch (e) {
-                    console.warn('Unable to load video preview', e);
+                const looksLikeFile = !isYouTube && !isVimeo && /\.(mp4|webm|mov|ogg|mkv)(\?|#|$)/i.test(mediaUrl || '');
+                if (looksLikeFile) {
+                    videoEl.classList.remove('hidden');
+                    videoEl.src = mediaUrl;
+                    try {
+                        videoEl.load();
+                    } catch (e) {
+                        console.warn('Unable to load video preview', e);
+                    }
+                } else {
+                    videoEl.pause();
+                    videoEl.classList.add('hidden');
+                    videoEl.removeAttribute('src');
+                    try {
+                        videoEl.load();
+                    } catch (e) {
+                        // ignore
+                    }
                 }
             }
         } else {
@@ -70,6 +146,10 @@ function showMediaPreview(contentType, mediaUrl) {
                 } catch (e) {
                     // ignore
                 }
+            }
+            if (iframeEl) {
+                iframeEl.classList.add('hidden');
+                iframeEl.removeAttribute('src');
             }
             if (previewImageEl) {
                 previewImageEl.classList.remove('hidden');
@@ -91,6 +171,10 @@ function showMediaPreview(contentType, mediaUrl) {
             } catch (e) {
                 // ignore
             }
+        }
+        if (iframeEl) {
+            iframeEl.classList.add('hidden');
+            iframeEl.removeAttribute('src');
         }
     }
 }
@@ -461,6 +545,10 @@ function openModal(contentKey, contentType, currentValue, imageUrl = null) {
             fileInput.value = '';
             fileInput.accept = contentType === 'video' ? 'video/*' : 'image/*';
         }
+        const urlEl = document.getElementById('externalVideoUrl');
+        if (urlEl) {
+            urlEl.value = '';
+        }
 
         const resolvedPreviewUrl = imageUrl
             || mediaPayload.url
@@ -543,6 +631,11 @@ async function saveContent() {
             const fileInput = document.getElementById('imageFile');
             if (fileInput.files.length > 0) {
                 formData.append('image', fileInput.files[0]);
+            }
+            const externalUrlEl = document.getElementById('externalVideoUrl');
+            const rawUrl = externalUrlEl ? externalUrlEl.value.trim() : '';
+            if (rawUrl) {
+                formData.append('external_url', rawUrl);
             }
         }
         

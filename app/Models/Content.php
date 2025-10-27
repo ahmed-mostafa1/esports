@@ -36,7 +36,14 @@ class Content extends Model
         if (! ($this->isImage() || $this->isVideo())) {
             return null;
         }
-        
-        return $this->value['path'] ?? null;
+
+        $value = $this->value;
+        if (is_string($value)) {
+            return $value;
+        }
+        if (is_array($value)) {
+            return $value['path'] ?? null;
+        }
+        return null;
     }
 }

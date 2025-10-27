@@ -125,6 +125,22 @@
               Accepted images: PNG, JPG, JPEG, WebP, GIF. Accepted videos: MP4, MOV, WebM, MKV, OGG.
             </p>
           </div>
+
+          <!-- OR: External video URL (YouTube/Vimeo/CDN) -->
+          <div>
+            <label for="externalVideoUrl" class="block text-sm font-medium text-gray-300 mb-2">
+              Or paste external video URL
+            </label>
+            <input
+              type="url"
+              id="externalVideoUrl"
+              name="external_url"
+              placeholder="https://youtu.be/xxxx or https://www.youtube.com/watch?v=xxxx or https://cdn.example.com/video.mp4"
+              class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <p class="text-xs text-gray-500 mt-1">
+              If provided, this URL will be saved as the media for this slot (no upload needed).
+            </p>
+          </div>
           
           <!-- Current Media Preview -->
           <div id="currentImagePreview" class="hidden">

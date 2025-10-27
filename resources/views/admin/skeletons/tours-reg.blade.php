@@ -175,7 +175,7 @@
                             </div>
 
                             <div class="cta p-4 border-t border-gray-700 space-y-3 bg-black/20">
-                                <button class="btn-register w-full py-2 bg-red-600 rounded text-sm font-semibold">
+                                <button class="btn-register py-2 bg-red-600 rounded text-sm font-semibold">
                                     <span data-content-key="tours-reg.card.register_button"
                                           data-content-type="text"
                                           data-content-value='{{ json_encode(optional($contents->get("tours-reg.card.register_button"))->value ?? []) }}'>

@@ -150,16 +150,32 @@
 
 /* CTA button */
 .ot-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
   width:100%;
-  height: 44px;
+  min-height: 48px;
+  padding: 0 24px;
   border:0;
-  border-radius: 8px;
-  background: var(--btn);
-  color:#222;
+  border-radius: 12px;
+  background: var(--accent);
+  color:#fff;
   font-weight: 800;
-  letter-spacing:.3px;
+  letter-spacing:.2px;
+  text-decoration:none;
   cursor:pointer;
-  transition: transform .06s ease, box-shadow .2s ease;
+  transition: transform .08s ease, filter .2s ease, box-shadow .2s ease;
+  box-shadow: 0 12px 24px rgba(0,0,0,.28);
 }
-.ot-btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 18px rgba(255,255,255,.08); }
+.ot-btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 14px 30px rgba(0,0,0,.32);
+}
 .ot-btn:active{ transform: none; }
+.ot-btn--register{
+  box-shadow: 0 12px 24px rgba(225,29,46,.38);
+}
+.ot-btn--register:hover{
+  box-shadow: 0 16px 32px rgba(225,29,46,.45);
+}

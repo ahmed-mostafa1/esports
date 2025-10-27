@@ -90,6 +90,11 @@ class SyncContentImages extends Command
     {
         $key = $entry->key;
         $valueJson = json_decode($entry->value, true);
+        if (is_string($valueJson)) {
+            $valueJson = ['path' => $valueJson];
+        } elseif (!is_array($valueJson)) {
+            $valueJson = [];
+        }
         $currentFilename = $valueJson['path'] ?? null;
         
         if (!$currentFilename) {

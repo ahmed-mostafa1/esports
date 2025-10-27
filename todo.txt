@@ -1,6 +1,6 @@
 -  edit modal: make modal load current data (arabic / english / image / video)
 
-
+admin@esport.com
 
  in Gallery skeleton page we will have another way to edit each card. 
  the admin must have the ability to add / delete / modify each of them  

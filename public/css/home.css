@@ -139,14 +139,26 @@ body {
 }
 .hero-media {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
+  width: 100%;
 }
-.hero-media img {
+.hero-media img,
+.hero-media video,
+.hero-media iframe {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+}
+.hero-media img,
+.hero-media video {
+  object-fit: cover;
+}
+.hero-media video {
+  background: #000;
+}
+.hero-media iframe {
+  border: 0;
 }
 .hero-tag {
   background: linear-gradient(#666464, #ffffff, #ffffff);
@@ -557,7 +569,7 @@ body {
   font-size: 0.875rem;
   background: rgba(17, 17, 23, 0.6);
 }
-}
+
 
 /* Partners */
 

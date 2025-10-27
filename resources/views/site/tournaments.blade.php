@@ -58,11 +58,11 @@
               </div>
 
               @if($card->status === 'open')
-                <a href="{{ route('tournaments.register', $card->slug) }}" class="ot-btn">
+                <a href="#" class="ot-btn ot-btn--register" style="width: 50%;">
                   {{ content('tournaments.card.register', 'REGISTER') }}
                 </a>
               @elseif($card->status === 'finished')
-                <a href="{{ route('winners.show', $card->slug) }}" class="ot-btn" style="background: #059669;">
+                <a href="{{ route('winners.show', $card->slug) }}" class="ot-btn" style="background: #059669; width: 50%;">
                   {{ content('tournaments.card.winner', 'Winner') }}
                 </a>
               @else

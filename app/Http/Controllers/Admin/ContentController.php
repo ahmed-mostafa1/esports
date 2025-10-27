@@ -232,13 +232,45 @@ class ContentController extends Controller
             }
             
             // Handle image content updates
+            // External URL for media (YouTube/Vimeo/CDN) → save as video, skip upload
+            if ($request->filled('external_url')) {
+                $url = trim((string) $request->input('external_url'));
+                if (!preg_match('~^https?://~i', $url)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'External URL must start with http(s)://'
+                    ], 422);
+                }
+
+                $content->type = 'video';
+                $content->value = [
+                    'path' => $url,
+                    'mime' => 'video/external',
+                    'size' => null,
+                ];
+                $content->save();
+                ContentRepository::forgetMedia($key);
+
+                $normalizedValue = $this->normalizeMediaValue($content->value);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Video URL saved successfully',
+                    'content' => $normalizedValue,
+                    'mediaUrl' => ContentRepository::media($key),
+                    'contentType' => 'video',
+                    'mimeType' => $normalizedValue['mime'] ?? null,
+                ]);
+            }
+
             if ($this->hasAnyUpload($request)) {
                 $media = $this->processMediaUpload($request, $content);
+                $normalizedValue = $this->normalizeMediaValue($content->value);
                 
                 return response()->json([
                     'success' => true,
                     'message' => ucfirst($media['type']) . ' updated successfully',
-                    'content' => $content->value,
+                    'content' => $normalizedValue,
                     'mediaUrl' => $media['url'],
                     'contentType' => $media['type'],
                     'mimeType' => $media['mime'],
@@ -293,10 +325,11 @@ class ContentController extends Controller
         }
 
         if (in_array($content->type, ['image', 'video'])) {
+            $value = $this->normalizeMediaValue($content->value);
             return response()->json($base + [
-                'content' => $content->value ?? [],
+                'content' => $value,
                 'mediaUrl' => ContentRepository::image($key),
-                'mimeType' => $content->value['mime'] ?? null,
+                'mimeType' => $value['mime'] ?? null,
             ]);
         }
 
@@ -612,7 +645,8 @@ class ContentController extends Controller
 
         // Capture size before moving (tmp file may be removed after move)
         $originalSize = $file->getSize();
-        $previousFilename = $content->value['path'] ?? null;
+        $existingValue = $this->normalizeMediaValue($content->value);
+        $previousFilename = $existingValue['path'] ?? null;
         $file->move($uploadsPath, $filename);
 
         if ($previousFilename && $previousFilename !== $filename) {
@@ -647,5 +681,31 @@ class ContentController extends Controller
             'mime' => $mimeType,
             'size' => $calculatedSize,
         ];
+    }
+
+    private function normalizeMediaValue($value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+            if (preg_match('~^https?://~i', $value)) {
+                return [
+                    'path' => $value,
+                    'mime' => 'video/external',
+                    'size' => null,
+                ];
+            }
+            return ['path' => $value];
+        }
+        if ($value instanceof \JsonSerializable) {
+            $serialized = $value->jsonSerialize();
+            return is_array($serialized) ? $serialized : [];
+        }
+        return [];
     }
 }

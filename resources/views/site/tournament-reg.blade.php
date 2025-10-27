@@ -45,14 +45,14 @@
 
           <div class="tr-cta">
             @if($tournament->status === 'open')
-              <button class="btn-register" type="button" aria-label="Register now">
+              <button class="btn-register" style="margin-bottom: 30px;" type="button" aria-label="Register now">
                 {{ content('tours-reg.card.register_button', 'Register - now') }}
               </button>
               <div class="segmented">
-                <a href="{{ route('register.single') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as single">
+                <a href="{{ route('register.single') }}?t={{ $tournament->id }}" class="tab-btn" aria-label="Register as single">
                   {{ content('tours-reg.links.single', 'Single') }}
                 </a>
-                <a href="{{ route('register.team') }}?t={{ $tournament->id }}" class="mini" aria-label="Register as team">
+                <a href="{{ route('register.team') }}?t={{ $tournament->id }}" class="tab-btn" aria-label="Register as team">
                   {{ content('tours-reg.links.team', 'Team') }}
                 </a>
               </div>

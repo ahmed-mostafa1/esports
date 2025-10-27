@@ -47,7 +47,25 @@
     @if(in_array($content->type, ['image', 'video'], true))
       @php
         $isVideo = $content->type === 'video';
-        $filename = $content->value['path'] ?? null;
+        $rawValue = $content->value;
+        if (is_string($rawValue)) {
+          $rawValue = ['path' => $rawValue];
+        } elseif (!is_array($rawValue)) {
+          $rawValue = [];
+        }
+        $path = $rawValue['path'] ?? null;
+        $isExternal = is_string($path) && preg_match('~^https?://~i', $path);
+        $previewUrl = $isExternal ? $path : ($path ? asset('content-images/'.$path) : null);
+        $embedUrl = $previewUrl;
+        if ($isExternal && $previewUrl) {
+          if (preg_match('~youtu\.be/([^?/]+)~i', $previewUrl, $matches)) {
+            $embedUrl = 'https://www.youtube.com/embed/'.$matches[1];
+          } elseif (preg_match('~youtube\.com/(?:watch\?v=|embed/)([^&?/]+)~i', $previewUrl, $matches)) {
+            $embedUrl = 'https://www.youtube.com/embed/'.$matches[1];
+          } elseif (preg_match('~vimeo\.com/(\d+)~i', $previewUrl, $matches)) {
+            $embedUrl = 'https://player.vimeo.com/video/'.$matches[1];
+          }
+        }
       @endphp
       <div class="flex flex-col md:flex-row md:items-center gap-6">
         <div class="flex-1">
@@ -78,11 +96,15 @@
         </div>
         <div>
           <div class="text-sm mb-1 text-gray-300">Current</div>
-          @if($filename)
+          @if($previewUrl)
             @if($isVideo)
-              <video src="{{ asset('content-images/'.$filename) }}" controls class="max-h-40 border border-neutral-800 rounded w-full"></video>
+              @if($isExternal && preg_match('~(youtube\.com|youtu\.be|vimeo\.com)~i', $previewUrl))
+                <iframe src="{{ $embedUrl }}" class="max-h-40 w-full border border-neutral-800 rounded" frameborder="0" allowfullscreen></iframe>
+              @else
+                <video src="{{ $previewUrl }}" controls class="max-h-40 border border-neutral-800 rounded w-full"></video>
+              @endif
             @else
-              <img src="{{ asset('content-images/'.$filename) }}" alt="" class="max-h-40 border border-neutral-800 rounded">
+              <img src="{{ $previewUrl }}" alt="" class="max-h-40 border border-neutral-800 rounded">
             @endif
           @else
             <div class="text-gray-500">No file</div>

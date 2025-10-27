@@ -37,9 +37,18 @@ class ContentRepository
 
             // Parse the JSON value
             $value = json_decode($row->value, true);
+            if (is_string($value)) {
+                $value = ['path' => $value];
+            } elseif (!is_array($value)) {
+                $value = [];
+            }
             $filename = $value['path'] ?? null;
 
             if (!$filename) return $default ? asset($default) : '';
+            // If stored path is already an absolute URL (external video/CDN), skip local versioning
+            if (is_string($filename) && preg_match('~^https?://~i', $filename)) {
+                return $filename;
+            }
             $url = asset('content-images/'.$filename);
             $path = public_path('content-images/'.$filename);
             $version = is_string($path) && file_exists($path) ? filemtime($path) : null;
