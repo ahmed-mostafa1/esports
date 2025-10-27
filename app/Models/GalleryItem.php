@@ -112,11 +112,14 @@ class GalleryItem extends Model
         }
 
         if ($this->video_type === self::VIDEO_TYPE_FILE && $this->video_path) {
+            $imageClass = trim(str_replace('aspect-video', '', $class));
+            $imageClass = trim($imageClass . ' object-cover');
+            $alt = $this->t('title', app()->getLocale()) ?: 'Gallery image';
             $html = sprintf(
-                '<video src="%s" class="%s"%s controls preload="metadata"></video>',
+                '<img src="%s" class="%s" alt="%s">',
                 e(asset($this->video_path)),
-                str_replace('aspect-video ', '', $class),
-                $autoplay ? ' autoplay muted playsinline' : ''
+                e($imageClass),
+                e($alt)
             );
 
             return new HtmlString($html);
@@ -128,6 +131,16 @@ class GalleryItem extends Model
     public function thumbnailUrl(): ?string
     {
         return $this->thumb_path ? asset($this->thumb_path) : null;
+    }
+
+    public function sourceLabel(): string
+    {
+        return match ($this->video_type) {
+            self::VIDEO_TYPE_YOUTUBE => 'YouTube',
+            self::VIDEO_TYPE_VIMEO => 'Vimeo',
+            self::VIDEO_TYPE_FILE => 'Image upload',
+            default => ucfirst((string) $this->video_type),
+        };
     }
 
     public function getRouteKeyName(): string

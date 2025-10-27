@@ -19,15 +19,15 @@ class UpdateGalleryItemRequest extends FormRequest
     {
         $galleryItem = $this->route('gallery_item');
 
-        $videoFileRules = [
+        $uploadedImageRules = [
             'nullable',
-            'file',
-            'mimetypes:video/mp4,video/quicktime,application/octet-stream',
-            'max:102400',
+            'image',
+            'mimes:jpg,jpeg,png,webp',
+            'max:8192',
         ];
 
         if ($this->input('video_type') === 'file' && !$galleryItem?->video_path) {
-            $videoFileRules[] = 'required';
+            $uploadedImageRules[] = 'required';
         }
 
         return [
@@ -43,7 +43,7 @@ class UpdateGalleryItemRequest extends FormRequest
             ],
             'video_type' => ['required', 'string', 'in:youtube,vimeo,file'],
             'video_url' => ['nullable', 'string', 'max:500', 'required_if:video_type,youtube,vimeo'],
-            'video_file' => $videoFileRules,
+            'video_file' => $uploadedImageRules,
             'thumb' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
             'is_published' => ['sometimes', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

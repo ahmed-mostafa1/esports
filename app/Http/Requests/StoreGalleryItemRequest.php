@@ -24,7 +24,7 @@ class StoreGalleryItemRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:255', 'unique:gallery_items,slug'],
             'video_type' => ['required', 'string', 'in:youtube,vimeo,file'],
             'video_url' => ['nullable', 'string', 'max:500', 'required_if:video_type,youtube,vimeo'],
-            'video_file' => ['nullable', 'file', 'mimetypes:video/mp4,video/quicktime,application/octet-stream', 'required_if:video_type,file', 'max:102400'],
+            'video_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'required_if:video_type,file', 'max:8192'],
             'thumb' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
             'is_published' => ['sometimes', 'boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

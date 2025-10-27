@@ -25,6 +25,9 @@
       <a href="{{ route('admin.tournaments.open') }}" class="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-gray-200 rounded transition">
         Back to Open List
       </a>
+      <a href="{{ route('admin.tournaments.export', $tournament) }}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded transition">
+        Export Registrations
+      </a>
       <a href="{{ route('admin.tournament-cards.edit', $tournament) }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition">
         Edit Card
       </a>

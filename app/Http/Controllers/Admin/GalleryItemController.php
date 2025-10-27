@@ -47,7 +47,7 @@ class GalleryItemController extends Controller
         $item->published_at = $request->input('published_at') ?: null;
 
         if ($item->video_type === GalleryItem::VIDEO_TYPE_FILE) {
-            $item->video_path = $this->storeVideo($request->file('video_file'));
+            $item->video_path = $this->storeUploadedImage($request->file('video_file'));
         } else {
             $item->video_url = $request->input('video_url');
         }
@@ -88,13 +88,13 @@ class GalleryItemController extends Controller
 
         if ($gallery_item->video_type === GalleryItem::VIDEO_TYPE_FILE) {
             if ($request->hasFile('video_file')) {
-                $this->deleteVideo($gallery_item->video_path);
-                $gallery_item->video_path = $this->storeVideo($request->file('video_file'));
+                $this->deleteUploadedImage($gallery_item->video_path);
+                $gallery_item->video_path = $this->storeUploadedImage($request->file('video_file'));
             }
             $gallery_item->video_url = null;
         } else {
             if ($gallery_item->video_path) {
-                $this->deleteVideo($gallery_item->video_path);
+                $this->deleteUploadedImage($gallery_item->video_path);
                 $gallery_item->video_path = null;
             }
             $gallery_item->video_url = $request->input('video_url');
@@ -115,7 +115,7 @@ class GalleryItemController extends Controller
     public function destroy(GalleryItem $gallery_item)
     {
         $this->deleteThumbnail($gallery_item->thumb_path);
-        $this->deleteVideo($gallery_item->video_path);
+        $this->deleteUploadedImage($gallery_item->video_path);
         $gallery_item->delete();
 
         return redirect()
@@ -155,19 +155,19 @@ class GalleryItemController extends Controller
         return 'content-images/gallery/' . $name;
     }
 
-    private function storeVideo($file): string
+    private function storeUploadedImage($file): string
     {
-        $directory = public_path('content-videos/gallery');
+        $directory = public_path('content-images/gallery');
 
         if (!File::isDirectory($directory)) {
             File::makeDirectory($directory, 0755, true);
         }
 
-        $extension = strtolower($file->getClientOriginalExtension() ?: $file->extension() ?: 'mp4');
-        $name = 'video-' . Str::random(16) . '.' . $extension;
+        $extension = strtolower($file->getClientOriginalExtension() ?: $file->extension() ?: 'jpg');
+        $name = 'upload-' . Str::random(16) . '.' . $extension;
         $file->move($directory, $name);
 
-        return 'content-videos/gallery/' . $name;
+        return 'content-images/gallery/' . $name;
     }
 
     private function deleteThumbnail(?string $path): void
@@ -182,7 +182,7 @@ class GalleryItemController extends Controller
         }
     }
 
-    private function deleteVideo(?string $path): void
+    private function deleteUploadedImage(?string $path): void
     {
         if (!$path) {
             return;

@@ -45,7 +45,7 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div>
-      <label class="block text-sm text-gray-300 mb-1">Video Source</label>
+      <label class="block text-sm text-gray-300 mb-1">Media Source</label>
       <select
         name="video_type"
         class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -54,9 +54,9 @@
         @php($videoType = old('video_type', $item->video_type ?? \App\Models\GalleryItem::VIDEO_TYPE_YOUTUBE))
         <option value="youtube" {{ $videoType === 'youtube' ? 'selected' : '' }}>YouTube Embed</option>
         <option value="vimeo" {{ $videoType === 'vimeo' ? 'selected' : '' }}>Vimeo Embed</option>
-        <option value="file" {{ $videoType === 'file' ? 'selected' : '' }}>Upload File</option>
+        <option value="file" {{ $videoType === 'file' ? 'selected' : '' }}>Upload Image</option>
       </select>
-      <p class="mt-1 text-xs text-gray-500">Choose how the video will be loaded on the public page.</p>
+      <p class="mt-1 text-xs text-gray-500">Choose how the media will be loaded on the public page.</p>
     </div>
 
     <div class="flex items-center gap-2 pt-6">
@@ -84,23 +84,21 @@
       <p class="mt-1 text-xs text-gray-500">Required when video source is YouTube or Vimeo.</p>
     </div>
     <div>
-      <label class="block text-sm text-gray-300 mb-1">Upload Video File (MP4)</label>
+      <label class="block text-sm text-gray-300 mb-1">Upload Image File</label>
       <input
         type="file"
         name="video_file"
-        accept="video/mp4,video/quicktime"
+        accept="image/jpeg,image/png,image/webp"
         class="w-full text-gray-200"
       >
       @if($item && $item->video_type === \App\Models\GalleryItem::VIDEO_TYPE_FILE && $item->video_path)
-        <a
-          href="{{ asset($item->video_path) }}"
-          target="_blank"
-          class="text-xs text-blue-400 hover:underline block mt-2"
+        <img
+          src="{{ asset($item->video_path) }}"
+          alt="Uploaded image"
+          class="mt-3 h-32 w-auto rounded border border-neutral-700 object-cover"
         >
-          Current video file
-        </a>
       @endif
-      <p class="mt-1 text-xs text-gray-500">Required when the video source is set to upload.</p>
+      <p class="mt-1 text-xs text-gray-500">Required when the source is set to upload.</p>
     </div>
   </div>
 

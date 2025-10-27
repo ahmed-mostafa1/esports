@@ -75,7 +75,7 @@
                         </div>
                         <div class="p-4 space-y-3">
                             <div class="flex items-center justify-between text-xs uppercase tracking-wide text-gray-400">
-                                <span>{{ ucfirst($item->video_type) }}</span>
+                                <span>{{ $item->sourceLabel() }}</span>
                                 <span>#{{ $item->sort_order }}</span>
                             </div>
                             <h3 class="font-semibold text-white text-lg">

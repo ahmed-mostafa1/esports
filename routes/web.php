@@ -105,6 +105,7 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
 
         Route::get('/tournaments/open', [TournamentAdminController::class, 'open'])->name('tournaments.open');
         Route::get('/tournaments/{tournament:slug}', [TournamentAdminController::class, 'show'])->name('tournaments.show');
+        Route::get('/tournaments/{tournament:slug}/export', [TournamentAdminController::class, 'export'])->name('tournaments.export');
         Route::post('/tournaments/{tournament:slug}/finish', [TournamentAdminController::class, 'finish'])->name('tournaments.finish');
 
         Route::resource('news-articles', NewsArticleController::class)->except(['show']);

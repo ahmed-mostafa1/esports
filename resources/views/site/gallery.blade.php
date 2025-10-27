@@ -61,7 +61,7 @@
                                             {{ $item->t('title', app()->getLocale()) }}
                                         </h3>
                                         @if($item->video_type)
-                                            <p class="g-frame__meta">{{ ucfirst($item->video_type) }}</p>
+                                            <p class="g-frame__meta">{{ $item->sourceLabel() }}</p>
                                         @endif
                                     </div>
                                 </figcaption>

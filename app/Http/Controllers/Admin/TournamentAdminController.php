@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use App\Models\TournamentCard;
 use App\Models\SingleRegistration;
 use App\Models\TeamRegistration;
 use App\Models\Winner;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TournamentAdminController extends Controller
 {
@@ -36,6 +37,28 @@ class TournamentAdminController extends Controller
         $winner = $tournament->winner;
 
         return view('admin.tournaments.show', compact('tournament', 'singleRegistrations', 'teamRegistrations', 'winner'));
+    }
+
+    public function export(TournamentCard $tournament)
+    {
+        $tournament->load([
+            'singleRegistrations' => fn ($query) => $query->orderBy('player_name'),
+            'teamRegistrations' => fn ($query) => $query->with('members')->orderBy('team_name'),
+        ]);
+
+        $content = view('admin.tournaments.export', [
+            'tournament' => $tournament,
+            'singleRegistrations' => $tournament->singleRegistrations,
+            'teamRegistrations' => $tournament->teamRegistrations,
+        ])->render();
+
+        $baseName = $tournament->titleFor(app()->getLocale()) ?: $tournament->slug;
+        $filename = 'tournament-' . Str::slug($baseName ?: 'tournament') . '-registrations-' . now()->format('Ymd_His') . '.xls';
+
+        return response($content, 200, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
     }
 
     public function finish(TournamentCard $tournament, Request $request)

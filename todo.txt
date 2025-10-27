@@ -22,10 +22,6 @@ in some cases i need to replace images with videos.
 how can we make it accepted from dashboard ?
 
 
-i want to change ui of popular tournaments section in site/home.blade.php
-make it dynamic slider with control buttons just like testimonials section.
-slider will show tournament image and tournament text name under the image
-
 
 
 check all text in the website and make sure it has translation (ar/en)

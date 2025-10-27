@@ -7,7 +7,7 @@
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
     <div>
       <h2 class="text-xl font-semibold text-white">Gallery Items</h2>
-      <p class="text-sm text-gray-400">Manage the videos displayed on the public gallery page.</p>
+      <p class="text-sm text-gray-400">Manage the media displayed on the public gallery page.</p>
     </div>
     <a
       href="{{ route('admin.gallery-items.create') }}"
@@ -30,7 +30,7 @@
         <tr>
           <th class="px-3 py-3 text-left">Order</th>
           <th class="px-3 py-3 text-left">Title (EN)</th>
-          <th class="px-3 py-3 text-left">Video Type</th>
+          <th class="px-3 py-3 text-left">Source</th>
           <th class="px-3 py-3 text-left">Published</th>
           <th class="px-3 py-3 text-right">Actions</th>
         </tr>
@@ -46,7 +46,7 @@
               >
             </td>
             <td class="px-3 py-3 text-gray-200">{{ $item->title['en'] ?? '' }}</td>
-            <td class="px-3 py-3 text-gray-400 capitalize">{{ $item->video_type }}</td>
+            <td class="px-3 py-3 text-gray-400">{{ $item->sourceLabel() }}</td>
             <td class="px-3 py-3">
               <span class="inline-flex items-center px-2 py-1 rounded text-xs {{ $item->is_published ? 'bg-green-700/70 text-white' : 'bg-neutral-700 text-gray-300' }}">
                 {{ $item->is_published ? 'Yes' : 'No' }}

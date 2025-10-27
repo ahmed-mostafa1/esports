@@ -25,6 +25,11 @@
     <div class="news-container">
       @foreach($articles as $a)
         <div class="news-card">
+          @if($a->image_path)
+            <div class="news-image-wrapper">
+              <img src="{{ $a->imageUrl() }}" alt="{{ $a->t('title', $locale) }}" class="news-image" />
+            </div>
+          @endif
           <div class="news-content">
             <p class="news-date">{{ optional($a->date)->format('F j, Y') }}</p>
             <h3 class="news-title">{{ $a->t('title', $locale) }}</h3>
@@ -33,9 +38,6 @@
             </p>
             <a class="news-btn" href="{{ route('news.show', $a->slug) }}">{{ __('Read more') }}</a>
           </div>
-          @if($a->image_path)
-            <img src="{{ $a->imageUrl() }}" alt="{{ $a->t('title', $locale) }}" />
-          @endif
         </div>
       @endforeach
     </div>

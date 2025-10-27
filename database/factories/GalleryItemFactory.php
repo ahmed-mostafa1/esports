@@ -32,7 +32,7 @@ class GalleryItemFactory extends Factory
         } elseif ($videoType === 'vimeo') {
             $videoUrl = 'https://vimeo.com/' . $this->faker->numberBetween(1000000, 999999999);
         } else {
-            $videoPath = 'content-videos/gallery/' . $this->faker->unique()->lexify('video-????') . '.mp4';
+            $videoPath = 'content-images/gallery/' . $this->faker->unique()->lexify('upload-????') . '.jpg';
         }
 
         return [

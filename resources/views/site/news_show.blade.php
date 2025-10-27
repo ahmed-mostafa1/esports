@@ -22,16 +22,22 @@
 
     <div class="news-container">
       <div class="news-card" style="grid-column:1/-1;">
-        <div class="news-content" style="width:100%;">
+        @if($article->image_path)
+          <div class="news-image-wrapper">
+            <img
+              src="{{ $article->imageUrl() }}"
+              alt="{{ $article->t('title', app()->getLocale()) }}"
+              class="news-image news-image--large"
+            />
+          </div>
+        @endif
+        <div class="news-content">
           <p class="news-date">{{ optional($article->date)->format('F j, Y') }}</p>
           <h1 class="news-title">{{ $article->t('title', app()->getLocale()) }}</h1>
           <p class="news-desc">
             {{ $article->t('description', app()->getLocale()) }}
           </p>
         </div>
-        @if($article->image_path)
-          <img src="{{ $article->imageUrl() }}" alt="{{ $article->t('title', app()->getLocale()) }}" />
-        @endif
       </div>
     </div>
   </section>
