@@ -2254,3 +2254,73 @@ html, body {
   max-width: var(--rail-width);
   contain: layout paint;       /* isolates any filter/shadow from affecting page size */
 }
+
+
+
+/* Social rail */
+.rail-content{
+
+      --bg: #050505;
+    --panel-red: #a90e14;
+    --panel-red-dark: #7b0a0f;
+    --accent: #e31b23;
+    --muted: #bdbdbd;
+    --card: #0f0f0f;
+    --container: 1200px;
+    --rail-red: #f23b33;
+    --rail-size: 56px;
+    --rail-gap: 12px;
+    --navbar-height: 72px;
+    --rail-width: 56px;
+    --rail-color: #f23b33;
+    --gap: 12px;
+    --nav-h: 92px;
+    font-family: "Cairo", sans-serif;
+    color: #fff;
+    box-sizing: border-box;
+    position: relative;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap);
+    pointer-events: auto;
+    background: rgb(221, 75, 75);
+    border-bottom-left-radius: 25px;
+    border-top-left-radius: 25px;
+      }
+
+
+/* play button */
+.play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #ffffffb5,
+    #ffffff66 60%,
+    #ffffff20 100%
+  );
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.play::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-40%, -50%);
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent #fff;
+}
+
+      .play {
+  transform: translate(-50%, -50%) scale(1.06);
+}
