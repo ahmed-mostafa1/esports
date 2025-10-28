@@ -14,7 +14,7 @@ function makeSlider(root){
     track.appendChild(first.cloneNode(true));
     track.removeChild(first);
   };
-  let auto = setInterval(step, 3500);
+  let auto = setInterval(step, 1500);
   const scrollByCards = (dir=1) => {
     const card = track.children[0];
     const w = card.getBoundingClientRect().width + 16;
@@ -22,7 +22,7 @@ function makeSlider(root){
   };
   prev && prev.addEventListener('click', () => { scrollByCards(-1); reset(); });
   next && next.addEventListener('click', () => { scrollByCards(1);  reset(); });
-  const reset = () => { clearInterval(auto); auto = setInterval(step, 3500); };
+  const reset = () => { clearInterval(auto); auto = setInterval(step, 1500); };
   root.addEventListener('mouseenter', () => clearInterval(auto));
   root.addEventListener('mouseleave', () => reset());
 }

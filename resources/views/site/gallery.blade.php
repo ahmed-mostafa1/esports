@@ -138,7 +138,7 @@
         const prevBtn = slider.querySelector('[data-slider-prev]');
         const nextBtn = slider.querySelector('[data-slider-next]');
         const slideCount = slides.length;
-        const intervalMs = Number(slider.dataset.sliderInterval || 6000);
+        const intervalMs = Number(1500);
         let currentIndex = 0;
         let autoTimer = null;
         let slideWidth = 0;
