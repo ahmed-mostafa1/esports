@@ -246,12 +246,14 @@
               'finished' => 'live--finished',
               default => 'live--closed',
             };
+            $tournamentTitle = $t->titleFor($homeLocale) ?: 'Tournament';
+            $tournamentNameClass = strlen($tournamentTitle) > 18 ? 'wrap' : '';
           @endphp
           <figure class="card-partner card-tournament">
             <div class="media">
               <img
                 src="{{ $t->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
-                alt="{{ $t->titleFor($homeLocale) ?: 'Tournament' }}"
+                alt="{{ $tournamentTitle }}"
                 loading="lazy" />
 
               <span class="live {{ $statusClass }}">{{ $status }}</span>
@@ -264,9 +266,9 @@
                 </div>
               </figcaption>
             </div>
-            <figcaption class="name">
+            <figcaption class="name {{ $tournamentNameClass }}">
               <a href="{{ route('tournaments.register', $t->slug) }}">
-                {{ $t->titleFor($homeLocale) ?: 'Tournament' }}
+                {{ $tournamentTitle }}
               </a>
             </figcaption>
           </figure>
