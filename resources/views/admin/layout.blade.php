@@ -49,6 +49,20 @@
           All Contents
         </a>
 
+        <!-- Account Settings -->
+        <a
+          href="{{ route('admin.account.edit') }}"
+          class="flex items-center gap-2 rounded-md px-3 py-2
+                 {{ request()->routeIs('admin.account.*') ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-gray-100' }}
+                 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 4v16m8-8H4" />
+          </svg>
+          Account Settings
+        </a>
+
         <!-- Divider -->
         <div class="border-t border-gray-200 my-2"></div>
         <div class="px-3 py-1">

@@ -19,6 +19,43 @@
     <ProtectWindows>False</ProtectWindows>
   </ExcelWorkbook>
 
+  <Worksheet ss:Name="Registrations">
+    <Table ss:ExpandedColumnCount="8">
+      <Row>
+        <Cell><Data ss:Type="String">Tournament</Data></Cell>
+        <Cell><Data ss:Type="String">Team Name</Data></Cell>
+        <Cell><Data ss:Type="String">Player Name</Data></Cell>
+        <Cell><Data ss:Type="String">Role</Data></Cell>
+        <Cell><Data ss:Type="String">In-Game ID</Data></Cell>
+        <Cell><Data ss:Type="String">Email</Data></Cell>
+        <Cell><Data ss:Type="String">Phone</Data></Cell>
+        <Cell><Data ss:Type="String">Age</Data></Cell>
+      </Row>
+      @forelse($allRegistrations as $registration)
+        <Row>
+          <Cell><Data ss:Type="String">{{ $registration['tournament'] }}</Data></Cell>
+          <Cell><Data ss:Type="String">{{ $registration['team_name'] ?? '' }}</Data></Cell>
+          <Cell><Data ss:Type="String">{{ $registration['player_name'] }}</Data></Cell>
+          <Cell><Data ss:Type="String">{{ $registration['role'] }}</Data></Cell>
+          <Cell><Data ss:Type="String">{{ $registration['ingame_id'] ?? '' }}</Data></Cell>
+          <Cell><Data ss:Type="String">{{ $registration['email'] ?? '' }}</Data></Cell>
+          <Cell><Data ss:Type="String">{{ $registration['phone'] ?? '' }}</Data></Cell>
+          <Cell>
+            @if(!is_null($registration['age'] ?? null))
+              <Data ss:Type="Number">{{ $registration['age'] }}</Data>
+            @else
+              <Data ss:Type="String"></Data>
+            @endif
+          </Cell>
+        </Row>
+      @empty
+        <Row>
+          <Cell ss:MergeAcross="7"><Data ss:Type="String">No registrations recorded.</Data></Cell>
+        </Row>
+      @endforelse
+    </Table>
+  </Worksheet>
+
   <Worksheet ss:Name="Singles">
     <Table ss:ExpandedColumnCount="6">
       <Row>

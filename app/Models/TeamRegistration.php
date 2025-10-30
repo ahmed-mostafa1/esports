@@ -58,14 +58,40 @@ class TeamRegistration extends Model
             return null;
         }
 
-        if (Str::startsWith($path, ['http://', 'https://'])) {
-            return $path;
+        $cleanPath = Str::of($path)
+            ->trim('/')
+            ->replace('\\', '/')
+            ->value();
+
+        if ($cleanPath === '') {
+            return null;
         }
 
-        if (Str::startsWith($path, ['storage/', '/storage/'])) {
-            return asset(ltrim($path, '/'));
+        if (Str::startsWith($cleanPath, ['http://', 'https://', '//'])) {
+            return $cleanPath;
         }
 
-        return Storage::disk('public')->url($path);
+        $normalized = ltrim($cleanPath, '/');
+
+        if (Str::startsWith($normalized, 'storage/')) {
+            return asset($normalized);
+        }
+
+        if (Str::startsWith($normalized, 'public/')) {
+            $publicPath = Str::after($normalized, 'public/');
+            if (file_exists(public_path($publicPath))) {
+                return asset($publicPath);
+            }
+        }
+
+        if (file_exists(public_path($normalized))) {
+            return asset($normalized);
+        }
+
+        if (Storage::disk('public')->exists($normalized)) {
+            return Storage::disk('public')->url($normalized);
+        }
+
+        return asset('storage/' . $normalized);
     }
 }

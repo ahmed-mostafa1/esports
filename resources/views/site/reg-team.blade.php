@@ -39,9 +39,7 @@
 
     <!-- RIGHT: avatar + form -->
     <div class="rt-right">
-      <div class="avatar">
-        <img src="{{ content_media('team_registration.avatar_image', 'img/reg-sinle.png') }}" alt="Team avatar / logo">
-      </div>
+      
 
       @if(session('status') && ! session('registration_success'))
         <div class="alert success">

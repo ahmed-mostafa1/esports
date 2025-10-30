@@ -120,19 +120,6 @@
                              class="w-full max-w-md mx-auto rounded border-4 border-green-500" />
                     </span>
                 </div>
-
-                <!-- Team Avatar Image -->
-                <div class="text-center bg-purple-700 p-6 rounded-lg border border-purple-600">
-                    <div class="mb-4 font-medium text-purple-200">Team Avatar</div>
-                    <span data-content-key="team_registration.avatar_image" 
-                          data-content-type="image"
-                          data-content-value="{{ optional($contents->get('team_registration.avatar_image'))->value ?? '{}' }}"
-                          data-image-url="{{ content_media('team_registration.avatar_image', 'img/reg-sinle.png') }}">
-                        <img src="{{ content_media('team_registration.avatar_image', 'img/reg-sinle.png') }}" 
-                             alt="Team Avatar" 
-                             class="w-40 h-40 mx-auto rounded-full border-4 border-green-500 object-cover" />
-                    </span>
-                </div>
             </div>
         </section>
 

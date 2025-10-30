@@ -46,10 +46,56 @@ class TournamentAdminController extends Controller
             'teamRegistrations' => fn ($query) => $query->with('members')->orderBy('team_name'),
         ]);
 
+        $tournamentTitle = $tournament->titleFor(app()->getLocale()) ?: $tournament->slug;
+
+        $singleRows = $tournament->singleRegistrations->map(function (SingleRegistration $registration) use ($tournamentTitle) {
+            return [
+                'tournament' => $tournamentTitle,
+                'team_name' => null,
+                'player_name' => $registration->player_name,
+                'role' => 'Single',
+                'ingame_id' => $registration->ingame_id,
+                'email' => $registration->email,
+                'phone' => $registration->phone,
+                'age' => $registration->age,
+            ];
+        });
+
+        $teamRows = $tournament->teamRegistrations->flatMap(function (TeamRegistration $team) use ($tournamentTitle) {
+            $rows = [[
+                'tournament' => $tournamentTitle,
+                'team_name' => $team->team_name,
+                'player_name' => $team->captain_name,
+                'role' => 'Captain',
+                'ingame_id' => $team->game_id,
+                'email' => $team->captain_email,
+                'phone' => $team->captain_phone,
+                'age' => null,
+            ]];
+
+            foreach ($team->members as $member) {
+                $rows[] = [
+                    'tournament' => $tournamentTitle,
+                    'team_name' => $team->team_name,
+                    'player_name' => $member->member_name,
+                    'role' => 'Member',
+                    'ingame_id' => $member->member_ingame_id,
+                    'email' => null,
+                    'phone' => null,
+                    'age' => null,
+                ];
+            }
+
+            return $rows;
+        });
+
+        $allRegistrations = $singleRows->concat($teamRows)->values();
+
         $content = view('admin.tournaments.export', [
             'tournament' => $tournament,
             'singleRegistrations' => $tournament->singleRegistrations,
             'teamRegistrations' => $tournament->teamRegistrations,
+            'allRegistrations' => $allRegistrations,
         ])->render();
 
         $baseName = $tournament->titleFor(app()->getLocale()) ?: $tournament->slug;

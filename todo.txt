@@ -1,2 +1,7 @@
 
 admin@esport.com
+
+- change password
+- fix export team data
+- fix team registeration image
+- subscribe email work

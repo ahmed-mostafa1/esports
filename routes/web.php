@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\NewsArticleController;
@@ -91,6 +92,11 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::get('/contents/{key}', [ContentController::class, 'edit'])->name('contents.edit');
         Route::post('/contents/{key}', [ContentController::class, 'update'])->name('contents.update');
         Route::post('/contents/{key}/ajax', [ContentController::class, 'updateAjax'])->name('contents.update.ajax');
+
+        Route::get('/account', [AccountController::class, 'edit'])->name('account.edit');
+        Route::put('/account/email', [AccountController::class, 'updateEmail'])->name('account.email.update');
+        Route::put('/account/username', [AccountController::class, 'updateUsername'])->name('account.username.update');
+        Route::put('/account/password', [AccountController::class, 'updatePassword'])->name('account.password.update');
         
         // AJAX endpoints for content management
         Route::post('/content/update-ajax', [ContentController::class, 'updateContentAjax'])->name('content.update-ajax');

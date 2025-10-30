@@ -169,28 +169,56 @@
                   @endforeach
                 </select>
               </div>
-              <div>
-                <label class="block text-sm text-gray-300 mb-1">Single Registrations</label>
-                <select name="single_registration_ids[]" multiple class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
-                  @foreach($singleRegistrations as $registration)
-                    <option value="{{ $registration->id }}" {{ in_array($registration->id, $oldSingles, true) ? 'selected' : '' }}>
-                      {{ $registration->player_name }} ({{ $registration->ingame_id }})
-                    </option>
-                  @endforeach
-                </select>
+              <div class="col-span-1 space-y-2">
+                <label class="block text-sm text-gray-300">Single Registrations</label>
+                <div class="bg-neutral-800/60 border border-neutral-700 rounded max-h-60 overflow-y-auto divide-y divide-neutral-800">
+                  @forelse($singleRegistrations as $registration)
+                    <label class="flex items-start gap-3 px-3 py-2 text-sm text-gray-200">
+                      <input
+                        type="checkbox"
+                        name="single_registration_ids[]"
+                        value="{{ $registration->id }}"
+                        class="mt-1 h-4 w-4 rounded border-neutral-600 bg-neutral-900 text-emerald-500 focus:ring-emerald-500"
+                        {{ in_array($registration->id, $oldSingles, true) ? 'checked' : '' }}
+                      >
+                      <span>
+                        <span class="block font-medium text-white">{{ $registration->player_name }}</span>
+                        @if($registration->ingame_id)
+                          <span class="block text-xs text-gray-400">{{ $registration->ingame_id }}</span>
+                        @endif
+                      </span>
+                    </label>
+                  @empty
+                    <p class="px-3 py-2 text-xs text-gray-500">No single registrations yet.</p>
+                  @endforelse
+                </div>
               </div>
-              <div>
-                <label class="block text-sm text-gray-300 mb-1">Team Registrations</label>
-                <select name="team_registration_ids[]" multiple class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
-                  @foreach($teamRegistrations as $registration)
-                    <option value="{{ $registration->id }}" {{ in_array($registration->id, $oldTeams, true) ? 'selected' : '' }}>
-                      {{ $registration->team_name }}
-                    </option>
-                  @endforeach
-                </select>
+              <div class="col-span-1 space-y-2">
+                <label class="block text-sm text-gray-300">Team Registrations</label>
+                <div class="bg-neutral-800/60 border border-neutral-700 rounded max-h-60 overflow-y-auto divide-y divide-neutral-800">
+                  @forelse($teamRegistrations as $registration)
+                    <label class="flex items-start gap-3 px-3 py-3 text-sm text-gray-200">
+                      <input
+                        type="checkbox"
+                        name="team_registration_ids[]"
+                        value="{{ $registration->id }}"
+                        class="mt-1 h-4 w-4 rounded border-neutral-600 bg-neutral-900 text-emerald-500 focus:ring-emerald-500"
+                        {{ in_array($registration->id, $oldTeams, true) ? 'checked' : '' }}
+                      >
+                      <span>
+                        <span class="block font-medium text-white">{{ $registration->team_name }}</span>
+                        @if($registration->captain_name)
+                          <span class="block text-xs text-gray-400">Captain: {{ $registration->captain_name }}</span>
+                        @endif
+                      </span>
+                    </label>
+                  @empty
+                    <p class="px-3 py-2 text-xs text-gray-500">No team registrations yet.</p>
+                  @endforelse
+                </div>
               </div>
             </div>
-            <p class="text-xs text-gray-500">Choose the winners for this tournament. Hold Ctrl (Windows) or Cmd (Mac) to select multiple entries.</p>
+            <p class="text-xs text-gray-500">Use the checkboxes to mark the winners for this tournament. Pick the entries that match the winner type above.</p>
             <div class="flex justify-end">
               <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition">
                 Finish Tournament
