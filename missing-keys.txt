@@ -1,0 +1,101 @@
+A new verification link has been sent to the email address you provided during registration.
+A new verification link has been sent to your email address.
+All rights reserved.
+Already registered?
+Are you sure you want to delete your account?
+At least one team member is required.
+Back to Gallery
+Back to News
+Cancel
+Captain:
+Check back soon for new tournaments
+Check back soon to hear from our community.
+Check back soon to see our latest partnerships.
+Click here to re-send the verification email.
+Closed
+Confirm
+Confirm Password
+Current Password
+Date
+Date TBD
+Delete Account
+Email
+Email Password Reset Link
+Ensure your account is using a long, random password to stay secure.
+Finished
+Forbidden
+Forgot your password?
+Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
+Gallery items are coming soon. Please check back later.
+Gallery slides
+Game ID:
+Go to homepage
+Go to page :page
+Hello!
+Log Out
+Log in
+Media unavailable
+Name
+New Password
+Next
+No partners available at the moment.
+No testimonials available right now.
+No tournaments available at the moment.
+No tournaments available right now.
+Not Found
+Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
+Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
+Open
+Page Expired
+Pagination Navigation
+Partners coming soon
+Password
+Payment Required
+Please check back later for upcoming events.
+Please select at least one single registration winner.
+Please select at least one team registration winner.
+Previous
+Prize
+Prize TBD
+Profile
+Profile Information
+Read more
+Regards,
+Register
+Registration Successful
+Remember me
+Resend Verification Email
+Reset Password
+Save
+Saved.
+Select at least one winner.
+Server Error
+Service Unavailable
+Showing
+Single winner mode does not accept team selections.
+Slide :number
+Team Roster
+Team winner mode does not accept single selections.
+Thank you! Your registration has been received.
+Thank you! Your team registration has been received.
+Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\
+This is a secure area of the application. Please confirm your password before continuing.
+This tournament has already been marked as finished.
+Time
+Time TBD
+Too Many Requests
+Tournament
+Tournament marked as finished.
+Unauthorized
+Update your account's profile information and email address.
+View :title
+Whoops!
+You're logged in!
+Your email address is unverified.
+auth.failed
+auth.password
+of
+pagination.next
+pagination.previous
+results
+to

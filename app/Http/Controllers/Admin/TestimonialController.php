@@ -35,7 +35,7 @@ class TestimonialController extends Controller
 
         Testimonial::create($data);
 
-        return redirect()->route('admin.testimonials.index')->with('ok', 'Testimonial created');
+        return redirect()->route('admin.testimonials.index')->with('ok', __('Testimonial created.'));
     }
 
     public function edit(Testimonial $testimonial)
@@ -54,7 +54,7 @@ class TestimonialController extends Controller
 
         $testimonial->update($data);
 
-        return redirect()->route('admin.testimonials.index')->with('ok', 'Testimonial updated');
+        return redirect()->route('admin.testimonials.index')->with('ok', __('Testimonial updated.'));
     }
 
     public function destroy(Testimonial $testimonial)
@@ -62,7 +62,7 @@ class TestimonialController extends Controller
         $this->deleteAvatar($testimonial->avatar_path);
         $testimonial->delete();
 
-        return redirect()->route('admin.testimonials.index')->with('ok', 'Testimonial deleted');
+        return redirect()->route('admin.testimonials.index')->with('ok', __('Testimonial deleted.'));
     }
 
     public function reorder(Request $request)

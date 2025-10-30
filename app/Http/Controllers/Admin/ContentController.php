@@ -81,7 +81,7 @@ class ContentController extends Controller
         $skeletonView = "admin.skeletons.{$group}";
         if (!view()->exists($skeletonView)) {
             return redirect()->route('admin.dashboard')
-                           ->with('status', 'Skeleton view not available for this page yet.');
+                           ->with('status', __('Skeleton view not available for this page yet.'));
         }
         
         $extra = [];
@@ -192,7 +192,7 @@ class ContentController extends Controller
             $this->processMediaUpload($request, $content);
         }
         
-        return back()->with('status', 'Content updated successfully!');
+        return back()->with('status', __('Content updated successfully!'));
     }
     
     public function updateAjax(Request $request, string $key)

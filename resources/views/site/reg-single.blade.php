@@ -37,9 +37,6 @@
 
     <!-- Right: avatar + single-column form -->
     <div class="reg__right">
-      <div class="avatar">
-        <img src="{{ asset('./img/reg-sinle.png') }}" alt="Player avatar">
-      </div>
 
       @if(session('status') && ! session('registration_success'))
         <div class="alert success">

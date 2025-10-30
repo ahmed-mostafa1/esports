@@ -60,7 +60,7 @@ class GalleryItemController extends Controller
 
         return redirect()
             ->route('admin.gallery-items.index')
-            ->with('ok', 'Gallery item created');
+            ->with('ok', __('Gallery item created.'));
     }
 
     public function edit(GalleryItem $gallery_item)
@@ -109,7 +109,7 @@ class GalleryItemController extends Controller
 
         return redirect()
             ->route('admin.gallery-items.index')
-            ->with('ok', 'Gallery item updated');
+            ->with('ok', __('Gallery item updated.'));
     }
 
     public function destroy(GalleryItem $gallery_item)
@@ -120,7 +120,7 @@ class GalleryItemController extends Controller
 
         return redirect()
             ->route('admin.gallery-items.index')
-            ->with('ok', 'Gallery item deleted');
+            ->with('ok', __('Gallery item deleted.'));
     }
 
     public function reorder(Request $request)

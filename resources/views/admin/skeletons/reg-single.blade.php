@@ -112,18 +112,7 @@
                 <!-- Right: Form Content -->
                 <div class="lg:col-span-2">
                     <div class="bg-slate-700 p-6 rounded-lg border border-slate-600">
-                        <!-- Avatar Image -->
-                        <div class="text-center mb-6">
-                            <span data-content-key="single_registration.avatar_image" 
-                                  data-content-type="image"
-                                  data-content-value="{{ $contents['single_registration.avatar_image']->value ?? '{}' }}"
-                                  data-image-url="{{ content_media('single_registration.avatar_image', 'img/reg-sinle.png') }}">
-                                <img src="{{ content_media('single_registration.avatar_image', 'img/reg-sinle.png') }}" 
-                                     alt="Player Avatar" 
-                                     class="w-24 h-24 mx-auto rounded-full border-2 border-green-400" />
-                            </span>
-                        </div>
-
+                     
                         <!-- Player Information Form -->
                         <div class="space-y-6">
                             <!-- Player Name & In-Game ID Row -->

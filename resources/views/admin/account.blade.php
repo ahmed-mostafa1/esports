@@ -1,19 +1,19 @@
-@extends('admin.layout')
+﻿@extends('admin.layout')
 
-@section('title', 'Account Settings')
+@section('title', __('Account Settings'))
 
 @section('content')
 <div class="max-w-3xl space-y-6">
   <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg shadow">
     <div class="px-6 py-4 border-b border-neutral-800">
-      <h2 class="text-lg font-semibold text-white">Update Login Email</h2>
-      <p class="text-sm text-gray-400">Keep your contact email current to make sure you can always sign in.</p>
+      <h2 class="text-lg font-semibold text-white">{{ __('Update Login Email') }}</h2>
+      <p class="text-sm text-gray-400">{{ __('Keep your contact email current to make sure you can always sign in.') }}</p>
     </div>
     <form method="POST" action="{{ route('admin.account.email.update') }}" class="px-6 py-6 space-y-4">
       @csrf
       @method('PUT')
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-300">Email address</label>
+        <label for="email" class="block text-sm font-medium text-gray-300">{{ __('Email address') }}</label>
         <input
           id="email"
           name="email"
@@ -29,7 +29,7 @@
       </div>
 
       <div>
-        <label for="email_current_password" class="block text-sm font-medium text-gray-300">Current password</label>
+        <label for="email_current_password" class="block text-sm font-medium text-gray-300">{{ __('Current password') }}</label>
         <input
           id="email_current_password"
           name="current_password"
@@ -48,7 +48,7 @@
           type="submit"
           class="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition"
         >
-          Update email
+          {{ __('Update Email') }}
         </button>
       </div>
     </form>
@@ -56,14 +56,14 @@
 
   <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg shadow">
     <div class="px-6 py-4 border-b border-neutral-800">
-      <h2 class="text-lg font-semibold text-white">Update Username</h2>
-      <p class="text-sm text-gray-400">Change how your name appears across the admin dashboard.</p>
+      <h2 class="text-lg font-semibold text-white">{{ __('Update Username') }}</h2>
+      <p class="text-sm text-gray-400">{{ __('Change how your name appears across the admin dashboard.') }}</p>
     </div>
     <form method="POST" action="{{ route('admin.account.username.update') }}" class="px-6 py-6 space-y-4">
       @csrf
       @method('PUT')
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-300">Display name</label>
+        <label for="name" class="block text-sm font-medium text-gray-300">{{ __('Display name') }}</label>
         <input
           id="name"
           name="name"
@@ -81,7 +81,7 @@
           type="submit"
           class="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition"
         >
-          Save changes
+          {{ __('Save changes') }}
         </button>
       </div>
     </form>
@@ -89,14 +89,14 @@
 
   <div class="bg-neutral-900/50 border border-neutral-800 rounded-lg shadow">
     <div class="px-6 py-4 border-b border-neutral-800">
-      <h2 class="text-lg font-semibold text-white">Update Password</h2>
-      <p class="text-sm text-gray-400">Use a strong password that you have not used elsewhere.</p>
+      <h2 class="text-lg font-semibold text-white">{{ __('Update Password') }}</h2>
+      <p class="text-sm text-gray-400">{{ __('Use a strong password that you have not used elsewhere.') }}</p>
     </div>
     <form method="POST" action="{{ route('admin.account.password.update') }}" class="px-6 py-6 space-y-4">
       @csrf
       @method('PUT')
       <div>
-        <label for="current_password" class="block text-sm font-medium text-gray-300">Current password</label>
+        <label for="current_password" class="block text-sm font-medium text-gray-300">{{ __('Current password') }}</label>
         <input
           id="current_password"
           name="current_password"
@@ -112,7 +112,7 @@
 
       <div class="grid gap-4 md:grid-cols-2">
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-300">New password</label>
+          <label for="password" class="block text-sm font-medium text-gray-300">{{ __('New password') }}</label>
           <input
             id="password"
             name="password"
@@ -127,7 +127,7 @@
         </div>
 
         <div>
-          <label for="password_confirmation" class="block text-sm font-medium text-gray-300">Confirm new password</label>
+          <label for="password_confirmation" class="block text-sm font-medium text-gray-300">{{ __('Confirm new password') }}</label>
           <input
             id="password_confirmation"
             name="password_confirmation"
@@ -144,13 +144,13 @@
           type="submit"
           class="inline-flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition"
         >
-          Update password
+          {{ __('Update Password') }}
         </button>
       </div>
 
       @if($errors->updatePassword->any())
         <p class="text-xs text-gray-400">
-          Make sure your new password meets the minimum requirements and matches the confirmation field.
+          {{ __('Make sure your new password meets the minimum requirements and matches the confirmation field.') }}
         </p>
       @endif
     </form>

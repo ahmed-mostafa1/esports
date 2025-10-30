@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $item->t('title', app()->getLocale()) ?: 'Gallery Item')
+@section('title', $item->t('title', app()->getLocale()) ?: __('Gallery Item'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -14,7 +14,7 @@
             <button
                 class="tab-btn active"
                 style="font-size: 20px; border-radius: 10px">
-                E-Sports
+                {{ content('gallery.header.tab_title', __('E-Sports')) }}
             </button>
         </div>
     </div>

@@ -16,7 +16,7 @@
             <button
                 class="tab-btn active"
                 style="font-size: 20px; border-radius: 10px">
-                E-Sports
+                {{ content('gallery.header.tab_title', __('E-Sports')) }}
             </button>
         </div>
     </div>

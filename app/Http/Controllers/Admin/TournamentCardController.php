@@ -42,7 +42,7 @@ class TournamentCardController extends Controller
 
         return redirect()
             ->route('admin.tournament-cards.index')
-            ->with('ok', 'Card created');
+            ->with('ok', __('Card created.'));
     }
 
     public function edit(TournamentCard $tournament_card)
@@ -68,7 +68,7 @@ class TournamentCardController extends Controller
 
         return redirect()
             ->route('admin.tournament-cards.index')
-            ->with('ok', 'Card updated');
+            ->with('ok', __('Card updated.'));
     }
 
     public function destroy(TournamentCard $tournament_card)
@@ -78,7 +78,7 @@ class TournamentCardController extends Controller
 
         return redirect()
             ->route('admin.tournament-cards.index')
-            ->with('ok', 'Card deleted');
+            ->with('ok', __('Card deleted.'));
     }
 
     public function reorder(Request $request)

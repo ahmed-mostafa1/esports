@@ -33,21 +33,21 @@ class PartnerController extends Controller
         if ($data['media_type'] === 'image') {
             if (!$request->hasFile('image')) {
                 throw ValidationException::withMessages([
-                    'image' => 'An image file is required when media type is image.',
+                    'image' => __('An image file is required when media type is image.'),
                 ]);
             }
             $data['image_path'] = $this->storeImage($request->file('image'));
         } else {
             if (!$data['video_url']) {
                 throw ValidationException::withMessages([
-                    'video_url' => 'A video URL is required when media type is video.',
+                    'video_url' => __('A video URL is required when media type is video.'),
                 ]);
             }
         }
 
         Partner::create($data);
 
-        return redirect()->route('admin.partners.index')->with('ok', 'Partner created');
+        return redirect()->route('admin.partners.index')->with('ok', __('Partner created.'));
     }
 
     public function edit(Partner $partner)
@@ -65,14 +65,14 @@ class PartnerController extends Controller
                 $data['image_path'] = $this->storeImage($request->file('image'));
             } elseif (!$partner->image_path) {
                 throw ValidationException::withMessages([
-                    'image' => 'An image file is required when media type is image.',
+                    'image' => __('An image file is required when media type is image.'),
                 ]);
             }
             $data['video_url'] = null;
         } else {
             if (!$data['video_url']) {
                 throw ValidationException::withMessages([
-                    'video_url' => 'A valid video URL is required when media type is video.',
+                    'video_url' => __('A valid video URL is required when media type is video.'),
                 ]);
             }
             if ($partner->image_path) {
@@ -83,7 +83,7 @@ class PartnerController extends Controller
 
         $partner->update($data);
 
-        return redirect()->route('admin.partners.index')->with('ok', 'Partner updated');
+        return redirect()->route('admin.partners.index')->with('ok', __('Partner updated.'));
     }
 
     public function destroy(Partner $partner)
@@ -91,7 +91,7 @@ class PartnerController extends Controller
         $this->deleteImage($partner->image_path);
         $partner->delete();
 
-        return redirect()->route('admin.partners.index')->with('ok', 'Partner deleted');
+        return redirect()->route('admin.partners.index')->with('ok', __('Partner deleted.'));
     }
 
     public function reorder(Request $request)

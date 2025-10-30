@@ -1,0 +1,185 @@
+A new verification link has been sent to the email address you provided during registration.
+A new verification link has been sent to your email address.
+A valid video URL is required when media type is video.
+A video URL is required when media type is video.
+About Page
+About Page Editor
+Account Settings
+Admin
+All Contents
+All rights reserved.
+Already registered?
+An image file is required when media type is image.
+Are you sure you want to delete your account?
+Article created.
+Article deleted.
+Article updated.
+At least one team member is required.
+Available editors
+Back to Dashboard
+Back to Gallery
+Back to News
+Cancel
+Captain:
+Card created.
+Card deleted.
+Card updated.
+Change how your name appears across the admin dashboard.
+Check back soon for new tournaments
+Check back soon to hear from our community.
+Check back soon to see our latest partnerships.
+Click here to re-send the verification email.
+Closed
+Complete Skeleton Editor Suite
+Confirm
+Confirm Password
+Confirm new password
+Content updated successfully!
+Current Password
+Current password
+Custom skeleton editors
+Custom skeleton editors include comprehensive form sections with real-time editing!
+Dashboard
+Date
+Date TBD
+Delete Account
+Display name
+Edit
+Edit Reg-Single Page
+Edit Reg-Teams Page
+Editor
+Email
+Email Password Reset Link
+Email address
+Email address is unchanged.
+Email updated successfully.
+Ensure your account is using a long, random password to stay secure.
+Esports Admin
+Finished
+Forbidden
+Forgot your password?
+Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.
+Gallery Page
+Gallery Page Editor
+Gallery item created.
+Gallery item deleted.
+Gallery item updated.
+Gallery items are coming soon. Please check back later.
+Gallery slides
+Game ID:
+Go to homepage
+Go to page :page
+Hello!
+Home Page
+Home Page Editor
+Jump straight into frequent management areas
+Keep your contact email current to make sure you can always sign in.
+Latest content modifications
+Log Out
+Log in
+Main Website Pages
+Make sure your new password meets the minimum requirements and matches the confirmation field.
+Manage Testimonials
+Management
+Media unavailable
+Name
+New Password
+New password
+News Page Editor
+Next
+No content edits yet
+No partners available at the moment.
+No testimonials available right now.
+No tournaments available at the moment.
+No tournaments available right now.
+Not Found
+Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.
+Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.
+Open
+Open Tournaments
+Page Expired
+Pages
+Pagination Navigation
+Partner created.
+Partner deleted.
+Partner updated.
+Partners
+Partners Page Editor
+Partners coming soon
+Password
+Password updated successfully.
+Password updated.
+Payment Required
+Please check back later for upcoming events.
+Please select at least one single registration winner.
+Please select at least one team registration winner.
+Previous
+Prize
+Prize TBD
+Profile
+Profile Information
+Profile updated.
+Quick Modules
+Read more
+Recent Edits
+Regards,
+Register
+Registration Successful
+Remember me
+Resend Verification Email
+Reset Password
+Save
+Save changes
+Saved.
+Select at least one winner.
+Server Error
+Service Unavailable
+Services
+Services Page Editor
+Showing
+Single winner mode does not accept team selections.
+Skeleton view not available for this page yet.
+Slide :number
+Standard skeleton editors
+Start editing content to see recent changes here.
+Team Roster
+Team winner mode does not accept single selections.
+Testimonial created.
+Testimonial deleted.
+Testimonial updated.
+Thank you! Your registration has been received.
+Thank you! Your team registration has been received.
+Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\
+This is a secure area of the application. Please confirm your password before continuing.
+This tournament has already been marked as finished.
+Time
+Time TBD
+Tip
+Too Many Requests
+Tournament
+Tournament Cards
+Tournament marked as finished.
+Tournaments
+Tournaments Page Editor
+Unauthorized
+Update Email
+Update Login Email
+Update Password
+Update Username
+Update your account's profile information and email address.
+Use a strong password that you have not used elsewhere.
+Username updated successfully.
+Verification link sent.
+View :title
+View all content →
+Visual page-based content editing - ALL PAGES AVAILABLE
+Whoops!
+You're logged in!
+Your email address is unverified.
+auth.failed
+auth.password
+of
+pagination.next
+pagination.previous
+results
+to

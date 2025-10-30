@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Services')
+@section('title', __('Services'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -14,83 +14,190 @@
       <div class="right-panel">
         <div class="form-header" style=" margin-bottom: 50px;">
           <button
+            id="services-title"
             class="tab-btn active"
             style="font-size: 20px; border-radius: 10px;"
           >
-            {{ content('services.header.title', 'Our Services') }}
+            {{ content('services.header.title', __('Our Services')) }}
           </button>
         </div>
       </div>
 
       @php
+          $locale = app()->getLocale();
+
           $serviceCards = [
               [
                   'icon_key' => 'services.card1.icon',
                   'title_key' => 'services.card1.title',
-                  'fallback_title' => 'Technology & Platform Development',
+                  'fallbacks' => [
+                      'en' => 'Technology & Platform Development',
+                      'ar' => \Illuminate\Support\Facades\Lang::get('Technology & Platform Development', [], 'ar'),
+                  ],
                   'items' => [
-                      'services.card1.item1' => 'Custom tournament platforms and registration portals',
-                      'services.card1.item2' => 'Score tracking dashboards and live updates',
-                      'services.card1.item3' => 'Integration with Discord, Twitch, and other gaming tools',
-                      'services.card1.item4' => 'Mobile-first responsive design',
+                      'services.card1.item1' => [
+                          'en' => 'Custom tournament platforms and registration portals',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Custom tournament platforms and registration portals', [], 'ar'),
+                      ],
+                      'services.card1.item2' => [
+                          'en' => 'Score tracking dashboards and live updates',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Score tracking dashboards and live updates', [], 'ar'),
+                      ],
+                      'services.card1.item3' => [
+                          'en' => 'Integration with Discord, Twitch, and other gaming tools',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Integration with Discord, Twitch, and other gaming tools', [], 'ar'),
+                      ],
+                      'services.card1.item4' => [
+                          'en' => 'Mobile-first responsive design',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Mobile-first responsive design', [], 'ar'),
+                      ],
                   ],
               ],
               [
                   'icon_key' => 'services.card2.icon',
                   'title_key' => 'services.card2.title',
-                  'fallback_title' => 'Event Management & Production',
+                  'fallbacks' => [
+                      'en' => 'Event Management & Production',
+                      'ar' => \Illuminate\Support\Facades\Lang::get('Event Management & Production', [], 'ar'),
+                  ],
                   'items' => [
-                      'services.card2.item1' => 'Tournament planning and execution',
-                      'services.card2.item2' => 'Live streaming and broadcast services',
-                      'services.card2.item3' => 'Professional commentary and analysis',
-                      'services.card2.item4' => 'Venue coordination and logistics',
+                      'services.card2.item1' => [
+                          'en' => 'Tournament planning and execution',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Tournament planning and execution', [], 'ar'),
+                      ],
+                      'services.card2.item2' => [
+                          'en' => 'Live streaming and broadcast services',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Live streaming and broadcast services', [], 'ar'),
+                      ],
+                      'services.card2.item3' => [
+                          'en' => 'Professional commentary and analysis',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Professional commentary and analysis', [], 'ar'),
+                      ],
+                      'services.card2.item4' => [
+                          'en' => 'Venue coordination and logistics',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Venue coordination and logistics', [], 'ar'),
+                      ],
                   ],
               ],
               [
                   'icon_key' => 'services.card3.icon',
                   'title_key' => 'services.card3.title',
-                  'fallback_title' => 'Community Building & Engagement',
+                  'fallbacks' => [
+                      'en' => 'Community Building & Engagement',
+                      'ar' => \Illuminate\Support\Facades\Lang::get('Community Building & Engagement', [], 'ar'),
+                  ],
                   'items' => [
-                      'services.card3.item1' => 'Discord server setup and management',
-                      'services.card3.item2' => 'Social media strategy and content creation',
-                      'services.card3.item3' => 'Player networking and team formation',
-                      'services.card3.item4' => 'Regular community events and activities',
+                      'services.card3.item1' => [
+                          'en' => 'Discord server setup and management',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Discord server setup and management', [], 'ar'),
+                      ],
+                      'services.card3.item2' => [
+                          'en' => 'Social media strategy and content creation',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Social media strategy and content creation', [], 'ar'),
+                      ],
+                      'services.card3.item3' => [
+                          'en' => 'Player networking and team formation',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Player networking and team formation', [], 'ar'),
+                      ],
+                      'services.card3.item4' => [
+                          'en' => 'Regular community events and activities',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Regular community events and activities', [], 'ar'),
+                      ],
                   ],
               ],
               [
                   'icon_key' => 'services.card4.icon',
                   'title_key' => 'services.card4.title',
-                  'fallback_title' => 'Training & Coaching Services',
+                  'fallbacks' => [
+                      'en' => 'Training & Coaching Services',
+                      'ar' => \Illuminate\Support\Facades\Lang::get('Training & Coaching Services', [], 'ar'),
+                  ],
                   'items' => [
-                      'services.card4.item1' => 'One-on-one coaching sessions',
-                      'services.card4.item2' => 'Team strategy development',
-                      'services.card4.item3' => 'Performance analysis and improvement',
-                      'services.card4.item4' => 'Mental health and wellness support',
+                      'services.card4.item1' => [
+                          'en' => 'One-on-one coaching sessions',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('One-on-one coaching sessions', [], 'ar'),
+                      ],
+                      'services.card4.item2' => [
+                          'en' => 'Team strategy development',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Team strategy development', [], 'ar'),
+                      ],
+                      'services.card4.item3' => [
+                          'en' => 'Performance analysis and improvement',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Performance analysis and improvement', [], 'ar'),
+                      ],
+                      'services.card4.item4' => [
+                          'en' => 'Mental health and wellness support',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Mental health and wellness support', [], 'ar'),
+                      ],
                   ],
               ],
               [
                   'icon_key' => 'services.card5.icon',
                   'title_key' => 'services.card5.title',
-                  'fallback_title' => 'Broadcasting & Media Production',
+                  'fallbacks' => [
+                      'en' => 'Broadcasting & Media Production',
+                      'ar' => \Illuminate\Support\Facades\Lang::get('Broadcasting & Media Production', [], 'ar'),
+                  ],
                   'items' => [
-                      'services.card5.item1' => 'Multi-platform streaming setup',
-                      'services.card5.item2' => 'Professional video production',
-                      'services.card5.item3' => 'Graphics and overlay design',
-                      'services.card5.item4' => 'Post-event highlight reels',
+                      'services.card5.item1' => [
+                          'en' => 'Multi-platform streaming setup',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Multi-platform streaming setup', [], 'ar'),
+                      ],
+                      'services.card5.item2' => [
+                          'en' => 'Professional video production',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Professional video production', [], 'ar'),
+                      ],
+                      'services.card5.item3' => [
+                          'en' => 'Graphics and overlay design',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Graphics and overlay design', [], 'ar'),
+                      ],
+                      'services.card5.item4' => [
+                          'en' => 'Post-event highlight reels',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Post-event highlight reels', [], 'ar'),
+                      ],
                   ],
               ],
               [
                   'icon_key' => 'services.card6.icon',
                   'title_key' => 'services.card6.title',
-                  'fallback_title' => 'Sponsorship & Partnership',
+                  'fallbacks' => [
+                      'en' => 'Sponsorship & Partnership',
+                      'ar' => \Illuminate\Support\Facades\Lang::get('Sponsorship & Partnership', [], 'ar'),
+                  ],
                   'items' => [
-                      'services.card6.item1' => 'Brand partnership development',
-                      'services.card6.item2' => 'Sponsorship activation strategies',
-                      'services.card6.item3' => 'Marketing campaign execution',
-                      'services.card6.item4' => 'ROI tracking and reporting',
+                      'services.card6.item1' => [
+                          'en' => 'Brand partnership development',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Brand partnership development', [], 'ar'),
+                      ],
+                      'services.card6.item2' => [
+                          'en' => 'Sponsorship activation strategies',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Sponsorship activation strategies', [], 'ar'),
+                      ],
+                      'services.card6.item3' => [
+                          'en' => 'Marketing campaign execution',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('Marketing campaign execution', [], 'ar'),
+                      ],
+                      'services.card6.item4' => [
+                          'en' => 'ROI tracking and reporting',
+                          'ar' => \Illuminate\Support\Facades\Lang::get('ROI tracking and reporting', [], 'ar'),
+                      ],
                   ],
               ],
           ];
+
+          $resolveContent = function (string $key, array $fallbacks) use ($locale) {
+              $fallbackEn = $fallbacks['en'] ?? '';
+              $value = content($key, $fallbackEn);
+
+              if ($locale === 'ar') {
+                  $fallbackAr = $fallbacks['ar'] ?? $fallbackEn;
+                  if (trim($value) === trim($fallbackEn)) {
+                      return $fallbackAr;
+                  }
+              }
+
+              return $value;
+          };
       @endphp
 
       <!-- grid -->
@@ -102,18 +209,18 @@
                 <span class="svc-card__puzzle" aria-hidden="true">
                   <img
                     src="{{ content_media($card['icon_key'], 'img/services-icon.png') }}"
-                    alt="{{ content($card['title_key'], $card['fallback_title']) }}"
+                    alt="{{ $resolveContent($card['title_key'], $card['fallbacks']) }}"
                   />
                 </span>
                 <span class="svc-card__label">
-                  {{ content($card['title_key'], $card['fallback_title']) }}
+                  {{ $resolveContent($card['title_key'], $card['fallbacks']) }}
                 </span>
               </div>
 
               <div class="svc-card__body">
                 <ul class="svc-list">
-                  @foreach($card['items'] as $itemKey => $fallback)
-                    <li>{{ content($itemKey, $fallback) }}</li>
+                  @foreach($card['items'] as $itemKey => $fallbacks)
+                    <li>{{ $resolveContent($itemKey, $fallbacks) }}</li>
                   @endforeach
                 </ul>
               </div>
@@ -121,32 +228,7 @@
           </li>
         @endforeach
       </ul>
-
-      <!-- pagination / controls -->
-      <div class="services__footer">
-        <div class="pager" aria-label="pagination">
-          <button
-            class="dot"
-            aria-label="slide 1 (current)"
-            aria-current="true"
-          ></button>
-          <button class="dot" aria-label="slide 2"></button>
-          <button class="dot" aria-label="slide 3"></button>
-          <button class="dot" aria-label="slide 4"></button>
-        </div>
-
-        <div class="nav">
-          <button class="nav__btn nav__btn--prev" aria-label="Previous">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
-          </button>
-          <button class="nav__btn nav__btn--next" aria-label="Next">
-            <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" /></svg>
-          </button>
-        </div>
-      </div>
     </section>
-
-
 @endsection
 @push('scripts')
 @vite('../../../public/js/script.js')

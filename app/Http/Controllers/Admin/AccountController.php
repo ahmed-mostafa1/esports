@@ -35,7 +35,7 @@ class AccountController extends Controller
             'name' => $validated['name'],
         ])->save();
 
-        return back()->with('status', 'Username updated successfully.');
+        return back()->with('status', __('Username updated successfully.'));
     }
 
     /**
@@ -57,14 +57,14 @@ class AccountController extends Controller
         ]);
 
         if ($validated['email'] === $user->email) {
-            return back()->with('status', 'Email address is unchanged.');
+            return back()->with('status', __('Email address is unchanged.'));
         }
 
         $user->forceFill([
             'email' => strtolower($validated['email']),
         ])->save();
 
-        return back()->with('status', 'Email updated successfully.');
+        return back()->with('status', __('Email updated successfully.'));
     }
 
     /**
@@ -84,6 +84,6 @@ class AccountController extends Controller
         $request->session()->put('password_hash_web', $request->user()->getAuthPassword());
         $request->session()->regenerate();
 
-        return back()->with('status', 'Password updated successfully.');
+        return back()->with('status', __('Password updated successfully.'));
     }
 }

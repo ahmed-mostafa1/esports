@@ -51,7 +51,7 @@ class NewsArticleController extends Controller
 
         return redirect()
             ->route('admin.news-articles.index')
-            ->with('ok', 'Article created');
+            ->with('ok', __('Article created.'));
     }
 
     public function edit(NewsArticle $news_article)
@@ -85,7 +85,7 @@ class NewsArticleController extends Controller
 
         return redirect()
             ->route('admin.news-articles.index')
-            ->with('ok', 'Article updated');
+            ->with('ok', __('Article updated.'));
     }
 
     public function destroy(NewsArticle $news_article)
@@ -95,7 +95,7 @@ class NewsArticleController extends Controller
 
         return redirect()
             ->route('admin.news-articles.index')
-            ->with('ok', 'Article deleted');
+            ->with('ok', __('Article deleted.'));
     }
 
     public function reorder(Request $request)

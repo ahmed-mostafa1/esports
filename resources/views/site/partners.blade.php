@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Our Partners')
+@section('title', __('Our Partners'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
@@ -67,18 +67,21 @@
 
   <!-- pager + nav -->
   <div class="partners__controls">
-    <div class="dots" role="tablist" aria-label="Partners slides">
-      <button class="dot is-active" aria-current="true" aria-label="Slide 1"></button>
-      <button class="dot" aria-label="Slide 2"></button>
-      <button class="dot" aria-label="Slide 3"></button>
-      <button class="dot" aria-label="Slide 4"></button>
+    <div class="dots" role="tablist" aria-label="{{ __('Partners slides') }}">
+      @for($i = 1; $i <= 4; $i++)
+        <button
+          class="dot{{ $i === 1 ? ' is-active' : '' }}"
+          @if($i === 1) aria-current="true" @endif
+          aria-label="{{ __('Slide :number', ['number' => $i]) }}"
+        ></button>
+      @endfor
     </div>
 
     <div class="nav">
-      <button class="nav__btn nav__btn--prev" aria-label="Previous">
+      <button class="nav__btn nav__btn--prev" aria-label="{{ __('Previous') }}">
         <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <button class="nav__btn nav__btn--next" aria-label="Next">
+      <button class="nav__btn nav__btn--next" aria-label="{{ __('Next') }}">
         <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
       </button>
     </div>
