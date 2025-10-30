@@ -40,9 +40,14 @@
             </div>
             <a
                 href="{{ route('gallery') }}"
-                class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold transition"
+                class="g-back-btn"
             >
-                Back to gallery
+                <span class="g-back-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                </span>
+                <span>{{ __('Back to Gallery') }}</span>
             </a>
         </div>
 </section>

@@ -21,7 +21,7 @@
     </h2>
 
     <div class="news-container">
-      <div class="news-card" style="grid-column:1/-1;">
+      <div class="news-card news-card--detailed" style="grid-column:1/-1;">
         @if($article->image_path)
           <div class="news-image-wrapper">
             <img
@@ -37,6 +37,9 @@
           <p class="news-desc">
             {{ $article->t('description', app()->getLocale()) }}
           </p>
+          <a class="news-btn" href="{{ route('news') }}" style="margin-top: 16px;">
+            {{ __('Back to News') }}
+          </a>
         </div>
       </div>
     </div>

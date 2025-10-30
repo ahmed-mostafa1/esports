@@ -7,14 +7,14 @@
 @endpush
 
 @section('content')
-  <section class="winner-page" style="padding:40px 0;">
+  <section class="winner-page" style="padding:40px 0; width:80%; margin:0 auto;">
     <div class="text-center mb-8">
       <button class="tab-btn active" style="font-size: 25px; padding: 10px 40px; border-radius: 5px !important;">
         {{ content('winners.header.main_title', 'E-Sports') }}
       </button>
     </div>
 
-    <div class="container" style="max-width:960px; margin:0 auto;">
+    <div class="container" style=" margin:auto;">
       <div style="display:flex;justify-content:flex-start;margin-bottom:24px;">
         <button class="secondary-btn" style="font-size: 22px; padding: 10px 30px; border-radius: 5px !important;">
           {{ content('winners.header.section_title', 'Winners') }}
@@ -58,7 +58,7 @@
           @endphp
 
           @if($singleEntries->isNotEmpty())
-            <section style="background:#1f2937; padding:24px; border-radius:12px; text-align:center;">
+            <section style="background:#1f2937; width:80%; padding:24px; border-radius:12px; text-align:center;">
               <h2 style="font-size:20px; font-weight:700; margin-bottom:12px;">
                 {{ content('winners.single.label', 'Winner (Single)') }}
               </h2>
@@ -76,7 +76,7 @@
           @endif
 
           @if($teamEntries->isNotEmpty())
-            <section style="background:#1f2937; padding:24px; border-radius:12px; width:90%; margin:0 auto; text-align:center;">
+            <section style="background:#1f2937; width:80%; padding:24px; border-radius:12px; width:90%; margin:0 auto; text-align:center;">
               <h2 style="font-size:20px; font-weight:700; margin-bottom:12px;">
                 {{ content('winners.team.label', 'Winner (Team)') }}
               </h2>
