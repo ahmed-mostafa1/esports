@@ -52,9 +52,6 @@
             <div class="checkbox-group">
               <label><input type="checkbox" name="remember" /> {{ content('auth.login.remember_me', 'Remember me') }}</label>
             </div>
-            <div class="forgot-password-link">
-              <a href="{{ route('password.request') }}" class="forgot-password">{{ content('auth.login.forgot_password', 'Forgot Password?') }}</a>
-            </div>
           </div>
           <button type="submit" class="btn-submit">{{ content('auth.login.button', 'Log in') }}</button>
         </form>

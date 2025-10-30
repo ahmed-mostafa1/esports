@@ -14,7 +14,7 @@
             <button
                 class="tab-btn active"
                 style="font-size: 20px; border-radius: 10px">
-                {{ content('gallery.header.tab_title', __('E-Sports')) }}
+                {{ content('gallery.header.tab_title', __('Gallery')) }}
             </button>
         </div>
     </div>

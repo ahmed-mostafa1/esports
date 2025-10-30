@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Single Registeration')
+@section('title', __('Single Registration'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/reg-single.css') }}" />
@@ -16,7 +16,7 @@
           class="tab-btn active"
           style="font-size: 20px; border-radius: 10px;"
         >
-          E-Sports
+          {{ content('single_registration.header.title', __('E-Sports')) }}
         </button>
       </div>
     </div>
@@ -25,13 +25,13 @@
     <!-- Left: tabs + Phoenix -->
     <aside class="reg__left">
       <div class="tabs">
-        <span class="tab tab--gray">Tournament Registrations</span>
-        <span class="tab tab--red">Register – now</span>
-        <span class="tab tab--gray tab--sm">Single</span>
+        <span class="tab tab--gray">{{ content('single_registration.tabs.main', __('Tournament Registrations')) }}</span>
+        <span class="tab tab--red">{{ content('single_registration.tabs.cta', __('Register now')) }}</span>
+        <span class="tab tab--gray tab--sm">{{ content('single_registration.tabs.single', __('Single')) }}</span>
       </div>
 
       <figure class="phoenix">
-        <img src="{{ asset('./img/Phoenix.png') }}" alt="Phoenix character card">
+        <img src="{{ asset('./img/Phoenix.png') }}" alt="{{ content('single_registration.hero.alt', __('Phoenix character card')) }}">
       </figure>
     </aside>
 
@@ -78,37 +78,37 @@
 
         <div class="form-row">
           <div class="field">
-            <label for="playerName">Player Name</label>
-            <input id="playerName" name="player_name" type="text" placeholder="Enter your name" value="{{ old('player_name') }}" required>
+            <label for="playerName">{{ content('single_registration.form.player_name', __('Player Name')) }}</label>
+            <input id="playerName" name="player_name" type="text" placeholder="{{ content('single_registration.form.player_placeholder', __('Enter your name')) }}" value="{{ old('player_name') }}" required>
           </div>
 
           <div class="field right-field">
-            <label for="ingameId">In-Game ID</label>
-            <input id="ingameId" name="ingame_id" type="text" placeholder="Enter your in-game ID" value="{{ old('ingame_id') }}" required>
+            <label for="ingameId">{{ content('single_registration.form.ingame', __('In-Game ID')) }}</label>
+            <input id="ingameId" name="ingame_id" type="text" placeholder="{{ content('single_registration.form.ingame_placeholder', __('Enter your in-game ID')) }}" value="{{ old('ingame_id') }}" required>
           </div>
         </div>
 
         <div class="form-row">
           <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="Enter your email" value="{{ old('email') }}">
+            <label for="email">{{ content('single_registration.form.email', __('Email')) }}</label>
+            <input id="email" name="email" type="email" placeholder="{{ content('single_registration.form.email_placeholder', __('Enter your email')) }}" value="{{ old('email') }}">
           </div>
 
           <div class="field right-field">
-            <label for="phone">Phone Number</label>
-            <input id="phone" name="phone" type="tel" placeholder="Enter your phone number" value="{{ old('phone') }}">
+            <label for="phone">{{ content('single_registration.form.phone', __('Phone Number')) }}</label>
+            <input id="phone" name="phone" type="tel" placeholder="{{ content('single_registration.form.phone_placeholder', __('Enter your phone number')) }}" value="{{ old('phone') }}">
           </div>
         </div>
 
         <div class="form-row">
           <div class="field">
-            <label for="age">Player Age</label>
-            <input id="age" name="age" type="number" inputmode="numeric" placeholder="Enter your age" min="1" value="{{ old('age') }}">
+            <label for="age">{{ content('single_registration.form.age', __('Player Age')) }}</label>
+            <input id="age" name="age" type="number" inputmode="numeric" placeholder="{{ content('single_registration.form.age_placeholder', __('Enter your age')) }}" min="1" value="{{ old('age') }}">
           </div>
         </div>
 
         <div class="form-actions">
-          <button class="btn-register" type="submit">Register</button>
+          <button class="btn-register" type="submit">{{ content('single_registration.form.submit', __('Register')) }}</button>
         </div>
       </form>
     </div>
@@ -120,3 +120,7 @@
 @push('scripts')
 @vite('../../../public/js/script.js')
 @endpush
+
+
+
+

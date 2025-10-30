@@ -448,7 +448,7 @@
 <section class="wwa-section" data-reveal="fade-left" data-reveal-delay="150">
   <div class="wwa-container">
     <!-- Heading -->
-    <h2 class="wwa-title">WHO WE ARE ?</h2>
+    <h2 class="wwa-title">{{ __('Who We Are?') }}</h2>
     <div class="wwa-swoosh" aria-hidden="true">
       <svg viewBox="0 0 260 24" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -463,36 +463,23 @@
     <!-- 3 columns -->
     <div class="wwa-grid">
       <div class="wwa-col">
-        <h3 class="wwa-h3">Our Story</h3>
+        <h3 class="wwa-h3">{{ __('Our Story') }}</h3>
         <p class="wwa-p">
-          In early winter 2020, amidst a raging pandemic, FOUR04 ESPORTS
-          was born. Our goal is to reinvent the region’s droopy eSports
-          atmosphere. By bringing together a diverse group of experts in
-          managing offline and online tournaments, we aim to execute
-          events that are tenfold better. We want to encourage and inspire
-          the gaming youth in our region to explore their passions and
-          consider building a career in eSports—a prospect that once
-          seemed far-fetched.
+          {{ __('In early winter 2020, amid a global pandemic, FOUR04 ESPORTS was born. Our goal is to reinvent the regions sluggish esports atmosphere. By bringing together a diverse group of experts in managing offline and online tournaments, we aim to deliver events that are ten times better. We encourage and inspire the regions gaming youth to explore their passions and consider building a career in esports, a prospect that once felt far-fetched.') }}
         </p>
       </div>
 
       <div class="wwa-col">
-        <h3 class="wwa-h3">Our Mission</h3>
+        <h3 class="wwa-h3">{{ __('Our Mission') }}</h3>
         <p class="wwa-p">
-          Establish a self-sustaining and progressively scalable eSports
-          platform in the Middle East while also aiming to build a local
-          and international eSports community that brings together
-          solutions and vocations for players and for brands to get
-          involved with eSports in the region.
+          {{ __('We are building a self-sustaining and steadily scalable esports platform in the Middle East while growing a local and international community that connects solutions and opportunities for players and brands to engage with esports across the region.') }}
         </p>
       </div>
 
       <div class="wwa-col">
-        <h3 class="wwa-h3">Our Vision</h3>
+        <h3 class="wwa-h3">{{ __('Our Vision') }}</h3>
         <p class="wwa-p wwa-center">
-          The Healing is fresh!!! can not wait to take my next session,
-          really i feel so Energetic and i know care of the quality for my
-          mental health and Happiness no matter what i face.
+          {{ __('The healing is fresh! I cannot wait for my next session. I feel energetic, and I stay committed to the quality of my mental health and happiness no matter what I face.') }}
         </p>
       </div>
     </div>
@@ -506,9 +493,9 @@
       <input
         class="wwa-input"
         type="email"
-        placeholder="Enter your email address"
-        aria-label="Email address" />
-      <button class="wwa-btn" type="submit">Subscribe</button>
+        placeholder="{{ __('Enter your email address') }}"
+        aria-label="{{ __('Email address') }}" />
+      <button class="wwa-btn" type="submit">{{ __('Subscribe') }}</button>
     </form>
   </div>
 </section>

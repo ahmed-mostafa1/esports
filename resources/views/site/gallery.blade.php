@@ -16,7 +16,7 @@
             <button
                 class="tab-btn active"
                 style="font-size: 20px; border-radius: 10px">
-                {{ content('gallery.header.tab_title', __('E-Sports')) }}
+                {{ content('gallery.header.tab_title', __('Gallery')) }}
             </button>
         </div>
     </div>
@@ -133,18 +133,29 @@
 
         const track = slider.querySelector('.js-gallery-slider-track');
         const viewport = slider.querySelector('.js-gallery-slider-viewport');
-        const slides = track ? Array.from(slider.querySelectorAll('.js-gallery-slide')) : [];
+        const slides = track ? Array.from(track.querySelectorAll('.js-gallery-slide')) : [];
         const dots = Array.from(slider.querySelectorAll('[data-slider-dot]'));
         const prevBtn = slider.querySelector('[data-slider-prev]');
         const nextBtn = slider.querySelector('[data-slider-next]');
         const slideCount = slides.length;
-        const intervalMs = Number(1500);
+        const intervalMs = Number(slider.dataset.sliderInterval || '') || 6000;
         let currentIndex = 0;
         let autoTimer = null;
         let slideWidth = 0;
 
         if (!track || !viewport || slideCount === 0) {
             return;
+        }
+
+        const sliderDirection = window.getComputedStyle(slider).direction;
+        const isRtl = sliderDirection === 'rtl';
+
+        if (isRtl) {
+            track.style.direction = 'ltr';
+            track.style.flexDirection = 'row';
+            slides.forEach((slide) => {
+                slide.style.direction = sliderDirection;
+            });
         }
 
         const updateDots = () => {
@@ -159,22 +170,55 @@
             });
         };
 
-        const updateSliderPosition = () => {
-            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        const updateSliderPosition = (instant = false) => {
+            const target = currentIndex * slideWidth;
+            const translateValue = isRtl ? target : -target;
+            if (instant) {
+                const previousTransition = track.style.transition;
+                track.style.transition = 'none';
+                track.style.transform = `translateX(${translateValue}px)`;
+                // Force a reflow so the browser applies the transform before restoring the transition.
+                void track.offsetWidth;
+                track.style.transition = previousTransition || '';
+            } else {
+                track.style.transform = `translateX(${translateValue}px)`;
+            }
         };
 
-        const setSlideWidths = () => {
-            slideWidth = viewport.clientWidth;
+        const applyLayout = (instant = false) => {
+            slideWidth = viewport.getBoundingClientRect().width;
+
             slides.forEach((slide) => {
                 slide.style.width = `${slideWidth}px`;
+                slide.style.flex = `0 0 ${slideWidth}px`;
             });
+
             track.style.width = `${slideWidth * slideCount}px`;
-            updateSliderPosition();
+            updateSliderPosition(instant);
         };
 
-        setSlideWidths();
-        window.addEventListener('resize', setSlideWidths);
+        const scheduleLayout = (() => {
+            let timer = null;
+
+            return (instant = false) => {
+                if (timer) {
+                    clearTimeout(timer);
+                    timer = null;
+                }
+
+                if (instant) {
+                    applyLayout(true);
+                } else {
+                    timer = setTimeout(() => applyLayout(true), 120);
+                }
+            };
+        })();
+
+        applyLayout(true);
         updateDots();
+
+        window.addEventListener('resize', () => scheduleLayout());
+        window.addEventListener('load', () => scheduleLayout(true));
 
         const goTo = (index) => {
             currentIndex = (index + slideCount) % slideCount;
@@ -182,8 +226,8 @@
             updateDots();
         };
 
-        const goToNext = () => goTo(currentIndex + 1);
-        const goToPrev = () => goTo(currentIndex - 1);
+        const goToNext = () => goTo(currentIndex + (isRtl ? -1 : 1));
+        const goToPrev = () => goTo(currentIndex + (isRtl ? 1 : -1));
 
         const clearAutoPlay = () => {
             if (autoTimer) {

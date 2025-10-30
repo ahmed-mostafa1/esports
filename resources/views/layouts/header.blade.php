@@ -22,10 +22,10 @@
         <a href="{{ route('services') }}" {{ request()->routeIs('services') ? 'aria-current=page' : '' }}>{{ content('nav.services', __('Our Services')) }}</a>
         <a href="{{ route('tournaments') }}" {{ request()->routeIs('tournaments') ? 'aria-current=page' : '' }}>{{ content('nav.esports', __('Tournaments')) }}</a>
         <a href="{{ route('gallery') }}" {{ request()->routeIs('gallery') || request()->routeIs('gallery.show') ? 'aria-current=page' : '' }}>
-          {{ content('nav.gallery', __('Gallery')) }}
+          {{ content('Gallery', __('Gallery')) }}
         </a>
         <a href="{{ route('news') }}" {{ request()->routeIs('news') ? 'aria-current=page' : '' }}>
-          {{ content('nav.news', __('News')) }}
+          {{ content('News', __('News')) }}
         </a>
         <a href="{{ route('team') }}" {{ request()->routeIs('team') ? 'aria-current=page' : '' }}>{{ content('nav.team', __('Our Team')) }}</a>
         @auth

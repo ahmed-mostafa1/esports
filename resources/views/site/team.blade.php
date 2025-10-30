@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Teams')
+@section('title', __('Teams'))
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
