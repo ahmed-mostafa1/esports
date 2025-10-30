@@ -123,8 +123,11 @@
       </div>
 
       <div class="hero-actions">
-        <a href="./tournaments.html">
-          <img href="" src="{{ asset('./img/register-now.png') }}" /></a>
+        <a href="./tournaments.html" class="hero-cta" aria-label="{{ content('home.cta.button', __('Register Now')) }}">
+          <img
+            src="{{ content_media('home.cta.button.image', 'img/register-now.png') }}"
+            alt="{{ content('home.cta.button', __('Register Now')) }}" />
+        </a>
       </div>
     </aside>
 
@@ -154,9 +157,10 @@
             alt="{{ __('Esports showcase') }}" />
         @endif
         <div class="hero-tag">
-          <small>{{ __('Ready For The') }}</small>
+          <small>{{ content('home.hero.tag.ready', __('Ready For The')) }}</small>
           <strong>
-            {{ __('Suspension') }} <span id="swapword">{{ __('Esports') }}</span>
+            {{ content('home.hero.tag.suspension', __('Suspension')) }}
+            <span id="swapword">{{ content('home.hero.tag.esports', __('Esports')) }}</span>
           </strong>
         </div>
       </div>
@@ -168,15 +172,27 @@
   <div class="progress-bar">
     <div class="progress-fill"></div>
   </div>
-  <span class="progress-label">{{ __('Esports') }}</span>
+  <span class="progress-label">{{ content('home.hero.tag.esports', __('Esports')) }}</span>
 </div>
 
 
 <!-- SERVICES -->
 <section class="services-section" data-reveal="fade-right" data-reveal-delay="150">
   <div class="container">
+    @php
+      $servicesHeading = content('home.services.title', __('Our Services and Speciality'));
+      $servicesHeadingPrimary = \Illuminate\Support\Str::beforeLast($servicesHeading, ' ');
+      $servicesHeadingHighlight = \Illuminate\Support\Str::afterLast($servicesHeading, ' ');
+      if ($servicesHeadingPrimary === $servicesHeading) {
+        $servicesHeadingPrimary = $servicesHeading;
+        $servicesHeadingHighlight = '';
+      }
+    @endphp
     <h2 class="title">
-      {{ __('Our Services and') }} <span>{{ __('Speciality') }}</span>
+      {{ $servicesHeadingPrimary }}
+      @if($servicesHeadingHighlight !== '')
+        <span>{{ $servicesHeadingHighlight }}</span>
+      @endif
     </h2>
     <div class="curved-underline">
       <svg viewBox="0 0 220 20" xmlns="http://www.w3.org/2000/svg">
@@ -192,31 +208,31 @@
     <div class="cards">
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ asset('./img/Subtract(1).png') }}" alt="{{ __('Experienced Trainers') }}" />
+          <img src="{{ content_media('home.services.card1.icon', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', __('Experienced Trainers')) }}" />
         </div>
         <div class="img-desc">
-          <h3>{{ __('Experienced Trainers') }}</h3>
-          <p>{{ __('Endless action that keeps players coming back.') }}</p>
+          <h3>{{ content('home.services.card1.title', __('Experienced Trainers')) }}</h3>
+          <p>{{ content('home.services.card1.description', __('Endless action that keeps players coming back.')) }}</p>
         </div>
       </div>
 
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ asset('./img/Subtract.png') }}" alt="{{ __('Every Console') }}" />
+          <img src="{{ content_media('home.services.card2.icon', 'img/Subtract.png') }}" alt="{{ content('home.services.card2.title', __('Every Console')) }}" />
         </div>
         <div class="img-desc">
-          <h3>{{ __('Every Console') }}</h3>
-          <p>{{ __('We deliver the complete esports experience.') }}</p>
+          <h3>{{ content('home.services.card2.title', __('Every Console')) }}</h3>
+          <p>{{ content('home.services.card2.description', __('We deliver the complete esports experience.')) }}</p>
         </div>
       </div>
 
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ asset('./img/Subtract(2).png') }}" alt="{{ __('Live Streaming') }}" />
+          <img src="{{ content_media('home.services.card3.icon', 'img/Subtract(2).png') }}" alt="{{ content('home.services.card3.title', __('Live Streaming')) }}" />
         </div>
         <div class="img-desc">
-          <h3>{{ __('Live Streaming') }}</h3>
-          <p>{{ __('One destination for unforgettable events.') }}</p>
+          <h3>{{ content('home.services.card3.title', __('Live Streaming')) }}</h3>
+          <p>{{ content('home.services.card3.description', __('One destination for unforgettable events.')) }}</p>
         </div>
       </div>
     </div>
@@ -469,7 +485,7 @@
 <section class="wwa-section" data-reveal="fade-left" data-reveal-delay="150">
   <div class="wwa-container">
     <!-- Heading -->
-    <h2 class="wwa-title">{{ __('Who We Are?') }}</h2>
+    <h2 class="wwa-title">{{ content('about.header.title', __('WHO WE ARE ?')) }}</h2>
     <div class="wwa-swoosh" aria-hidden="true">
       <svg viewBox="0 0 260 24" xmlns="http://www.w3.org/2000/svg">
         <path
@@ -484,23 +500,23 @@
     <!-- 3 columns -->
     <div class="wwa-grid">
       <div class="wwa-col">
-        <h3 class="wwa-h3">{{ __('Our Story') }}</h3>
+        <h3 class="wwa-h3">{{ content('about.story.title', __('Our Story')) }}</h3>
         <p class="wwa-p">
-          {{ __('In early winter 2020, amid a global pandemic, FOUR04 ESPORTS was born. Our goal is to reinvent the regions sluggish esports atmosphere. By bringing together a diverse group of experts in managing offline and online tournaments, we aim to deliver events that are ten times better. We encourage and inspire the regions gaming youth to explore their passions and consider building a career in esports, a prospect that once felt far-fetched.') }}
+          {{ content('about.story.text', __('In early winter 2020, amid a global pandemic, FOUR04 ESPORTS was born. Our goal is to reinvent the region\'s sluggish esports atmosphere. By bringing together a diverse group of experts in managing offline and online tournaments, we aim to deliver events that are ten times better. We encourage and inspire the region\'s gaming youth to explore their passions and consider building a career in esports, a prospect that once felt far-fetched.')) }}
         </p>
       </div>
 
       <div class="wwa-col">
-        <h3 class="wwa-h3">{{ __('Our Mission') }}</h3>
+        <h3 class="wwa-h3">{{ content('about.mission.title', __('Our Mission')) }}</h3>
         <p class="wwa-p">
-          {{ __('We are building a self-sustaining and steadily scalable esports platform in the Middle East while growing a local and international community that connects solutions and opportunities for players and brands to engage with esports across the region.') }}
+          {{ content('about.mission.text', __('We are building a self-sustaining and steadily scalable esports platform in the Middle East while growing a local and international community that connects solutions and opportunities for players and brands to engage with esports across the region.')) }}
         </p>
       </div>
 
       <div class="wwa-col">
-        <h3 class="wwa-h3">{{ __('Our Vision') }}</h3>
+        <h3 class="wwa-h3">{{ content('about.vision.title', __('Our Vision')) }}</h3>
         <p class="wwa-p wwa-center">
-          {{ __('The healing is fresh! I cannot wait for my next session. I feel energetic, and I stay committed to the quality of my mental health and happiness no matter what I face.') }}
+          {{ content('about.vision.text', __('The healing is fresh! I cannot wait for my next session. I feel energetic, and I stay committed to the quality of my mental health and happiness no matter what I face.')) }}
         </p>
       </div>
     </div>
@@ -514,9 +530,9 @@
       <input
         class="wwa-input"
         type="email"
-        placeholder="{{ __('Enter your email address') }}"
-        aria-label="{{ __('Email address') }}" />
-      <button class="wwa-btn" type="submit">{{ __('Subscribe') }}</button>
+        placeholder="{{ content('home.subscribe.placeholder', __('Enter your email address')) }}"
+        aria-label="{{ content('home.subscribe.placeholder', __('Email address')) }}" />
+      <button class="wwa-btn" type="submit">{{ content('home.subscribe.button', __('Subscribe')) }}</button>
     </form>
   </div>
 </section>
