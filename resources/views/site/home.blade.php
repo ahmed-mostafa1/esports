@@ -30,6 +30,27 @@
       $heroEmbedUrl = 'https://player.vimeo.com/video/' . $matches[1];
     }
   }
+
+  $countdownNow = now();
+  $countdownDefaultTarget = (clone $countdownNow)->addMonths(3)->startOfMinute();
+  $countdownTargetRaw = content('home.countdown.target_datetime', $countdownDefaultTarget->toIso8601String());
+
+  try {
+    $countdownTarget = \Carbon\Carbon::parse($countdownTargetRaw);
+  } catch (\Throwable $e) {
+    $countdownTarget = clone $countdownDefaultTarget;
+  }
+
+  $countdownTarget = $countdownTarget->timezone($countdownNow->timezone);
+
+  if ($countdownTarget->lessThanOrEqualTo($countdownNow)) {
+    $countdownMonths = $countdownDays = $countdownMinutes = 0;
+  } else {
+    $countdownInterval = $countdownNow->diff($countdownTarget);
+    $countdownMonths = max(0, ($countdownInterval->y * 12) + $countdownInterval->m);
+    $countdownDays = max(0, $countdownInterval->d);
+    $countdownMinutes = max(0, $countdownInterval->i);
+  }
 @endphp
 
 <!-- Floating Social Rail (upper-right under navbar) -->
@@ -80,24 +101,24 @@
       <h1 class="hero-title">{{ content('home.hero.subtitle', __('Your text...')) }}</h1>
 
       <p class="hero-desc">
-        {{ __('We are excited to announce that Tournament Community 2025 will take place this December 2025! Get ready for a month full of thrilling matches, friendly competition, and unforgettable moments.') }}
+        {{ content('home.hero.description', __('We are excited to announce that Tournament Community 2025 will take place this December 2025! Get ready for a month full of thrilling matches, friendly competition, and unforgettable moments.')) }}
       </p>
 
 
       <div class="countdown" role="timer" aria-live="polite">
         <div class="countbox">
-          <div class="num">03</div>
-          <div class="label">{{ __('Months') }}</div>
+          <div class="num">{{ str_pad($countdownMonths, 2, '0', STR_PAD_LEFT) }}</div>
+          <div class="label">{{ content('home.countdown.months', __('Months')) }}</div>
         </div>
         <img src="{{ asset('./img/Star 8.png') }}" class="star-icon" alt="{{ __('Star Icon') }}" />
         <div class="countbox">
-          <div class="num">23</div>
-          <div class="label">{{ __('Days') }}</div>
+          <div class="num">{{ str_pad($countdownDays, 2, '0', STR_PAD_LEFT) }}</div>
+          <div class="label">{{ content('home.countdown.days', __('Days')) }}</div>
         </div>
         <img src="{{ asset('./img/Star 8.png') }}" class="star-icon" alt="{{ __('Star Icon') }}" />
         <div class="countbox">
-          <div class="num">48</div>
-          <div class="label">{{ __('Minutes') }}</div>
+          <div class="num">{{ str_pad($countdownMinutes, 2, '0', STR_PAD_LEFT) }}</div>
+          <div class="label">{{ content('home.countdown.minutes', __('Minutes')) }}</div>
         </div>
       </div>
 
