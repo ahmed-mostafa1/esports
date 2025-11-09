@@ -266,66 +266,127 @@
       </div>
     </div>
 
-    <div class="slider slider--tournaments" id="tr-slider" role="region" aria-label="{{ __('Popular tournaments') }}">
-      <div class="track" id="tr-track">
-        @forelse($tournaments as $t)
-          @php
-            $status = match($t->status) {
-              'open' => __('Open'),
-              'finished' => __('Finished'),
-              default => __('Closed'),
-            };
-            $statusClass = match($t->status) {
-              'open' => 'live--open',
-              'finished' => 'live--finished',
-              default => 'live--closed',
-            };
-            $tournamentTitle = $t->titleFor($homeLocale) ?: 'Tournament';
-            $tournamentNameClass = strlen($tournamentTitle) > 18 ? 'wrap' : '';
-          @endphp
-          <figure class="card-partner card-tournament">
-            <div class="media">
-              <img
-                src="{{ $t->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
-                alt="{{ $tournamentTitle }}"
-                loading="lazy" />
+    @php
+      $tournamentTotal = max(1, $tournaments->count());
+    @endphp
 
-              <span class="live {{ $statusClass }}">{{ $status }}</span>
-              <figcaption class="overlay">
-                <div class="meta-title">
-                  {{ optional($t->date)->format('d/m/Y') ?? __('Date TBD') }}
-                </div>
-                <div class="meta-sub">
-                  {{ $t->time ?: __('Time TBD') }} • {{ $t->prize ?: __('Prize TBD') }}
-                </div>
-              </figcaption>
-            </div>
-            <figcaption class="name {{ $tournamentNameClass }}">
-              <a href="{{ route('tournaments.register', $t->slug) }}">
-                {{ $tournamentTitle }}
-              </a>
-            </figcaption>
-          </figure>
-        @empty
-          <figure class="card-partner card-tournament card-tournament--empty">
-            <div class="media">
-              <div class="media-empty">{{ __('No tournaments available right now.') }}</div>
-            </div>
-            <figcaption class="name">{{ __('Check back soon for new tournaments') }}</figcaption>
-          </figure>
-        @endforelse
-      </div>
-    </div>
-    <div class="mp-header mp-header--controls">
-      <div class="dots-partner dots-partner--inline" id="tr-dots" aria-label="Slider pagination"></div>
-      <div class="nav nav--tournaments">
-        <button class="pill light" id="tr-prev" aria-label="Previous">
-          <span class="chev">‹</span>
+    <div
+      class="tournament-carousel"
+      id="tournamentCarousel"
+      data-tournament-carousel
+      data-carousel-status-template="{{ __('Showing :start-:end of :total tournaments') }}"
+      data-carousel-dot-label="{{ __('Show tournament group :number') }}"
+      role="region"
+      aria-label="{{ __('Popular tournaments carousel') }}">
+      <div class="tournament-carousel__controls" aria-hidden="{{ $tournamentTotal <= 1 ? 'true' : 'false' }}">
+        <button
+          type="button"
+          class="tournament-carousel__control"
+          data-carousel-prev
+          aria-controls="tournamentCarouselTrack"
+          aria-label="{{ __('Previous tournaments') }}"
+          @if($tournamentTotal <= 1) disabled @endif>
+          <span aria-hidden="true">&larr;</span>
         </button>
-        <button class="pill dark" id="tr-next" aria-label="Next">
-          <span class="chev">›</span>
+        <button
+          type="button"
+          class="tournament-carousel__control"
+          data-carousel-next
+          aria-controls="tournamentCarouselTrack"
+          aria-label="{{ __('Next tournaments') }}"
+          @if($tournamentTotal <= 1) disabled @endif>
+          <span aria-hidden="true">&rarr;</span>
         </button>
       </div>
+
+      <div
+        class="tournament-carousel__viewport"
+        tabindex="0"
+        aria-roledescription="{{ __('carousel') }}"
+        data-carousel-viewport>
+        <ul class="tournament-carousel__track" id="tournamentCarouselTrack" data-carousel-track>
+          @forelse($tournaments as $t)
+            @php
+              $status = match($t->status) {
+                'open' => __('Open'),
+                'finished' => __('Finished'),
+                default => __('Closed'),
+              };
+              $statusModifier = match($t->status) {
+                'open' => 'is-live',
+                'finished' => 'is-finished',
+                default => 'is-closed',
+              };
+              $tournamentTitle = $t->titleFor($homeLocale) ?: 'Tournament';
+              $slideLabel = __('Tournament :current of :total', [
+                'current' => $loop->iteration,
+                'total' => $tournamentTotal,
+              ]);
+            @endphp
+            <li
+              class="tournament-slide"
+              data-carousel-slide
+              role="group"
+              aria-roledescription="{{ __('slide') }}"
+              aria-label="{{ $slideLabel }}">
+              <article class="t-card">
+                <figure class="t-card__media">
+                  <img
+                    src="{{ $t->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
+                    alt="{{ $tournamentTitle }}"
+                    loading="lazy" />
+                  <span class="t-card__status {{ $statusModifier }}">{{ $status }}</span>
+                </figure>
+                <div class="t-card__body">
+                  <p class="t-card__meta">
+                    {{ optional($t->date)->format('d/m/Y') ?? __('Date TBD') }}
+                    <span aria-hidden="true">•</span>
+                    {{ $t->time ?: __('Time TBD') }}
+                  </p>
+                  <h3 class="t-card__title">
+                    <a href="{{ route('tournaments.register', $t->slug) }}">
+                      {{ $tournamentTitle }}
+                    </a>
+                  </h3>
+                  <p class="t-card__prize">
+                    {{ $t->prize ?: __('Prize TBD') }}
+                  </p>
+                  <a class="t-card__link" href="{{ route('tournaments.register', $t->slug) }}">
+                    {{ __('Register your team') }}
+                  </a>
+                </div>
+              </article>
+            </li>
+          @empty
+            <li
+              class="tournament-slide tournament-slide--empty"
+              data-carousel-slide
+              role="group"
+              aria-roledescription="{{ __('slide') }}"
+              aria-label="{{ __('No tournaments available') }}">
+              <article class="t-card t-card--empty">
+                <div class="t-card__body">
+                  <p class="t-card__title">{{ __('No tournaments available right now.') }}</p>
+                  <p class="t-card__meta">{{ __('Check back soon for new tournaments.') }}</p>
+                </div>
+              </article>
+            </li>
+          @endforelse
+        </ul>
+      </div>
+
+      <div class="tournament-carousel__footer">
+        <div
+          class="tournament-carousel__dots"
+          data-carousel-dots
+          role="tablist"
+          aria-label="{{ __('Tournaments navigation') }}"></div>
+        <p class="tournament-carousel__hint">
+          {{ __('Swipe, scroll, or use the arrows to explore tournaments.') }}
+        </p>
+      </div>
+
+      <div class="tournament-carousel__live" data-carousel-live aria-live="polite"></div>
     </div>
   </div>
 </section>

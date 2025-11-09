@@ -639,62 +639,293 @@ body {
   background: #ffffff;
 }
 
-.slider--tournaments {
+/* Tournaments carousel */
+.tournament-carousel {
   margin-top: 32px;
+  padding: clamp(24px, 4vw, 40px);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.slider--tournaments .media {
-  background: linear-gradient(180deg, #141519 0%, #090a0d 100%);
-  border-color: rgba(255, 255, 255, 0.12);
+.tournament-carousel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
-.slider--tournaments .media img {
+.tournament-carousel__controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 640px) {
+  .tournament-carousel__controls {
+    justify-content: space-between;
+  }
+}
+
+.tournament-carousel__control {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 1px solid #ff0000;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.tournament-carousel__control:hover:not(:disabled),
+.tournament-carousel__control:focus-visible {
+  background: rgba(242, 59, 51, 0.18);
+  border-color: rgba(242, 59, 51, 0.4);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.tournament-carousel__control:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tournament-carousel__viewport {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.tournament-carousel__track {
+  display: flex;
+  gap: clamp(16px, 3vw, 32px);
+  transition: transform 0.6s cubic-bezier(0.4, 0.1, 0.2, 1);
+  will-change: transform;
+}
+
+.tournament-slide {
+  list-style: none;
+  flex: 0 0 clamp(240px, 28vw, 360px);
+  transition: opacity 0.3s ease;
+}
+
+.tournament-slide.is-active {
+  opacity: 1;
+}
+
+.tournament-slide[aria-hidden="true"] {
+  opacity: 0.6;
+}
+
+@media (max-width: 640px) {
+  .tournament-slide {
+    flex-basis: 78vw;
+  }
+}
+
+.t-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(26, 28, 40, 0.95) 0%, rgba(10, 12, 20, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.tournament-slide.is-active .t-card {
+  border-color: rgba(242, 59, 51, 0.45);
+  box-shadow: 0 24px 50px rgba(242, 59, 51, 0.18);
+}
+
+.t-card__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.t-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease;
 }
 
-.card-tournament .name {
-  margin-top: 18px;
-  font-size: 20px;
+.tournament-slide:is(:hover, :focus-within) .t-card__media img {
+  transform: scale(1.05);
 }
 
-.card-tournament .name a {
-  color: inherit;
-  text-decoration: none;
-  display: inline-block;
-  transition: color 0.2s ease, transform 0.2s ease;
+.t-card__status {
+  position: absolute;
+  top: 16px;
+  inset-inline-end: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  border: 1px solid transparent;
 }
 
-.card-tournament .name a:hover {
-  color: #ff4d4d;
-  transform: translateY(-2px);
+.t-card__status.is-live {
+  background: rgba(34, 197, 94, 0.25);
+  border-color: rgba(34, 197, 94, 0.65);
 }
 
-.live.live--open {
-  background: #16a34a;
-}
-.live.live--finished {
-  background: #2563eb;
-}
-.live.live--closed {
-  background: #6b7280;
+.t-card__status.is-finished {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(59, 130, 246, 0.65);
 }
 
-.card-tournament--empty .media {
+.t-card__status.is-closed {
+  background: rgba(156, 163, 175, 0.2);
+  border-color: rgba(156, 163, 175, 0.5);
+}
+
+.t-card__body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .t-card__body {
+    padding: 20px;
+  }
+}
+
+.t-card__meta {
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 255, 0.7);
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(17, 17, 23, 0.6);
-  border-style: dashed;
-  border-color: rgba(255, 255, 255, 0.18);
+  gap: 8px;
 }
-.card-tournament--empty .media-empty {
-  color: #d1d5db;
-  font-size: 0.95rem;
+
+.t-card__title {
+  font-size: clamp(1.15rem, 1.2vw, 1.35rem);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.t-card__title a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.t-card__title a:hover,
+.t-card__title a:focus {
+  color: #f23b33;
+}
+
+.t-card__prize {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.t-card__link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.t-card__link:hover,
+.t-card__link:focus-visible {
+  background: #f23b33;
+  border-color: #f23b33;
+  color: #fff;
+  outline: none;
+}
+
+.t-card--empty {
   text-align: center;
-  padding: 20px;
+  justify-content: center;
+  background: rgba(14, 16, 24, 0.8);
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.t-card--empty .t-card__body {
+  align-items: center;
+}
+
+.tournament-carousel__footer {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.tournament-carousel__dots {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.tournament-carousel__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 0.2s ease, width 0.2s ease;
+  cursor: pointer;
+}
+
+.tournament-carousel__dot.is-active {
+  width: 32px;
+  background: #f23b33;
+}
+
+.tournament-carousel__dot:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.tournament-carousel__hint {
+  font-size: 0.9rem;
+  color: #aeb4c4;
+}
+
+.tournament-carousel__live {
+  position: absolute;
+  inset-inline-start: clamp(24px, 4vw, 40px);
+  inset-block-end: clamp(16px, 3vw, 32px);
+  font-size: 0.85rem;
+  color: rgba(226, 232, 255, 0.65);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* overlay text (lower left) */
@@ -824,8 +1055,7 @@ body {
   right: 24px;
   bottom: 34px;
 }
-.nav--partners,
-.nav--tournaments {
+.nav--partners {
   position: static;
   right: auto;
   bottom: auto;
@@ -833,8 +1063,7 @@ body {
   margin-left: auto;
   flex: 0 0 auto;
 }
-.mp-header--controls .nav--partners,
-.mp-header--controls .nav--tournaments {
+.mp-header--controls .nav--partners {
   justify-content: flex-end;
 }
 .pill {
@@ -1876,8 +2105,7 @@ body {
 
 /* === Desktop: show 2 slides, slide 1-by-1 === */
 @media (min-width: 1024px) {
-  #partners-slider,
-  #tr-slider {
+  #partners-slider {
     --gap: 2px; /* space between cards */
     --cards: 2; /* visible cards per view on desktop */
 
@@ -1899,16 +2127,14 @@ body {
     scroll-behavior: smooth;
   }
 
-  #partners-slider .track,
-  #tr-slider .track {
+  #partners-slider .track {
     display: flex;
     gap: var(--gap);
     width: max-content;
     position: relative !important;
   }
 
-  #partners-slider .card-partner,
-  #tr-slider .card-partner {
+  #partners-slider .card-partner {
     flex: 0 0 var(--card-w);
     box-sizing: border-box;
     scroll-snap-align: center; /* autoplay/user scroll locks one-by-one */
@@ -1919,16 +2145,13 @@ body {
 /* Center the partners slider block itself */
 /* 0) Stop overusing will-change */
 #partners-slider,
-#partners-slider *,
-#tr-slider,
-#tr-slider * {
+#partners-slider * {
   will-change: auto !important;
 }
 
 /* 1) Create a centered viewport with padding equal to half the viewport,
       so the active card sits in the middle */
-#partners-slider,
-#tr-slider {
+#partners-slider {
   --card-w: clamp(180px, 70vw, 260px); /* tune card width range */
   width: 100%;
   margin: 0 auto;
@@ -1945,49 +2168,37 @@ body {
 #partners-slider .track {
   display: flex;
   gap: clamp(16px, 4vw, 28px);
-  width: max-content; /* shrink-wrap */
-  position: relative !important;
-}
-#tr-slider .track {
-  display: flex;
-  gap: clamp(16px, 4vw, 28px);
   width: max-content;
   position: relative !important;
 }
 
 /* 3) Slides */
-#partners-slider .card-partner,
-#tr-slider .card-partner {
+#partners-slider .card-partner {
   flex: 0 0 var(--card-w);
   scroll-snap-align: center; /* key: the active slide locks to center */
   box-sizing: border-box;
 }
 
 /* 4) Optional: hide default scrollbar on WebKit without breaking a11y */
-#partners-slider::-webkit-scrollbar,
-#tr-slider::-webkit-scrollbar {
+#partners-slider::-webkit-scrollbar {
   display: none;
 }
 
-#partners-slider,
-#tr-slider {
+#partners-slider {
   scroll-behavior: smooth;
 }
 
 /* Hide the scrollbar for the partners slider (keeps scrolling & snap) */
-#partners-slider,
-#tr-slider {
+#partners-slider {
   -ms-overflow-style: none; /* IE/Edge legacy */
   scrollbar-width: none; /* Firefox */
 }
-#partners-slider::-webkit-scrollbar,
-#tr-slider::-webkit-scrollbar {
+#partners-slider::-webkit-scrollbar {
   display: none; /* Chrome/Safari/Edge (WebKit/Blink) */
 }
 
 /* Optional: avoid rubber-band scrolling affecting the page horizontally */
-#partners-slider,
-#tr-slider {
+#partners-slider {
   overscroll-behavior-x: contain;
 }
 

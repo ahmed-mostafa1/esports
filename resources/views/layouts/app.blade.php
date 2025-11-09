@@ -61,9 +61,13 @@
         </div>
 
         <div class="footer-bottom gradient-bar">
-            <p>{{ content('footer.copyright', '©Copyright 2025') }}</p>
+            <div style="display: flex; flex-direction:row;"></div>
+            <p>{{ content('footer.copyright', '©Copyright 2025') }}</p> 
+            <script type="text/javascript" src="https://counter.websiteout.com/js/2/6/145/0"></script>
+        </div>
             <p>{{ content('footer.developed_by', 'Designed & Developed by Four04') }}</p>
-         </div>
+         
+        </div>
     </footer>
     @stack('scripts')
 </body>

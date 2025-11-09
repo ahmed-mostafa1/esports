@@ -262,106 +262,149 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
 })();
 
 
-// Tournaments slider (image + name), mirrors testimonials behavior
+// Tournaments carousel
 (() => {
-  const root = document.getElementById('tr-slider');
-  if (!root) return;
+  const carousel = document.querySelector('[data-tournament-carousel]');
+  if (!carousel) return;
 
-  const track = document.getElementById('tr-track');
-  const btnPrev = document.getElementById('tr-prev');
-  const btnNext = document.getElementById('tr-next');
-  const dotsEl = document.getElementById('tr-dots');
+  const track = carousel.querySelector('[data-carousel-track]');
+  const viewport = carousel.querySelector('[data-carousel-viewport]');
+  const btnPrev = carousel.querySelector('[data-carousel-prev]');
+  const btnNext = carousel.querySelector('[data-carousel-next]');
+  const dotsHost = carousel.querySelector('[data-carousel-dots]');
+  const liveRegion = carousel.querySelector('[data-carousel-live]');
 
-  if (!track || !btnPrev || !btnNext || !dotsEl) return;
+  if (!track || !viewport || !btnPrev || !btnNext || !dotsHost) {
+    console.warn('Tournament carousel: missing pieces', {
+      track: !!track,
+      viewport: !!viewport,
+      btnPrev: !!btnPrev,
+      btnNext: !!btnNext,
+      dotsHost: !!dotsHost,
+    });
+    return;
+  }
 
-  const cards = () => Array.from(track.querySelectorAll('.card-tournament'));
-  const AUTO_MS = 2000;
+  const slides = () => Array.from(track.querySelectorAll('[data-carousel-slide]'));
+  const AUTO_MS = 1500;
+  const statusTemplate = carousel.dataset.carouselStatusTemplate || 'Showing :start-:end of :total';
+  const dotLabelTemplate = carousel.dataset.carouselDotLabel || 'Show tournament group :number';
+  const prefersReducedMotion = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+
   let index = 0;
   let timer = null;
   let resizeId = null;
 
-  const toNumber = (value) => {
-    const parsed = parseFloat(value ?? '');
+  const gapValue = () => {
+    const styles = window.getComputedStyle(track);
+    const gapRaw = styles.columnGap || styles.gap || '0';
+    const parsed = parseFloat(gapRaw);
     return Number.isFinite(parsed) ? parsed : 0;
   };
 
-  const cardStride = (list = cards()) => {
-    if (list.length <= 1) {
-      const single = list[0];
-      return single ? single.getBoundingClientRect().width : root.clientWidth;
-    }
-
-    const delta = Math.abs(list[1].offsetLeft - list[0].offsetLeft);
-    if (delta > 0) return delta;
-
-    const width = list[0].getBoundingClientRect().width;
-    return width || root.clientWidth;
+  const stride = () => {
+    const first = slides()[0];
+    if (!first) return 0;
+    return first.getBoundingClientRect().width + gapValue();
   };
 
   const visibleCount = () => {
-    const list = cards();
-    if (!list.length) return 1;
-
-    const stride = cardStride(list);
-    if (!stride) return 1;
-
-    const styles = window.getComputedStyle(root);
-    const paddingStart = toNumber(styles.paddingInlineStart || styles.paddingLeft);
-    const paddingEnd = toNumber(styles.paddingInlineEnd || styles.paddingRight);
-    const available = root.clientWidth - paddingStart - paddingEnd;
-    const usable = available > 0 ? available : root.clientWidth;
-
-    return Math.max(1, Math.round(usable / stride));
+    const width = viewport.clientWidth;
+    const step = stride();
+    if (!step) return 1;
+    return Math.max(1, Math.round(width / step));
   };
 
-  const maxIndex = () => {
-    const total = cards().length;
+  const maxIndex = () => Math.max(0, slides().length - visibleCount());
+
+  const formatStatus = (start, end, total) =>
+    statusTemplate
+      .replace(':start', start)
+      .replace(':end', end)
+      .replace(':total', total);
+
+  const announce = () => {
+    if (!liveRegion) return;
+    const total = slides().length;
+    if (!total) {
+      liveRegion.textContent = '';
+      return;
+    }
+
     const visible = visibleCount();
-    return Math.max(0, total - visible);
+    const start = Math.min(total, index + 1);
+    const end = Math.min(total, index + visible);
+    liveRegion.textContent = formatStatus(start, end, total);
+  };
+
+  const updateSlides = () => {
+    const items = slides();
+    const visible = visibleCount();
+    const start = index;
+    const end = Math.min(items.length - 1, start + visible - 1);
+
+    items.forEach((item, idx) => {
+      const active = idx >= start && idx <= end;
+      item.classList.toggle('is-active', active);
+      item.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
   };
 
   const buildDots = () => {
-    const count = Math.max(1, maxIndex() + 1);
-    dotsEl.innerHTML = '';
+    const max = maxIndex();
+    const count = Math.max(1, max + 1);
+    dotsHost.innerHTML = '';
+
     for (let i = 0; i < count; i++) {
-      const dot = document.createElement('span');
-      dot.className = 'dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => setIndex(i, true));
-      dotsEl.appendChild(dot);
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'tournament-carousel__dot' + (i === index ? ' is-active' : '');
+      dot.setAttribute('aria-label', dotLabelTemplate.replace(':number', String(i + 1)));
+      dot.addEventListener('click', () => goTo(i, true));
+      dotsHost.appendChild(dot);
     }
   };
 
   const updateDots = () => {
-    Array.from(dotsEl.children).forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === index);
+    Array.from(dotsHost.children).forEach((dot, idx) => {
+      dot.classList.toggle('is-active', idx === index);
     });
   };
 
-  const setIndex = (nextIndex, stopAuto = false) => {
+  const applyTransform = () => {
+    const offset = stride() * index;
+    const rtl = isRTL();
+    const translate = rtl ? offset : -offset;
+    track.style.transform = offset ? `translateX(${translate}px)` : '';
+  };
+
+  const goTo = (nextIndex, stopAuto = false) => {
     const max = maxIndex();
     if (max === 0) {
       index = 0;
       track.style.transform = '';
-      updateDots();
+      buildDots();
+      updateSlides();
+      announce();
       stopAutoplay();
       return;
     }
 
-    index = (nextIndex + max + 1) % (max + 1);
+    const total = max + 1;
+    index = ((nextIndex % total) + total) % total;
 
-    const stride = cardStride();
-    const offset = stride * index;
-    const rtl = isRTL();
-    const translate = rtl ? offset : -offset;
-
-    track.style.transform = `translateX(${translate}px)`;
+    applyTransform();
     updateDots();
+    updateSlides();
+    announce();
 
     if (stopAuto) restartAutoplay();
   };
 
-  const next = (stopAuto = false) => setIndex(index + 1, stopAuto);
-  const prev = (stopAuto = false) => setIndex(index - 1, stopAuto);
+  const next = (stopAuto = false) => goTo(index + 1, stopAuto);
+  const prev = (stopAuto = false) => goTo(index - 1, stopAuto);
 
   const stopAutoplay = () => {
     if (timer) {
@@ -370,9 +413,14 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
     }
   };
 
+  const shouldAutoplay = () => {
+    if (prefersReducedMotion?.matches) return false;
+    return maxIndex() > 0;
+  };
+
   const startAutoplay = () => {
     stopAutoplay();
-    if (maxIndex() === 0) return; // nothing to slide
+    if (!shouldAutoplay()) return;
     timer = setInterval(next, AUTO_MS);
   };
 
@@ -384,19 +432,22 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
   btnNext.addEventListener('click', () => next(true));
   btnPrev.addEventListener('click', () => prev(true));
 
-  root.addEventListener('mouseenter', stopAutoplay);
-  root.addEventListener('mouseleave', startAutoplay);
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
 
-  // Touch swipe
+  viewport.addEventListener('focusin', stopAutoplay);
+  viewport.addEventListener('focusout', startAutoplay);
+
+  // Touch gestures
   let startX = 0;
   let dragging = false;
-  root.addEventListener('touchstart', (e) => {
+  viewport.addEventListener('touchstart', (e) => {
     dragging = true;
     startX = e.touches[0].clientX;
     stopAutoplay();
   }, { passive: true });
 
-  root.addEventListener('touchend', (e) => {
+  viewport.addEventListener('touchend', (e) => {
     if (!dragging) return;
     dragging = false;
 
@@ -415,7 +466,7 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
       const previousMax = maxIndex();
       buildDots();
       const boundedIndex = Math.min(index, maxIndex());
-      setIndex(boundedIndex);
+      goTo(boundedIndex);
       if (previousMax !== maxIndex()) {
         restartAutoplay();
       }
@@ -423,16 +474,26 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
   });
 
   const init = () => {
-    if (!cards().length) return;
+    if (!slides().length) return;
     buildDots();
-    setIndex(0);
+    goTo(0);
     startAutoplay();
+    announce();
   };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
+  }
+
+  if (prefersReducedMotion) {
+    const handleMotionChange = () => restartAutoplay();
+    if (typeof prefersReducedMotion.addEventListener === 'function') {
+      prefersReducedMotion.addEventListener('change', handleMotionChange);
+    } else if (typeof prefersReducedMotion.addListener === 'function') {
+      prefersReducedMotion.addListener(handleMotionChange);
+    }
   }
 })();
 
@@ -714,82 +775,6 @@ document.querySelectorAll('[data-slider]').forEach(makeSlider);
   update();
 })();
 
-// // === Random single TRIANGLES on both sides ===
-// document.addEventListener('DOMContentLoaded', () => {
-//   const host = document.getElementById('starfield');
-//   if (!host) return;
-
-//   // Tweak to taste
-//   const MAX_TRIS   = 14;     // triangles on screen
-//   const SPAWN_EVERY= 1200;   // ms between spawn attempts
-//   const LIFE_MIN   = 9000;   // ms a triangle stays alive
-//   const LIFE_MAX   = 15000;
-
-//   const vw = () => Math.max(document.documentElement.clientWidth,  window.innerWidth  || 0);
-//   const r  = (min, max) => Math.random() * (max - min) + min;
-//   const pick = (a) => a[Math.floor(Math.random()*a.length)];
-
-//   function spawnTri(){
-//     // keep population tasteful
-//     if (host.querySelectorAll('.tri-piece').length >= MAX_TRIS) return;
-
-//     const el = document.createElement('div');
-//     el.className = 'tri-piece ' + pick(['v1','v2','v3']);
-
-//     // size & scale
-//     const base = r(32, 64);           // base px
-//     const scale = r(0.7, 1.2);
-//     el.style.width = el.style.height = `${base}px`;
-//     el.style.transform = `scale(${scale})`;
-
-//     // vertical position (avoid extreme edges)
-//     const y = r(6, 92); // %
-//     el.style.top = `calc(${y}vh - ${(base*scale)/2}px)`;
-
-//     // choose side, stick near edge with light jitter
-//     const side = Math.random() < 0.5 ? 'left' : 'right';
-//     const margin = 8;                 // px from edge
-//     const jitter = r(-8, 8);
-//     if (side === 'left') el.style.left = `${margin + jitter}px`;
-//     else el.style.left = `${vw() - margin - base*scale + jitter}px`;
-
-//     // unique animation timings per instance
-//     el.style.setProperty('--twinkle', `${r(2.1, 3.4).toFixed(2)}s`);
-//     el.style.setProperty('--spin',    `${r(14, 24).toFixed(2)}s`);
-//     el.style.setProperty('--sway',    `${r(5.2, 8.2).toFixed(2)}s`);
-//     el.style.setProperty('--rot',     `${r(0, 360).toFixed(1)}deg`);
-
-//     // de-sync
-//     el.style.animationDelay = `${r(0,.6).toFixed(2)}s, ${r(0,.6).toFixed(2)}s, 0s, ${r(0,.6).toFixed(2)}s`;
-
-//     host.appendChild(el);
-
-//     // lifespan + fade-out removal
-//     const lifespan = r(LIFE_MIN, LIFE_MAX);
-//     const fadeOut = 700;
-//     setTimeout(() => {
-//       el.style.transition = `opacity ${fadeOut}ms ease`;
-//       el.style.opacity = '0';
-//       setTimeout(() => el.remove(), fadeOut + 50);
-//     }, lifespan);
-//   }
-
-//   // pump spawns
-//   const timer = setInterval(spawnTri, SPAWN_EVERY);
-
-//   // seed a few at start
-//   for (let i = 0; i < Math.min(MAX_TRIS, 8); i++) spawnTri();
-
-//   // on resize, re-seed positions so they hug the new edges
-//   let ro;
-//   window.addEventListener('resize', () => {
-//     clearTimeout(ro);
-//     ro = setTimeout(() => {
-//       host.innerHTML = '';
-//       for (let i = 0; i < Math.min(MAX_TRIS, 8); i++) spawnTri();
-//     }, 180);
-//   }, { passive: true });
-// });
 
 (function countdownTimer() {
   const countdownEl = document.querySelector('[data-countdown-target]');

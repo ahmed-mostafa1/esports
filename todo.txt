@@ -7,10 +7,5 @@ C7mne5FO49rrNY4Q0n
 
 
 
-in site/home.blade.php: check tournaments slider and replace it with carousel 
-to show tournaments dynamically from database. it must look modern and semantic
 
 
-
-in layout/app.blade.php: add visitors counter that acumulate all time visits
- with text "Visitors Count : #### "
