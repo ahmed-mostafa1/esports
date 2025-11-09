@@ -220,7 +220,25 @@ function parseContentValue(rawValue, contentType, node) {
 
     if (isLikelyJson(trimmed)) {
         try {
-            return JSON.parse(trimmed);
+            const parsed = JSON.parse(trimmed);
+
+            if (contentType === 'text' && parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                const hasNonEmptyValue = Object.values(parsed).some((value) => {
+                    return typeof value === 'string' && value.trim().length > 0;
+                });
+
+                if (!hasNonEmptyValue) {
+                    const fallbackText = node?.textContent?.trim() ?? '';
+                    if (fallbackText) {
+                        return {
+                            ...parsed,
+                            en: parsed.en || fallbackText,
+                        };
+                    }
+                }
+            }
+
+            return parsed;
         } catch (error) {
             console.warn('Failed to parse JSON from data-content-value', {
                 key: node?.dataset?.contentKey,

@@ -133,6 +133,19 @@ class GalleryItem extends Model
         return $this->thumb_path ? asset($this->thumb_path) : null;
     }
 
+    public function cardImageUrl(): ?string
+    {
+        if ($thumbnail = $this->thumbnailUrl()) {
+            return $thumbnail;
+        }
+
+        if ($this->video_type === self::VIDEO_TYPE_FILE && $this->video_path) {
+            return asset($this->video_path);
+        }
+
+        return null;
+    }
+
     public function sourceLabel(): string
     {
         return match ($this->video_type) {

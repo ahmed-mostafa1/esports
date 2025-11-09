@@ -67,8 +67,9 @@
                 @forelse($items as $item)
                     <div class="bg-gray-800 rounded-lg overflow-hidden border border-gray-700/70">
                         <div class="h-48 overflow-hidden">
+                            @php($cardImage = $item->cardImageUrl())
                             <img
-                                src="{{ $item->thumbnailUrl() ?? asset('img/placeholder-gallery.jpg') }}"
+                                src="{{ $cardImage ?? asset('img/placeholder-gallery.jpg') }}"
                                 alt="{{ $item->t('title', app()->getLocale()) }}"
                                 class="w-full h-full object-cover"
                             />

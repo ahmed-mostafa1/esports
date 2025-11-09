@@ -5,4 +5,7 @@ admin@esport.com
 
 C7mne5FO49rrNY4Q0n
 
-- subscribe email work
+
+
+in site/home.blade.php: check tournaments slider and replace it with carousel 
+to show tournaments dynamically from database. it must look modern and semantic
