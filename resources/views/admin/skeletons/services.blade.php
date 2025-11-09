@@ -4,6 +4,56 @@
 
 @section('content')
 <div class="skeleton-editor">
+    @php
+        $defaultTranslations = [
+            'services.header.title' => ['en' => 'Our Services', 'ar' => 'خدماتنا'],
+            'services.card1.title' => ['en' => 'Technology & Platform Development', 'ar' => 'تطوير التكنولوجيا والمنصات'],
+            'services.card1.item1' => ['en' => 'Custom tournament platforms and registration portals', 'ar' => 'منصات بطولات مخصّصة وبوابات تسجيل'],
+            'services.card1.item2' => ['en' => 'Score tracking dashboards and live updates', 'ar' => 'لوحات متابعة النتائج وتحديثات مباشرة'],
+            'services.card1.item3' => ['en' => 'Integration with Discord, Twitch, and other gaming tools', 'ar' => 'تكامل مع ديسكورد وتويتش وأدوات الألعاب الأخرى'],
+            'services.card1.item4' => ['en' => 'Mobile-first responsive design', 'ar' => 'تصميم متجاوب يركّز على الهواتف'],
+            'services.card2.title' => ['en' => 'Event Management & Production', 'ar' => 'إدارة وتنظيم الفعاليات'],
+            'services.card2.item1' => ['en' => 'Tournament planning and execution', 'ar' => 'تخطيط وتنفيذ البطولات'],
+            'services.card2.item2' => ['en' => 'Live streaming and broadcast services', 'ar' => 'خدمات البث المباشر والنقل'],
+            'services.card2.item3' => ['en' => 'Professional commentary and analysis', 'ar' => 'تعليق وتحليل احترافي'],
+            'services.card2.item4' => ['en' => 'Venue coordination and logistics', 'ar' => 'تنسيق المواقع واللوجستيات'],
+            'services.card3.title' => ['en' => 'Community Building & Engagement', 'ar' => 'بناء المجتمع والتفاعل'],
+            'services.card3.item1' => ['en' => 'Discord server setup and management', 'ar' => 'إعداد وإدارة خوادم ديسكورد'],
+            'services.card3.item2' => ['en' => 'Social media strategy and content creation', 'ar' => 'استراتيجية منصات التواصل وصناعة المحتوى'],
+            'services.card3.item3' => ['en' => 'Player networking and team formation', 'ar' => 'ربط اللاعبين وتكوين الفرق'],
+            'services.card3.item4' => ['en' => 'Regular community events and activities', 'ar' => 'فعاليات وأنشطة مجتمعية منتظمة'],
+            'services.card4.title' => ['en' => 'Training & Coaching Services', 'ar' => 'خدمات التدريب والتوجيه'],
+            'services.card4.item1' => ['en' => 'One-on-one coaching sessions', 'ar' => 'جلسات تدريب فردية'],
+            'services.card4.item2' => ['en' => 'Team strategy development', 'ar' => 'تطوير استراتيجيات الفرق'],
+            'services.card4.item3' => ['en' => 'Performance analysis and improvement', 'ar' => 'تحليل الأداء وتحسينه'],
+            'services.card4.item4' => ['en' => 'Mental health and wellness support', 'ar' => 'دعم الصحة الذهنية والعافية'],
+            'services.card5.title' => ['en' => 'Broadcasting & Media Production', 'ar' => 'البث وإنتاج المحتوى الإعلامي'],
+            'services.card5.item1' => ['en' => 'Multi-platform streaming setup', 'ar' => 'إعداد بث متعدد المنصات'],
+            'services.card5.item2' => ['en' => 'Professional video production', 'ar' => 'إنتاج فيديو احترافي'],
+            'services.card5.item3' => ['en' => 'Graphics and overlay design', 'ar' => 'تصميم الرسوميات والعناصر البصرية'],
+            'services.card5.item4' => ['en' => 'Post-event highlight reels', 'ar' => 'ملخصات مميزة بعد الفعالية'],
+            'services.card6.title' => ['en' => 'Sponsorship & Partnership', 'ar' => 'الرعاية والشراكات'],
+            'services.card6.item1' => ['en' => 'Brand partnership development', 'ar' => 'تطوير شراكات مع العلامات التجارية'],
+            'services.card6.item2' => ['en' => 'Sponsorship activation strategies', 'ar' => 'استراتيجيات تفعيل الرعايات'],
+            'services.card6.item3' => ['en' => 'Marketing campaign execution', 'ar' => 'تنفيذ الحملات التسويقية'],
+            'services.card6.item4' => ['en' => 'ROI tracking and reporting', 'ar' => 'تتبع العائد على الاستثمار والتقارير'],
+        ];
+
+        $contentTranslations = static function (string $key) use ($contents, $defaultTranslations) {
+            $defaults = $defaultTranslations[$key] ?? ['en' => '', 'ar' => ''];
+            $record = $contents->get($key);
+            $translations = $record ? $record->getTranslations('value') : [];
+
+            foreach (['en', 'ar'] as $locale) {
+                $value = $translations[$locale] ?? null;
+                if (! is_string($value) || trim($value) === '') {
+                    $translations[$locale] = $defaults[$locale] ?? '';
+                }
+            }
+
+            return $translations;
+        };
+    @endphp
     <!-- Mode Indicator -->
     <div class="skeleton-mode-indicator">
         🎨 SKELETON EDIT MODE - COMPLETE SERVICES PAGE
@@ -50,7 +100,7 @@
                 <h1 class="text-4xl font-bold mb-4">
                     <span data-content-key="services.header.title" 
                           data-content-type="text"
-                          data-content-value="{{ $contents['services.header.title']->value ?? '{}' }}">
+                          data-content-value='@json($contentTranslations("services.header.title"))'>
                         {{ content('services.header.title', 'Our Services') }}
                     </span>
                 </h1>
@@ -79,7 +129,7 @@
                         <h3 class="text-xl font-bold ml-4">
                             <span data-content-key="services.card1.title" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card1.title']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card1.title"))'>
                                 {{ content('services.card1.title', 'Technology & Platform Development') }}
                             </span>
                         </h3>
@@ -90,7 +140,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card1.item1" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card1.item1']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card1.item1"))'>
                                 {{ content('services.card1.item1', 'Custom tournament platforms and registration portals') }}
                             </span>
                         </li>
@@ -98,7 +148,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card1.item2" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card1.item2']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card1.item2"))'>
                                 {{ content('services.card1.item2', 'Score tracking dashboards and live updates') }}
                             </span>
                         </li>
@@ -106,7 +156,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card1.item3" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card1.item3']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card1.item3"))'>
                                 {{ content('services.card1.item3', 'Integration with Discord, Twitch, and other gaming tools') }}
                             </span>
                         </li>
@@ -114,7 +164,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card1.item4" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card1.item4']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card1.item4"))'>
                                 {{ content('services.card1.item4', 'Mobile-first responsive design') }}
                             </span>
                         </li>
@@ -135,7 +185,7 @@
                         <h3 class="text-xl font-bold ml-4">
                             <span data-content-key="services.card2.title" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card2.title']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card2.title"))'>
                                 {{ content('services.card2.title', 'Event Management & Production') }}
                             </span>
                         </h3>
@@ -146,7 +196,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card2.item1" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card2.item1']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card2.item1"))'>
                                 {{ content('services.card2.item1', 'Tournament planning and execution') }}
                             </span>
                         </li>
@@ -154,7 +204,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card2.item2" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card2.item2']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card2.item2"))'>
                                 {{ content('services.card2.item2', 'Live streaming and broadcast services') }}
                             </span>
                         </li>
@@ -162,7 +212,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card2.item3" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card2.item3']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card2.item3"))'>
                                 {{ content('services.card2.item3', 'Professional commentary and analysis') }}
                             </span>
                         </li>
@@ -170,7 +220,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card2.item4" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card2.item4']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card2.item4"))'>
                                 {{ content('services.card2.item4', 'Venue coordination and logistics') }}
                             </span>
                         </li>
@@ -191,7 +241,7 @@
                         <h3 class="text-xl font-bold ml-4">
                             <span data-content-key="services.card3.title" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card3.title']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card3.title"))'>
                                 {{ content('services.card3.title', 'Community Building & Engagement') }}
                             </span>
                         </h3>
@@ -202,7 +252,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card3.item1" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card3.item1']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card3.item1"))'>
                                 {{ content('services.card3.item1', 'Discord server setup and management') }}
                             </span>
                         </li>
@@ -210,7 +260,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card3.item2" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card3.item2']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card3.item2"))'>
                                 {{ content('services.card3.item2', 'Social media strategy and content creation') }}
                             </span>
                         </li>
@@ -218,7 +268,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card3.item3" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card3.item3']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card3.item3"))'>
                                 {{ content('services.card3.item3', 'Player networking and team formation') }}
                             </span>
                         </li>
@@ -226,7 +276,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card3.item4" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card3.item4']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card3.item4"))'>
                                 {{ content('services.card3.item4', 'Regular community events and activities') }}
                             </span>
                         </li>
@@ -247,7 +297,7 @@
                         <h3 class="text-xl font-bold ml-4">
                             <span data-content-key="services.card4.title" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card4.title']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card4.title"))'>
                                 {{ content('services.card4.title', 'Training & Coaching Services') }}
                             </span>
                         </h3>
@@ -258,7 +308,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card4.item1" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card4.item1']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card4.item1"))'>
                                 {{ content('services.card4.item1', 'One-on-one coaching sessions') }}
                             </span>
                         </li>
@@ -266,7 +316,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card4.item2" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card4.item2']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card4.item2"))'>
                                 {{ content('services.card4.item2', 'Team strategy development') }}
                             </span>
                         </li>
@@ -274,7 +324,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card4.item3" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card4.item3']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card4.item3"))'>
                                 {{ content('services.card4.item3', 'Performance analysis and improvement') }}
                             </span>
                         </li>
@@ -282,7 +332,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card4.item4" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card4.item4']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card4.item4"))'>
                                 {{ content('services.card4.item4', 'Mental health and wellness support') }}
                             </span>
                         </li>
@@ -303,7 +353,7 @@
                         <h3 class="text-xl font-bold ml-4">
                             <span data-content-key="services.card5.title" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card5.title']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card5.title"))'>
                                 {{ content('services.card5.title', 'Broadcasting & Media Production') }}
                             </span>
                         </h3>
@@ -314,7 +364,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card5.item1" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card5.item1']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card5.item1"))'>
                                 {{ content('services.card5.item1', 'Multi-platform streaming setup') }}
                             </span>
                         </li>
@@ -322,7 +372,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card5.item2" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card5.item2']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card5.item2"))'>
                                 {{ content('services.card5.item2', 'Professional video production') }}
                             </span>
                         </li>
@@ -330,7 +380,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card5.item3" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card5.item3']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card5.item3"))'>
                                 {{ content('services.card5.item3', 'Graphics and overlay design') }}
                             </span>
                         </li>
@@ -338,7 +388,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card5.item4" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card5.item4']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card5.item4"))'>
                                 {{ content('services.card5.item4', 'Post-event highlight reels') }}
                             </span>
                         </li>
@@ -359,7 +409,7 @@
                         <h3 class="text-xl font-bold ml-4">
                             <span data-content-key="services.card6.title" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card6.title']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card6.title"))'>
                                 {{ content('services.card6.title', 'Sponsorship & Partnership') }}
                             </span>
                         </h3>
@@ -370,7 +420,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card6.item1" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card6.item1']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card6.item1"))'>
                                 {{ content('services.card6.item1', 'Brand partnership development') }}
                             </span>
                         </li>
@@ -378,7 +428,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card6.item2" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card6.item2']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card6.item2"))'>
                                 {{ content('services.card6.item2', 'Sponsorship activation strategies') }}
                             </span>
                         </li>
@@ -386,7 +436,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card6.item3" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card6.item3']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card6.item3"))'>
                                 {{ content('services.card6.item3', 'Marketing campaign execution') }}
                             </span>
                         </li>
@@ -394,7 +444,7 @@
                             <span class="text-indigo-300 mr-2">•</span>
                             <span data-content-key="services.card6.item4" 
                                   data-content-type="text"
-                                  data-content-value="{{ $contents['services.card6.item4']->value ?? '{}' }}">
+                                  data-content-value='@json($contentTranslations("services.card6.item4"))'>
                                 {{ content('services.card6.item4', 'ROI tracking and reporting') }}
                             </span>
                         </li>
