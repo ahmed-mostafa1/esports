@@ -42,7 +42,7 @@
     <p class="text-xs text-gray-400 mt-1">Leave blank to generate from the English name.</p>
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Description (EN)</label>
+    <label class="block text-sm text-gray-300 mb-1">Key Information (EN)</label>
     <textarea
       name="description[en]"
       rows="4"
@@ -50,7 +50,7 @@
     >{{ old('description.en', data_get($partner, 'description.en')) }}</textarea>
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Description (AR)</label>
+    <label class="block text-sm text-gray-300 mb-1">Key Information (AR)</label>
     <textarea
       name="description[ar]"
       dir="rtl"
@@ -59,7 +59,7 @@
     >{{ old('description.ar', data_get($partner, 'description.ar')) }}</textarea>
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">History (EN)</label>
+    <label class="block text-sm text-gray-300 mb-1">Objectives (EN)</label>
     <textarea
       name="history[en]"
       rows="4"
@@ -67,7 +67,7 @@
     >{{ old('history.en', data_get($partner, 'history.en')) }}</textarea>
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">History (AR)</label>
+    <label class="block text-sm text-gray-300 mb-1">Objectives (AR)</label>
     <textarea
       name="history[ar]"
       dir="rtl"
