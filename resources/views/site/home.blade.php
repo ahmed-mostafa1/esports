@@ -306,7 +306,7 @@
         data-carousel-viewport>
         <ul class="tournament-carousel__track" id="tournamentCarouselTrack" data-carousel-track>
           @forelse($tournaments as $t)
-            @php
+          @php
               $status = match($t->status) {
                 'open' => __('Open'),
                 'finished' => __('Finished'),
@@ -322,6 +322,11 @@
                 'current' => $loop->iteration,
                 'total' => $tournamentTotal,
               ]);
+              $isFinished = $t->status === 'finished';
+              $ctaUrl = $isFinished
+                ? route('winners.show', $t->slug)
+                : route('tournaments.register', $t->slug);
+              $ctaLabel = $isFinished ? __('Winners') : __('Register your team');
             @endphp
             <li
               class="tournament-slide"
@@ -351,8 +356,8 @@
                   <p class="t-card__prize">
                     {{ $t->prize ?: __('Prize TBD') }}
                   </p>
-                  <a class="t-card__link" href="{{ route('tournaments.register', $t->slug) }}">
-                    {{ __('Register your team') }}
+                  <a class="t-card__link" href="{{ $ctaUrl }}">
+                    {{ $ctaLabel }}
                   </a>
                 </div>
               </article>

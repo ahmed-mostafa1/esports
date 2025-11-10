@@ -40,13 +40,11 @@
       @csrf
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-white">{{ __('Games') }}</h2>
-        <button type="submit" class="px-3 py-2 text-sm bg-blue-600 hover:bg-blue-500 text-white rounded">{{ __('Save Order') }}</button>
       </div>
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-neutral-800 text-sm">
           <thead class="bg-neutral-900 text-gray-300 uppercase tracking-wide text-xs">
             <tr>
-              <th class="px-3 py-2 text-left">{{ __('Image') }}</th>
               <th class="px-3 py-2 text-left">{{ __('Title') }}</th>
               <th class="px-3 py-2 text-left">{{ __('Slug') }}</th>
               <th class="px-3 py-2 text-left">{{ __('Status') }}</th>
@@ -59,13 +57,6 @@
           <tbody class="divide-y divide-neutral-800">
             @forelse($games as $game)
               <tr class="bg-neutral-900/40">
-                <td class="px-3 py-2">
-                  @if($game->imageUrl())
-                    <img src="{{ $game->imageUrl() }}" alt="{{ $game->titleFor(app()->getLocale()) }}" class="w-16 h-16 object-cover rounded border border-neutral-800">
-                  @else
-                    <span class="text-xs text-gray-500">—</span>
-                  @endif
-                </td>
                 <td class="px-3 py-2 text-gray-200">
                   <div class="font-semibold">{{ $game->titleFor(app()->getLocale()) ?: __('Untitled') }}</div>
                   <div class="text-xs text-gray-400">#{{ $game->id }}</div>

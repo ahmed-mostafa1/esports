@@ -23,7 +23,7 @@
     <i class="tri mr" aria-hidden="true"></i>
 
     <!-- Grid -->
-    @php($locale = app()->getLocale())
+    @php $locale = app()->getLocale(); @endphp
     <ul class="team-grid">
         @forelse($teams as $team)
             @php

@@ -44,9 +44,13 @@
           </div>
         @endif
 
-        @php($gameWinners = ($gameWinners ?? collect())->filter())
+        <?php
+          $gameWinners = ($gameWinners ?? collect())->filter();
+          $hasGameWinners = $gameWinners->isNotEmpty();
+          $hasLegacyWinner = ! $hasGameWinners && $winner;
+        ?>
 
-        @if($gameWinners->isNotEmpty())
+        <?php if ($hasGameWinners): ?>
           <section class="w-full space-y-4">
             @foreach($gameWinners as $game)
               <article class="bg-[#1f2937] border border-[#374151] rounded-2xl p-5 space-y-4">
@@ -71,7 +75,9 @@
               </article>
             @endforeach
           </section>
-        @elseif($winner)
+        <?php endif; ?>
+
+        <?php if ($hasLegacyWinner): ?>
           @php
             $snapshot = $winner->snapshot ?? [];
             $singleEntries = collect($snapshot['singles'] ?? []);
@@ -166,11 +172,13 @@
               </div>
             </section>
           @endif
-        @else
+        <?php endif; ?>
+
+        <?php if (! $hasGameWinners && ! $hasLegacyWinner): ?>
           <p class="text-gray-400" style="font-size:16px;">
             {{ content('winners.empty', 'Winner will be announced soon.') }}
           </p>
-        @endif
+        <?php endif; ?>
       </article>
     </div>
   </section>
