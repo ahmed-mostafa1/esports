@@ -130,13 +130,11 @@
     font-size: 0.85rem;
   }
   .game-tile__body {
-    position: relative;
     padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: auto;
-    background: linear-gradient(180deg, rgba(5,5,6,0), rgba(5,5,6,0.85) 40%, rgba(5,5,6,1));
+    background: #050506;
   }
   .winner-pill-list {
     display: flex;
@@ -260,18 +258,23 @@
             <div class="game-scroll">
               @foreach($displayCards as $card)
                 @php($cardImage = $card['image'] ?: $tournamentImage)
-                <article class="game-tile" style="--game-image:url('{{ e($cardImage) }}');">
-                  <div class="game-tile__label">{{ strtoupper($card['title']) }}</div>
+                <article class="game-tile">
+                  <figure>
+                    <img src="{{ $cardImage }}" alt="{{ $card['title'] }}">
+                  </figure>
                   <div class="game-tile__body">
+                    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">
+                      {{ strtoupper($card['title']) }}
+                    </h3>
                     <div class="winner-pill-list">
                       @forelse($card['winners'] as $winnerName)
                         <div class="winner-pill">
-                          <span>{{ __('Winner') }} - {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                          <span>{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                           <span>{{ $winnerName ?: __('TBD') }}</span>
                         </div>
                       @empty
                         <div class="winner-pill">
-                          <span>{{ __('Winner') }}</span>
+                          <span>--</span>
                           <span>{{ __('Coming soon') }}</span>
                         </div>
                       @endforelse

@@ -59,33 +59,26 @@
                   alt="{{ $game->titleFor(app()->getLocale()) ?: $tournamentTitle }}"
                 />
               </figure>
-              <div class="vlabel">
-                <strong>{{ $game->titleFor(app()->getLocale()) ?: __('Game') }}</strong>
-                <em>{{ strtoupper($game->status) }}</em>
-              </div>
+            
               <i class="accent" aria-hidden="true"></i>
               <div class="abilities">
-                <span class="ab" style="color:#fff; font-weight:600;">{{ $game->allow_single ? __('Single open') : __('Single closed') }}</span>
-                <span class="ab" style="color:#fff; font-weight:600;">{{ $game->allow_team ? __('Team open') : __('Team closed') }}</span>
-                <span class="ab" style="color:#fff;">{{ __('Sort:') }} {{ $game->sort_order }}</span>
-                <span class="under" aria-hidden="true"></span>
+              <h5>
+ {{ $description ?: __('Select your preferred mode below to continue.') }}
+              </h5>
               </div>
             </div>
             <div class="cta">
-              <p class="text-sm text-gray-200" style="min-height:60px;">
-                {{ $description ?: __('Select your preferred mode below to continue.') }}
-              </p>
               <div class="segmented">
                 <a
                   href="{{ $singleUrl ?: '#' }}"
-                  class="mini"
+                  class="tab-btn active"
                   style="{{ $singleUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
                 >
                   {{ content('tours-reg.links.single', 'Single') }}
                 </a>
                 <a
                   href="{{ $teamUrl ?: '#' }}"
-                  class="mini"
+                  class="tab-btn active"
                   style="{{ $teamUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
                 >
                   {{ content('tours-reg.links.team', 'Team') }}
@@ -151,8 +144,8 @@
           ],
           [
               'key' => 'card4',
-              'theme' => 'theme-white',
-              'label_classes' => 'vlabel vlabel--light',
+              'theme' => 'theme-coal',
+              'label_classes' => 'vlabel',
               'name_class' => '',
               'fallback_name' => 'SAGE',
               'fallback_country' => 'China',
