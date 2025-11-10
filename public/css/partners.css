@@ -41,6 +41,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 46px 34px;
+  align-items: stretch;
 }
 
 @media (max-width: 1020px){
@@ -52,6 +53,12 @@
 
 .p-card{
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 12px 28px;
+  min-height: 480px;
+  height: 100%;
 }
 
 /* rounded image with heavy soft shadow + highlight rim */
@@ -77,6 +84,11 @@
   color: var(--muted);
   font-weight: 600;
   line-height: 1.6;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  min-height: 5.5rem;
 }
 
 /* gradient button */

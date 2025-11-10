@@ -97,7 +97,11 @@ body{
   box-shadow: 0 14px 30px rgba(0,0,0,.45);
 }
 .name-pill{
-  position:absolute; left:50%; bottom:-16px; transform:translateX(-50%);
+  position:static;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:18px auto 0;
   background:var(--red); color:#fff; font-weight:800; font-size:18px;
   padding:10px 18px; border-radius:12px;
   box-shadow:0 10px 22px rgba(242,59,51,.45);
