@@ -18,7 +18,7 @@
 <section class="team team-show" aria-labelledby="team-member-title">
     <div class="team-head">
         <h2 id="team-member-title" class="pill-red">
-            {{ $name }}
+           Our Team
         </h2>
     </div>
 
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <a href="{{ route('team') }}" class="read-more-link back-link team-back-link">
+    <a href="{{ route('team') }}" class="team-value-heading">
         {{ __('Back to Team') }}
     </a>
 </section>

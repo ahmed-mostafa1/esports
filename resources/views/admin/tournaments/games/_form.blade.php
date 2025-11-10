@@ -2,7 +2,7 @@
 @php($titleAr = old('title_ar', data_get($game->title, 'ar')))
 @php($descriptionEn = old('description_en', data_get($game->description, 'en')))
 @php($descriptionAr = old('description_ar', data_get($game->description, 'ar')))
-@php($status = old('status', $game->status ?? 'open'))
+@php($status = old('status', $game->status ?? null) ?: 'open')
 @php($allowSingle = old('allow_single', $game->allow_single ?? true))
 @php($allowTeam = old('allow_team', $game->allow_team ?? true))
 @php($sortOrder = old('sort_order', $game->sort_order ?? null))
