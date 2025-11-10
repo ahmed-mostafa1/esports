@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use App\Models\TournamentCard;
 use App\Models\SingleRegistration;
@@ -14,6 +15,37 @@ use Illuminate\Support\Str;
 
 class TournamentAdminController extends Controller
 {
+    public function index()
+    {
+        $tournaments = TournamentCard::query()
+            ->withCount(['singleRegistrations', 'teamRegistrations'])
+            ->orderByRaw("FIELD(status, 'open','finished','closed') ASC")
+            ->orderBy('sort_order')
+            ->orderByDesc('id')
+            ->paginate(20);
+
+        return view('admin.tournaments.index', compact('tournaments'));
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $data = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:tournament_cards,id'],
+        ]);
+
+        $cards = TournamentCard::whereIn('id', $data['ids'])->get();
+
+        foreach ($cards as $card) {
+            $this->removeCardImage($card->image_path);
+            $card->delete();
+        }
+
+        return redirect()
+            ->route('admin.tournaments.index')
+            ->with('ok', __('Selected tournaments deleted.'));
+    }
+
     public function open()
     {
         $tournaments = TournamentCard::where('status', 'open')
@@ -257,5 +289,17 @@ class TournamentAdminController extends Controller
         return redirect()
             ->route('admin.tournaments.show', $tournament)
             ->with('ok', __('Tournament marked as finished.'));
+    }
+
+    private function removeCardImage(?string $path): void
+    {
+        if (!$path) {
+            return;
+        }
+
+        $fullPath = public_path($path);
+        if (File::isFile($fullPath)) {
+            File::delete($fullPath);
+        }
     }
 }

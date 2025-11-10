@@ -109,6 +109,8 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::post('tournament-cards/reorder', [TournamentCardController::class, 'reorder'])
             ->name('tournament-cards.reorder');
 
+        Route::get('/tournaments', [TournamentAdminController::class, 'index'])->name('tournaments.index');
+        Route::delete('/tournaments/bulk', [TournamentAdminController::class, 'bulkDestroy'])->name('tournaments.bulk-destroy');
         Route::get('/tournaments/open', [TournamentAdminController::class, 'open'])->name('tournaments.open');
         Route::get('/tournaments/{tournament:slug}', [TournamentAdminController::class, 'show'])->name('tournaments.show');
         Route::get('/tournaments/{tournament:slug}/export', [TournamentAdminController::class, 'export'])->name('tournaments.export');

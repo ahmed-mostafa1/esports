@@ -115,6 +115,20 @@
           {{ __('Open Tournaments') }}
         </a>
 
+        <!-- All tournaments overview -->
+        <a
+          href="{{ route('admin.tournaments.index') }}"
+          class="flex items-center gap-2 rounded-md px-3 py-2
+                 {{ request()->routeIs('admin.tournaments.index') ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-gray-100' }}
+                 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 7h14M3 12h14M3 17h14" />
+          </svg>
+          {{ __('All Tournaments') }}
+        </a>
+
         <!-- Tournament Cards (CRUD + reorder) -->
         <a
           href="{{ route('admin.tournament-cards.index') }}"
