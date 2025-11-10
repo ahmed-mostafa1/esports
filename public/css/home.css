@@ -780,17 +780,17 @@ body {
 }
 
 .t-card__status.is-live {
-  background: rgba(34, 197, 94, 0.25);
+  background: rgb(31, 92, 54);
   border-color: rgba(34, 197, 94, 0.65);
 }
 
 .t-card__status.is-finished {
-  background: rgba(59, 130, 246, 0.25);
+  background: rgba(18, 51, 100, 0.767);
   border-color: rgba(59, 130, 246, 0.65);
 }
 
 .t-card__status.is-closed {
-  background: rgba(156, 163, 175, 0.2);
+  background: rgb(1, 39, 105);
   border-color: rgba(156, 163, 175, 0.5);
 }
 
