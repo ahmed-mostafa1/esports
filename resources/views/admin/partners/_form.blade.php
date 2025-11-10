@@ -1,4 +1,5 @@
 @php($partner = $partner ?? null)
+@php($forceImage = $forceImage ?? false)
 
 @if($errors->any())
   <div class="mb-4 px-4 py-3 bg-red-900/40 border border-red-700 text-red-200 rounded">
@@ -74,16 +75,23 @@
       class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
     >{{ old('history.ar', data_get($partner, 'history.ar')) }}</textarea>
   </div>
+  @php($mediaType = old('media_type', $partner->media_type ?? 'image'))
   <div>
     <label class="block text-sm text-gray-300 mb-1">Media Type</label>
-    <select
-      name="media_type"
-      id="media_type"
-      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600">
-      @php($mediaType = old('media_type', $partner->media_type ?? 'image'))
-      <option value="image" {{ $mediaType === 'image' ? 'selected' : '' }}>Image</option>
-      <option value="video" {{ $mediaType === 'video' ? 'selected' : '' }}>Video</option>
-    </select>
+    @if($forceImage)
+      <input type="hidden" name="media_type" value="image">
+      <div class="w-full bg-neutral-900/60 text-gray-200 rounded px-3 py-2 border border-neutral-700">
+        Image (required on creation)
+      </div>
+    @else
+      <select
+        name="media_type"
+        id="media_type"
+        class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600">
+        <option value="image" {{ $mediaType === 'image' ? 'selected' : '' }}>Image</option>
+        <option value="video" {{ $mediaType === 'video' ? 'selected' : '' }}>Video</option>
+      </select>
+    @endif
   </div>
   <div class="flex items-center gap-2">
     <input

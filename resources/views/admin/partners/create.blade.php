@@ -11,7 +11,7 @@
 
   <form action="{{ route('admin.partners.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
     @csrf
-    @include('admin.partners._form', ['partner' => null])
+    @include('admin.partners._form', ['partner' => null, 'forceImage' => true])
 
     <div class="flex items-center gap-3">
       <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition">Create</button>
