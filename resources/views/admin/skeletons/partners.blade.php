@@ -75,6 +75,7 @@
             @php($partners = $partners ?? \App\Models\Partner::ordered()->get())
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                 @forelse($partners as $partner)
+                    @php($canManagePartner = $partner instanceof \App\Models\Partner && $partner->exists)
                     <div class="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all">
                         <div class="aspect-w-16 aspect-h-9 bg-gray-900/40">
                             @if($partner->media_type === 'video' && $partner->video_url)
@@ -105,16 +106,20 @@
                             </p>
                             
                             <div class="flex justify-end gap-2 text-sm">
-                                <a href="{{ route('admin.partners.edit', $partner) }}" class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
-                                    Edit
-                                </a>
-                                <form action="{{ route('admin.partners.destroy', $partner) }}" method="POST" onsubmit="return confirm('Delete this partner?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
-                                        Delete
-                                    </button>
-                                </form>
+                                @if($canManagePartner)
+                                    <a href="{{ route('admin.partners.edit', $partner->getKey()) }}" class="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('admin.partners.destroy', $partner->getKey()) }}" method="POST" onsubmit="return confirm('Delete this partner?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                            Delete
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="text-gray-500 italic">Preview mode</span>
+                                @endif
                             </div>
                         </div>
                     </div>

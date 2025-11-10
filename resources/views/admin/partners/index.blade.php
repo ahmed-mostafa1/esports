@@ -46,8 +46,8 @@
               </span>
             </td>
             <td class="px-3 py-3 text-right space-x-2">
-              <a href="{{ route('admin.partners.edit', $partner) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition">Edit</a>
-              <form action="{{ route('admin.partners.destroy', $partner) }}" method="POST" class="inline" onsubmit="return confirm('Delete this partner?');">
+              <a href="{{ route('admin.partners.edit', $partner->getKey()) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition">Edit</a>
+              <form action="{{ route('admin.partners.destroy', $partner->getKey()) }}" method="POST" class="inline" onsubmit="return confirm('Delete this partner?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition">Delete</button>

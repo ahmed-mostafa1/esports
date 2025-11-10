@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TournamentAdminController;
 use App\Http\Controllers\Admin\TournamentCardController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PartnerPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\Registration\SingleRegistrationController;
@@ -36,6 +37,8 @@ Route::view('/about', 'site.about')->name('about');
 Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
 Route::get('/gallery/{item:slug}', [GalleryController::class, 'show'])->name('gallery.show');
 Route::view('/partners', 'site.partners')->name('partners');
+Route::get('/partners/{partner:slug}', [PartnerPublicController::class, 'show'])
+    ->name('partners.show');
 Route::view('/privacy', 'site.privacy')->name('privacy');
 Route::view('/services', 'site.services')->name('services');
 Route::view('/terms', 'site.terms')->name('terms');

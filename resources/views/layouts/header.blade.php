@@ -24,6 +24,9 @@
         <a href="{{ route('gallery') }}" {{ request()->routeIs('gallery') || request()->routeIs('gallery.show') ? 'aria-current=page' : '' }}>
           {{ content('Gallery', __('Gallery')) }}
         </a>
+        <a href="{{ route('partners') }}" {{ request()->routeIs('partners') || request()->routeIs('partners.show') ? 'aria-current=page' : '' }}>
+          {{ content('nav.partners', __('Partners')) }}
+        </a>
         <a href="{{ route('news') }}" {{ request()->routeIs('news') ? 'aria-current=page' : '' }}>
           {{ content('News', __('News')) }}
         </a>

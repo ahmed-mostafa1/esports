@@ -30,6 +30,50 @@
       class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
     >
   </div>
+  <div class="md:col-span-2">
+    <label class="block text-sm text-gray-300 mb-1">Slug</label>
+    <input
+      name="slug"
+      value="{{ old('slug', $partner->slug ?? '') }}"
+      placeholder="auto-generate if empty"
+      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+    >
+    <p class="text-xs text-gray-400 mt-1">Leave blank to generate from the English name.</p>
+  </div>
+  <div>
+    <label class="block text-sm text-gray-300 mb-1">Description (EN)</label>
+    <textarea
+      name="description[en]"
+      rows="4"
+      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+    >{{ old('description.en', data_get($partner, 'description.en')) }}</textarea>
+  </div>
+  <div>
+    <label class="block text-sm text-gray-300 mb-1">Description (AR)</label>
+    <textarea
+      name="description[ar]"
+      dir="rtl"
+      rows="4"
+      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+    >{{ old('description.ar', data_get($partner, 'description.ar')) }}</textarea>
+  </div>
+  <div>
+    <label class="block text-sm text-gray-300 mb-1">History (EN)</label>
+    <textarea
+      name="history[en]"
+      rows="4"
+      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+    >{{ old('history.en', data_get($partner, 'history.en')) }}</textarea>
+  </div>
+  <div>
+    <label class="block text-sm text-gray-300 mb-1">History (AR)</label>
+    <textarea
+      name="history[ar]"
+      dir="rtl"
+      rows="4"
+      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+    >{{ old('history.ar', data_get($partner, 'history.ar')) }}</textarea>
+  </div>
   <div>
     <label class="block text-sm text-gray-300 mb-1">Media Type</label>
     <select

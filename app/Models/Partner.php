@@ -9,6 +9,9 @@ class Partner extends Model
 {
     protected $fillable = [
         'name',
+        'description',
+        'history',
+        'slug',
         'media_type',
         'image_path',
         'video_url',
@@ -18,8 +21,30 @@ class Partner extends Model
 
     protected $casts = [
         'name' => 'array',
+        'description' => 'array',
+        'history' => 'array',
         'is_published' => 'boolean',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $field ??= $this->getRouteKeyName();
+
+        $query = static::query();
+
+        if ($field === 'slug') {
+            return $query->where('slug', $value)
+                ->orWhere('id', $value)
+                ->firstOrFail();
+        }
+
+        return $query->where($field, $value)->firstOrFail();
+    }
 
     public function scopeOrdered(Builder $query): Builder
     {
@@ -33,16 +58,30 @@ class Partner extends Model
 
     public function displayName(string $locale, ?string $fallback = 'en'): string
     {
-        $names = $this->name ?? [];
-        if (isset($names[$locale]) && $names[$locale]) {
-            return $names[$locale];
+        return $this->displayText($this->name, $locale, $fallback);
+    }
+
+    public function displayText(array|string|null $field, string $locale, ?string $fallback = 'en'): string
+    {
+        if (is_array($field)) {
+            if (!empty($field[$locale])) {
+                return $field[$locale];
+            }
+
+            if ($fallback && !empty($field[$fallback])) {
+                return $field[$fallback];
+            }
+
+            foreach ($field as $value) {
+                if ($value) {
+                    return $value;
+                }
+            }
+
+            return '';
         }
 
-        if ($fallback && isset($names[$fallback]) && $names[$fallback]) {
-            return $names[$fallback];
-        }
-
-        return '';
+        return $field ?? '';
     }
 
     public function mediaTag(?string $locale = null): string

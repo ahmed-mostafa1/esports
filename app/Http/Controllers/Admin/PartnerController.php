@@ -37,12 +37,14 @@ class PartnerController extends Controller
                 ]);
             }
             $data['image_path'] = $this->storeImage($request->file('image'));
+            $data['video_url'] = null;
         } else {
             if (!$data['video_url']) {
                 throw ValidationException::withMessages([
                     'video_url' => __('A video URL is required when media type is video.'),
                 ]);
             }
+            $data['image_path'] = null;
         }
 
         Partner::create($data);
@@ -57,7 +59,7 @@ class PartnerController extends Controller
 
     public function update(UpdatePartnerRequest $request, Partner $partner)
     {
-        $data = $this->extractData($request);
+        $data = $this->extractData($request, $partner);
 
         if ($data['media_type'] === 'image') {
             if ($request->hasFile('image')) {
@@ -111,17 +113,55 @@ class PartnerController extends Controller
         return response()->json(['ok' => true]);
     }
 
-    private function extractData(Request $request): array
+    private function extractData(Request $request, ?Partner $partner = null): array
     {
         return [
             'name' => [
                 'en' => $request->input('name.en'),
                 'ar' => $request->input('name.ar'),
             ],
+            'description' => [
+                'en' => $request->input('description.en'),
+                'ar' => $request->input('description.ar'),
+            ],
+            'history' => [
+                'en' => $request->input('history.en'),
+                'ar' => $request->input('history.ar'),
+            ],
+            'slug' => $this->makeSlug(
+                $request->input('slug'),
+                $request->input('name.en'),
+                $partner
+            ),
             'media_type' => $request->input('media_type'),
             'video_url' => $this->normaliseVideoUrl($request->input('video_url')),
             'is_published' => $request->boolean('is_published'),
         ];
+    }
+
+    private function makeSlug(?string $input, ?string $englishName, ?Partner $partner = null): string
+    {
+        $base = $input ? Str::slug($input) : Str::slug($englishName ?? '');
+
+        if (!$base) {
+            $base = $partner?->slug ?? 'partner';
+        }
+
+        $slug = $base;
+        $suffix = 2;
+
+        while ($this->slugExists($slug, $partner?->id)) {
+            $slug = sprintf('%s-%d', $base, $suffix++);
+        }
+
+        return $slug;
+    }
+
+    private function slugExists(string $slug, ?int $ignoreId = null): bool
+    {
+        return Partner::where('slug', $slug)
+            ->when($ignoreId, fn ($query, $id) => $query->where('id', '<>', $id))
+            ->exists();
     }
 
     private function storeImage($file): string

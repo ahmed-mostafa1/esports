@@ -28,7 +28,11 @@
     <p class="section1__text">{{ content('partners.section1.text', 'Discover how partnering with us can elevate your brand and connect you with the esports community.') }}</p>
   </div>
 
+  @php($locale = app()->getLocale())
   @php($partners = \App\Models\Partner::published()->ordered()->get())
+  @php($ctaLabel = app()->getLocale() === 'ar'
+      ? 'اقرأ المزيد'
+      : content('partners.card.cta', 'Read More'))
   <ul class="partners__grid">
     @forelse($partners as $partner)
       <li class="p-card">
@@ -45,10 +49,15 @@
             </div>
           @endif
         </figure>
+        @php($cardDescription = $partner->displayText($partner->description, $locale))
         <p class="p-card__desc">
-          {{ content('partners.intro.text', 'The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.') }}
+          {{ $cardDescription ?: content('partners.intro.text', 'The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.') }}
         </p>
-        <button class="btn-more" type="button">{{ content('partners.card.cta', 'Read More') }}</button>
+        @if($partner->slug)
+          <a class="btn-more" href="{{ route('partners.show', $partner) }}">
+            {{ $ctaLabel }}
+          </a>
+        @endif
       </li>
     @empty
       <li class="p-card">
@@ -60,7 +69,7 @@
         <p class="p-card__desc">
           {{ __('Check back soon to see our latest partnerships.') }}
         </p>
-        <button class="btn-more" type="button">{{ content('partners.card.cta', 'Read More') }}</button>
+        <button class="btn-more" type="button">{{ $ctaLabel }}</button>
       </li>
     @endforelse
   </ul>
