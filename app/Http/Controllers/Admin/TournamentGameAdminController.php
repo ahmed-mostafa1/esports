@@ -133,8 +133,8 @@ class TournamentGameAdminController extends Controller
             'image' => $imageRules,
         ]);
 
-        $payload['allow_single'] = $request->boolean('allow_single', true);
-        $payload['allow_team'] = $request->boolean('allow_team', true);
+        $payload['allow_single'] = $request->boolean('allow_single');
+        $payload['allow_team'] = $request->boolean('allow_team');
 
         return $payload;
     }

@@ -63,6 +63,7 @@
         <div class="footer-bottom gradient-bar">
             <p>{{ content('footer.copyright', '©Copyright 2025') }}</p> 
             <p>{{ content('footer.developed_by', 'Designed & Developed by Four04') }}</p>
+            <p>{{ __('Total Visitors: :count', ['count' => number_format($totalVisitorCount ?? 0)]) }}</p>
         </div>
     </footer>
     @stack('scripts')

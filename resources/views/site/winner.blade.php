@@ -93,9 +93,18 @@
     border: 1px solid rgba(255,255,255,0.04);
   }
   .game-scroll {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+  }
+  .game-scroll::-webkit-scrollbar {
+    height: 8px;
+  }
+  .game-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.25);
+    border-radius: 999px;
   }
   .game-tile {
     background: linear-gradient(180deg, rgba(5,5,6,0.85), rgba(5,5,6,0.95));
@@ -103,31 +112,11 @@
     border: 2px solid #f23b33;
     position: relative;
     overflow: hidden;
-    min-height: 320px;
+    min-width: 230px;
+    max-width: 260px;
     display: flex;
     flex-direction: column;
     color: #fff;
-  }
-  .game-tile::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: var(--game-image, none);
-    background-size: cover;
-    background-position: center;
-    opacity: 0.35;
-    filter: saturate(1.1);
-  }
-  .game-tile__label {
-    position: absolute;
-    left: 12px;
-    top: 20px;
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: 0.18em;
-    color: #f23b33;
-    font-weight: 700;
-    font-size: 0.85rem;
   }
   .game-tile__body {
     padding: 18px;
@@ -135,6 +124,17 @@
     flex-direction: column;
     gap: 12px;
     background: #050506;
+  }
+  .game-tile figure {
+    height: 160px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .game-tile figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   .winner-pill-list {
     display: flex;
@@ -263,9 +263,9 @@
                     <img src="{{ $cardImage }}" alt="{{ $card['title'] }}">
                   </figure>
                   <div class="game-tile__body">
-                    <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">
+                    <h5 style="font-weight:700;margin-bottom:8px;">
                       {{ strtoupper($card['title']) }}
-                    </h3>
+                    </h5>
                     <div class="winner-pill-list">
                       @forelse($card['winners'] as $winnerName)
                         <div class="winner-pill">

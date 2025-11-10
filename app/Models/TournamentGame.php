@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class TournamentGame extends Model
 {
@@ -72,15 +73,19 @@ class TournamentGame extends Model
             return $path;
         }
 
-        if (Storage::disk('public')->exists($path)) {
-            return Storage::disk('public')->url($path);
-        }
-
-        if (Str::startsWith($path, ['storage/', 'public/'])) {
+        if ($this->publicAssetExists($path)) {
             return asset($path);
         }
 
-        return asset('storage/' . ltrim($path, '/'));
+        try {
+            if (Storage::disk('public')->exists($path)) {
+                return route('tournament-games.image', $this);
+            }
+        } catch (Throwable $e) {
+            // Ignore disk issues and fall through to null so UI can fall back.
+        }
+
+        return null;
     }
 
     public function getRouteKeyName(): string
@@ -104,5 +109,16 @@ class TournamentGame extends Model
                 $game->slug = $slug;
             }
         });
+    }
+
+    private function publicAssetExists(string $path): bool
+    {
+        if (Str::startsWith($path, ['storage/', 'public/'])) {
+            return false;
+        }
+
+        $fullPath = public_path($path);
+
+        return is_string($fullPath) && is_file($fullPath);
     }
 }

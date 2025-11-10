@@ -16,6 +16,7 @@ use App\Http\Controllers\PartnerPublicController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamPublicController;
 use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\TournamentGameImageController;
 use App\Http\Controllers\Registration\SingleRegistrationController;
 use App\Http\Controllers\Registration\TeamRegistrationController;
 use App\Http\Controllers\WinnersController;
@@ -51,6 +52,8 @@ Route::get('/tournaments/{tournament:slug}/register', [TournamentController::cla
 Route::view('/tours-reg', 'site.tours-reg')->name('tours-reg');
 Route::get('/team', [TeamPublicController::class, 'index'])->name('team');
 Route::get('/team/{team:slug}', [TeamPublicController::class, 'show'])->name('teams.show');
+Route::get('/media/tournament-games/{game:slug}', TournamentGameImageController::class)
+    ->name('tournament-games.image');
 
 // Public registration
 Route::get('/register/single', [SingleRegistrationController::class, 'create'])->name('register.single');

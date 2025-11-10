@@ -43,20 +43,25 @@
           @php
             $theme = $themeCycle[$loop->index % count($themeCycle)];
             $description = $game->description[app()->getLocale()] ?? ($game->description['en'] ?? '');
-            $gameImage = $game->imageUrl() ?? $tournament->imageUrl() ?? content_media('tours-reg.card1.image', 'img/Art(3).png');
-            $singleUrl = ($game->allow_single && $game->status === 'open')
+            $gameTitle = $game->titleFor(app()->getLocale()) ?: $tournamentTitle;
+            $gameImage = $game->imageUrl() ?: content_media('tours-reg.card1.image', 'img/Art(3).png');
+            $singleAllowed = (bool) $game->allow_single;
+            $teamAllowed = (bool) $game->allow_team;
+            $singleUrl = ($singleAllowed && $game->status === 'open')
               ? route('privacy', ['mode' => 'single', 't' => $tournament->id, 'g' => $game->id])
               : null;
-            $teamUrl = ($game->allow_team && $game->status === 'open')
+            $teamUrl = ($teamAllowed && $game->status === 'open')
               ? route('privacy', ['mode' => 'team', 't' => $tournament->id, 'g' => $game->id])
               : null;
           @endphp
           <li class="char-card {{ $theme }}">
             <div class="char-wrap">
-              <figure class="art">
+              <figure class="art" data-art-source="{{ $gameImage }}">
                 <img
                   src="{{ $gameImage }}"
-                  alt="{{ $game->titleFor(app()->getLocale()) ?: $tournamentTitle }}"
+                  alt="{{ $gameTitle }}"
+                  loading="lazy"
+                  decoding="async"
                 />
               </figure>
             
@@ -69,21 +74,32 @@
             </div>
             <div class="cta">
               <div class="segmented">
-                <a
-                  href="{{ $singleUrl ?: '#' }}"
-                  class="tab-btn active"
-                  style="{{ $singleUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
-                >
-                  {{ content('tours-reg.links.single', 'Single') }}
-                </a>
-                <a
-                  href="{{ $teamUrl ?: '#' }}"
-                  class="tab-btn active"
-                  style="{{ $teamUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
-                >
-                  {{ content('tours-reg.links.team', 'Team') }}
-                </a>
+                @if($singleAllowed)
+                  <a
+                    href="{{ $singleUrl ?: '#' }}"
+                    class="tab-btn active"
+                    style="{{ $singleUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
+                  >
+                    {{ content('tours-reg.links.single', 'Single') }}
+                  </a>
+                @endif
+
+                @if($teamAllowed)
+                  <a
+                    href="{{ $teamUrl ?: '#' }}"
+                    class="tab-btn active"
+                    style="{{ $teamUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
+                  >
+                    {{ content('tours-reg.links.team', 'Team') }}
+                  </a>
+                @endif
               </div>
+
+              @unless($singleAllowed || $teamAllowed)
+                <p class="mini" style="margin-top:8px; opacity:0.7;">
+                  {{ __('Registrations are not available for this game.') }}
+                </p>
+              @endunless
             </div>
           </li>
         @empty
