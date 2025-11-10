@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class TournamentCard extends Model
@@ -75,6 +76,13 @@ class TournamentCard extends Model
     public function winner()
     {
         return $this->hasOne(Winner::class);
+    }
+
+    public function games(): HasMany
+    {
+        return $this->hasMany(TournamentGame::class, 'tournament_card_id')
+            ->orderBy('sort_order')
+            ->orderBy('id');
     }
 
     public function getRouteKeyName(): string

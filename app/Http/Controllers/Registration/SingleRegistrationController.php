@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SingleRegistrationRequest;
 use App\Models\SingleRegistration;
 use App\Models\TournamentCard;
+use App\Models\TournamentGame;
 use Illuminate\Http\Request;
 
 class SingleRegistrationController extends Controller
@@ -25,9 +26,27 @@ class SingleRegistrationController extends Controller
             }
         }
 
+        $selectedGameId = null;
+        $selectedGame = null;
+
+        $gameId = $request->query('g');
+        if ($gameId && $selectedTournamentId) {
+            $selectedGame = TournamentGame::where('id', (int) $gameId)
+                ->where('tournament_card_id', $selectedTournamentId)
+                ->where('allow_single', true)
+                ->where('status', 'open')
+                ->first();
+
+            if ($selectedGame) {
+                $selectedGameId = $selectedGame->id;
+            }
+        }
+
         return view('site.reg-single', [
             'tournaments' => $tournaments,
             'selectedTournamentId' => $selectedTournamentId,
+            'selectedGame' => $selectedGame,
+            'selectedGameId' => $selectedGameId,
         ]);
     }
 

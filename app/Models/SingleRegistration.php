@@ -15,6 +15,7 @@ class SingleRegistration extends Model
         'phone',
         'age',
         'meta',
+        'tournament_game_id',
     ];
 
     protected $casts = [
@@ -25,5 +26,10 @@ class SingleRegistration extends Model
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(TournamentCard::class, 'tournament_card_id');
+    }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(TournamentGame::class, 'tournament_game_id');
     }
 }

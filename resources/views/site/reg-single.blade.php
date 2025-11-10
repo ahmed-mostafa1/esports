@@ -59,6 +59,8 @@
       <form class="reg-form" action="{{ route('register.single.store') }}" method="post" novalidate>
         @csrf
         <input type="text" name="website" value="" style="display:none;">
+        @php($stickyGameId = old('tournament_game_id', $selectedGameId ?? null))
+        <input type="hidden" name="tournament_game_id" value="{{ $stickyGameId }}">
 
         <div class="form-row">
           <div class="field">
@@ -117,10 +119,29 @@
 
 
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var tournamentSelect = document.getElementById('tournamentId');
+  var gameInput = document.querySelector('input[name="tournament_game_id"]');
+  if (tournamentSelect && gameInput) {
+    tournamentSelect.addEventListener('change', function () {
+      gameInput.value = '';
+    });
+  }
+});
+</script>
+@endpush
 @push('scripts')
 @vite('../../../public/js/script.js')
 @endpush
 
 
 
-
+        @if(($selectedGame ?? null) || $stickyGameId)
+          @php($gameName = ($selectedGame ?? null)?->titleFor(app()->getLocale()) ?? '')
+          <div class="alert info">
+            {{ $gameName ?: __('You are registering for a selected game slot.') }}
+          </div>
+        @endif

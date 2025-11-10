@@ -44,7 +44,34 @@
           </div>
         @endif
 
-        @if($winner)
+        @php($gameWinners = ($gameWinners ?? collect())->filter())
+
+        @if($gameWinners->isNotEmpty())
+          <section class="w-full space-y-4">
+            @foreach($gameWinners as $game)
+              <article class="bg-[#1f2937] border border-[#374151] rounded-2xl p-5 space-y-4">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+                  <div>
+                    <h2 class="text-xl font-bold text-white">{{ $game->titleFor(app()->getLocale()) ?: __('Game') }}</h2>
+                    <p class="text-xs text-gray-400 uppercase tracking-wide">{{ __('Status:') }} {{ strtoupper($game->status) }}</p>
+                  </div>
+                  <div class="flex items-center gap-2 text-xs text-gray-400">
+                    <span>{{ __('Single:') }} {{ $game->allow_single ? __('Yes') : __('No') }}</span>
+                    <span>•</span>
+                    <span>{{ __('Team:') }} {{ $game->allow_team ? __('Yes') : __('No') }}</span>
+                  </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  @foreach($game->winnerEntry->winners as $winnerName)
+                    <span class="px-4 py-2 rounded-full bg-[#0f172a] border border-[#1f2937] text-sm font-medium text-white">
+                      {{ $winnerName }}
+                    </span>
+                  @endforeach
+                </div>
+              </article>
+            @endforeach
+          </section>
+        @elseif($winner)
           @php
             $snapshot = $winner->snapshot ?? [];
             $singleEntries = collect($snapshot['singles'] ?? []);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamRegistrationRequest;
 use App\Models\TeamRegistration;
 use App\Models\TournamentCard;
+use App\Models\TournamentGame;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -27,9 +28,27 @@ class TeamRegistrationController extends Controller
             }
         }
 
+        $selectedGameId = null;
+        $selectedGame = null;
+        $gameId = $request->query('g');
+
+        if ($gameId && $selectedTournamentId) {
+            $selectedGame = TournamentGame::where('id', (int) $gameId)
+                ->where('tournament_card_id', $selectedTournamentId)
+                ->where('allow_team', true)
+                ->where('status', 'open')
+                ->first();
+
+            if ($selectedGame) {
+                $selectedGameId = $selectedGame->id;
+            }
+        }
+
         return view('site.reg-team', [
             'tournaments' => $tournaments,
             'selectedTournamentId' => $selectedTournamentId,
+            'selectedGame' => $selectedGame,
+            'selectedGameId' => $selectedGameId,
         ]);
     }
 
@@ -39,19 +58,6 @@ class TeamRegistrationController extends Controller
         $members = $data['members'];
         unset($data['members']);
         unset($data['team_logo'], $data['captain_logo']);
-
-        $tournamentId = TournamentCard::published()
-            ->open()
-            ->ordered()
-            ->value('id');
-
-        if (! $tournamentId) {
-            return back()
-                ->withErrors(['tournament' => __('No tournaments available at the moment.')])
-                ->withInput();
-        }
-
-        $data['tournament_card_id'] = $tournamentId;
 
         DB::transaction(function () use ($request, &$data, $members) {
             if ($request->hasFile('teamLogo')) {

@@ -95,6 +95,45 @@
 
 
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const acceptCheckbox = document.getElementById('accept-all');
+  const acceptButton = document.querySelector('.pp-btn');
+  if (!acceptButton || !acceptCheckbox) {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const mode = (params.get('mode') || 'single').toLowerCase();
+  const tournamentId = params.get('t');
+  const gameId = params.get('g');
+  const singleRoute = "{{ route('register.single') }}";
+  const teamRoute = "{{ route('register.team') }}";
+
+  acceptButton.addEventListener('click', function () {
+    if (!acceptCheckbox.checked) {
+      alert("{{ __('Please confirm you accept the privacy policy.') }}");
+      return;
+    }
+
+    let baseUrl = mode === 'team' ? teamRoute : singleRoute;
+    const target = new URL(baseUrl, window.location.origin);
+
+    if (tournamentId) {
+      target.searchParams.set('t', tournamentId);
+    }
+
+    if (gameId) {
+      target.searchParams.set('g', gameId);
+    }
+
+    window.location.href = target.toString();
+  });
+});
+</script>
+@endpush
 @push('scripts')
 @vite('../../../public/js/script.js')
 @endpush

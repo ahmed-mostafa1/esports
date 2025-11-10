@@ -61,6 +61,43 @@
 
       <form class="team-form" action="{{ route('register.team.store') }}" method="post" enctype="multipart/form-data" novalidate="">
         @csrf
+        @php($stickyGameId = old('tournament_game_id', $selectedGameId ?? null))
+        <input type="hidden" name="tournament_game_id" value="{{ $stickyGameId }}">
+
+        <div class="field">
+          <label for="tournamentCard">{{ content('team_registration.form.tournament', __('Choose Tournament')) }}</label>
+          @php($selectedTournament = old('tournament_card_id', $selectedTournamentId ?? $tournaments->first()->id ?? null))
+          <select id="tournamentCard" name="tournament_card_id" required>
+            <option value="">{{ content('team_registration.form.tournament_placeholder', __('Select...')) }}</option>
+            @foreach($tournaments as $tournament)
+              @php($title = $tournament->title[app()->getLocale()] ?? $tournament->title['en'] ?? __('Tournament'))
+              <option value="{{ $tournament->id }}" {{ (int) $selectedTournament === $tournament->id ? 'selected' : '' }}>
+                {{ $title }}
+              </option>
+            @endforeach
+          </select>
+        </div>
+<div>
+  <!-- ! to keep space -->
+</div>
+
+        @if($tournaments->isEmpty())
+          <div class="field" style="grid-column: span 2;">
+            <div class="alert info">
+              {{ __('No tournaments are open for team registrations right now.') }}
+            </div>
+          </div>
+        @endif
+
+        @if(($selectedGame ?? null) || $stickyGameId)
+          @php($gameName = ($selectedGame ?? null)?->titleFor(app()->getLocale()) ?? '')
+          <div class="field" style="grid-column: span 2;">
+            <div class="alert info">
+              {{ $gameName ?: __('You are registering for a selected game slot.') }}
+            </div>
+          </div>
+        @endif
+
         <!-- Row 1 -->
         <div class="field">
           <label for="teamName">Team Name</label>
@@ -140,6 +177,20 @@
 
 
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var tournamentSelect = document.getElementById('tournamentCard');
+  var gameInput = document.querySelector('input[name="tournament_game_id"]');
+  if (tournamentSelect && gameInput) {
+    tournamentSelect.addEventListener('change', function () {
+      gameInput.value = '';
+    });
+  }
+});
+</script>
+@endpush
 @push('scripts')
 @vite('../../../public/js/script.js')
 @endpush

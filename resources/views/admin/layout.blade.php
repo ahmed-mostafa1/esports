@@ -142,6 +142,28 @@
           </svg>
           {{ __('Tournament Cards') }}
         </a>
+
+        @php($sidebarTournament = request()->route('tournament'))
+        @if($sidebarTournament instanceof \App\Models\TournamentCard)
+          <div class="border-t border-gray-200 my-2"></div>
+          <div class="px-3 py-1">
+            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {{ __('Current Tournament') }}
+            </span>
+          </div>
+          <a
+            href="{{ route('admin.tournaments.games.index', $sidebarTournament) }}"
+            class="flex items-center gap-2 rounded-md px-3 py-2
+                   {{ request()->routeIs('admin.tournaments.games.*') ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-gray-100' }}
+                   transition"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c1.657 0 3-1.343 3-3S13.657 2 12 2 9 3.343 9 5s1.343 3 3 3zM6 22v-2a4 4 0 014-4h4a4 4 0 014 4v2M4 12l1.5 3h13L20 12" />
+            </svg>
+            {{ __('Tournament Games') }}
+          </a>
+        @endif
       </nav>
     </aside>
 

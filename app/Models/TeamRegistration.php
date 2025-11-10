@@ -13,6 +13,7 @@ class TeamRegistration extends Model
 {
     protected $fillable = [
         'tournament_card_id',
+        'tournament_game_id',
         'team_name',
         'captain_name',
         'captain_email',
@@ -35,6 +36,11 @@ class TeamRegistration extends Model
     public function tournament(): BelongsTo
     {
         return $this->belongsTo(TournamentCard::class, 'tournament_card_id');
+    }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(TournamentGame::class, 'tournament_game_id');
     }
 
     public function members(): HasMany

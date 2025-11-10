@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TeamRegistrationRequest extends FormRequest
 {
@@ -17,6 +18,20 @@ class TeamRegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'tournament_card_id' => [
+                'required',
+                'integer',
+                Rule::exists('tournament_cards', 'id')->where('status', 'open'),
+            ],
+            'tournament_game_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('tournament_games', 'id')->where(function ($query) {
+                    $query->where('tournament_card_id', $this->input('tournament_card_id'))
+                        ->where('allow_team', true)
+                        ->where('status', 'open');
+                }),
+            ],
             'teamName' => ['required', 'string', 'max:255'],
             'captainName' => ['required', 'string', 'max:255'],
             'captainEmail' => ['required', 'email', 'max:255'],
@@ -43,6 +58,8 @@ class TeamRegistrationRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
+            'tournament_card_id' => $this->input('tournament_card_id'),
+            'tournament_game_id' => $this->input('tournament_game_id'),
             'teamName' => trim((string) $this->input('teamName')),
             'captainName' => trim((string) $this->input('captainName')),
             'captainEmail' => trim((string) $this->input('captainEmail')),
@@ -91,6 +108,8 @@ class TeamRegistrationRequest extends FormRequest
             ->all();
 
         $payload = [
+            'tournament_card_id' => $data['tournament_card_id'],
+            'tournament_game_id' => $data['tournament_game_id'] ?? null,
             'team_name' => $data['teamName'],
             'captain_name' => $data['captainName'],
             'captain_email' => $data['captainEmail'],

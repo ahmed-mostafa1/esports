@@ -50,6 +50,84 @@
     </div>
   @endif
 
+  <div class="bg-neutral-900 border border-neutral-800 rounded p-5 space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-white">Games</h2>
+      <div class="flex items-center gap-3">
+        <a href="{{ route('admin.tournaments.games.create', $tournament) }}" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-sm">
+          Add Game
+        </a>
+        <a href="{{ route('admin.tournaments.games.index', $tournament) }}" class="px-3 py-2 bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded text-sm">
+          Manage All
+        </a>
+      </div>
+    </div>
+    @if($tournament->games->isEmpty())
+      <p class="text-sm text-gray-400">No games configured yet.</p>
+    @else
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-neutral-800 text-sm">
+          <thead class="bg-neutral-900 text-gray-300 uppercase tracking-wide text-xs">
+            <tr>
+              <th class="px-3 py-2 text-left">Image</th>
+              <th class="px-3 py-2 text-left">Title</th>
+              <th class="px-3 py-2 text-left">Status</th>
+              <th class="px-3 py-2 text-left">Single</th>
+              <th class="px-3 py-2 text-left">Team</th>
+              <th class="px-3 py-2 text-left">Sort</th>
+              <th class="px-3 py-2 text-left">Winners</th>
+              <th class="px-3 py-2 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-neutral-800">
+            @foreach($tournament->games as $game)
+              @php($gameWinners = $game->winnerEntry?->winners ?? [])
+              <tr class="bg-neutral-900/40">
+                <td class="px-3 py-2">
+                  @if($game->imageUrl())
+                    <img src="{{ $game->imageUrl() }}" alt="{{ $game->titleFor(app()->getLocale()) }}" class="w-14 h-14 object-cover rounded border border-neutral-800">
+                  @else
+                    <span class="text-xs text-gray-500">—</span>
+                  @endif
+                </td>
+                <td class="px-3 py-2 text-gray-200">
+                  <div class="font-semibold">{{ $game->titleFor(app()->getLocale()) ?: 'Untitled' }}</div>
+                  <div class="text-xs text-gray-500">{{ $game->slug }}</div>
+                </td>
+                <td class="px-3 py-2 text-gray-300 capitalize">{{ $game->status }}</td>
+                <td class="px-3 py-2 text-gray-300">{{ $game->allow_single ? 'Yes' : 'No' }}</td>
+                <td class="px-3 py-2 text-gray-300">{{ $game->allow_team ? 'Yes' : 'No' }}</td>
+                <td class="px-3 py-2 text-gray-300">{{ $game->sort_order }}</td>
+                <td class="px-3 py-2 text-gray-200">
+                  @if(!empty($gameWinners))
+                    <div class="flex flex-wrap gap-2">
+                      @foreach(array_slice($gameWinners, 0, 3) as $winnerName)
+                        <span class="inline-flex items-center px-2 py-1 rounded-full bg-neutral-800 text-xs text-gray-200">{{ $winnerName }}</span>
+                      @endforeach
+                      @if(count($gameWinners) > 3)
+                        <span class="text-xs text-gray-500">+{{ count($gameWinners) - 3 }}</span>
+                      @endif
+                    </div>
+                  @else
+                    <span class="text-xs text-gray-500">—</span>
+                  @endif
+                </td>
+                <td class="px-3 py-2 text-right text-sm space-x-2">
+                  <a href="{{ route('admin.tournaments.games.edit', [$tournament, $game]) }}" class="text-blue-400 hover:text-blue-200">Edit</a>
+                  <form action="{{ route('admin.tournaments.games.destroy', [$tournament, $game]) }}" method="post" class="inline" onsubmit="return confirm('Delete this game?');">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="text-red-400 hover:text-red-200">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    @endif
+  </div>
+
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <div class="col-span-1 bg-neutral-900 border border-neutral-800 rounded p-5 space-y-4">
       <div>
@@ -72,159 +150,131 @@
 
       <div>
         <h2 class="text-lg font-semibold text-white mb-2">Winner Snapshot</h2>
-        @if($winner)
-          @php
-            $snap = $winner->snapshot ?? [];
-            $singleEntries = collect($snap['singles'] ?? []);
-            if ($singleEntries->isEmpty() && !empty($snap['single'])) {
-              $singleEntries = collect([$snap['single']]);
-            }
-            $teamEntries = collect($snap['teams'] ?? []);
-            if ($teamEntries->isEmpty() && !empty($snap['team'])) {
-              $teamEntries = collect([$snap['team']]);
-            }
-          @endphp
+        <?php if (!empty($winnerSnapshot)): ?>
           <div class="space-y-3 text-sm text-gray-300">
             <div>
               <span class="text-gray-400 uppercase text-xs">Kind</span>
-              <div class="font-semibold text-white">{{ ucfirst($winner->kind) }}</div>
+              <div class="font-semibold text-white">{{ ucfirst($winnerSnapshot['kind']) }}</div>
             </div>
-            @if($singleEntries->isNotEmpty())
+
+            <?php if (!empty($winnerSnapshot['singles'])): ?>
               <div class="bg-neutral-800 rounded p-3 space-y-2">
                 <div class="text-xs text-gray-400 uppercase">Single Winners</div>
                 <div class="space-y-2">
-                  @foreach($singleEntries as $single)
+                  <?php foreach ($winnerSnapshot['singles'] as $single): ?>
                     <div class="border border-neutral-700 rounded p-2">
                       <div class="font-semibold text-white">{{ $single['player_name'] ?? '' }}</div>
-                      @if(!empty($single['ingame_id']))
+                      <?php if (!empty($single['ingame_id'])): ?>
                         <div class="text-gray-400 text-xs">{{ $single['ingame_id'] }}</div>
-                      @endif
+                      <?php endif; ?>
                     </div>
-                  @endforeach
+                  <?php endforeach; ?>
                 </div>
               </div>
-            @endif
-            @if($teamEntries->isNotEmpty())
+            <?php endif; ?>
+
+            <?php if (!empty($winnerSnapshot['teams'])): ?>
               <div class="bg-neutral-800 rounded p-3 space-y-3">
                 <div class="text-xs text-gray-400 uppercase">Team Winners</div>
                 <div class="space-y-3">
-                  @foreach($teamEntries as $team)
-                    @php
+                  <?php foreach ($winnerSnapshot['teams'] as $team): ?>
+                    <?php
                       $teamLogoUrl = $resolveLogoUrl($team['team_logo_url'] ?? null, $team['team_logo_path'] ?? null);
                       $captainLogoUrl = $resolveLogoUrl($team['captain_logo_url'] ?? null, $team['captain_logo_path'] ?? null);
-                    @endphp
+                    ?>
                     <div class="border border-neutral-700 rounded p-3 space-y-2">
                       <div class="font-semibold text-white">{{ $team['team_name'] ?? '' }}</div>
-                      @if($teamLogoUrl || $captainLogoUrl)
+                      <?php if ($teamLogoUrl || $captainLogoUrl): ?>
                         <div class="flex items-center gap-3 pt-1">
-                          @if($teamLogoUrl)
+                          <?php if ($teamLogoUrl): ?>
                             <img src="{{ $teamLogoUrl }}" alt="Team logo" class="w-16 h-16 object-cover rounded">
-                          @endif
-                          @if($captainLogoUrl)
+                          <?php endif; ?>
+                          <?php if ($captainLogoUrl): ?>
                             <img src="{{ $captainLogoUrl }}" alt="Captain logo" class="w-16 h-16 object-cover rounded">
-                          @endif
+                          <?php endif; ?>
                         </div>
-                      @endif
-                      @if(!empty($team['captain_name']))
+                      <?php endif; ?>
+                      <?php if (!empty($team['captain_name'])): ?>
                         <div class="text-gray-400 text-xs">{{ __('Captain:') }} {{ $team['captain_name'] }}</div>
-                      @endif
-                      @if(!empty($team['members']))
+                      <?php endif; ?>
+                      <?php if (!empty($team['members'])): ?>
                         <ul class="text-xs text-gray-300 space-y-1">
-                          @foreach($team['members'] as $member)
+                          <?php foreach ($team['members'] as $member): ?>
                             <li>{{ $member['member_name'] ?? '' }} <span class="text-gray-500">{{ $member['member_ingame_id'] ?? '' }}</span></li>
-                          @endforeach
+                          <?php endforeach; ?>
                         </ul>
-                      @endif
+                      <?php endif; ?>
                     </div>
-                  @endforeach
+                  <?php endforeach; ?>
                 </div>
               </div>
-            @endif
+            <?php endif; ?>
           </div>
-        @else
+        <?php else: ?>
           <p class="text-gray-400 text-sm">No winner selected yet.</p>
-        @endif
+        <?php endif; ?>
       </div>
     </div>
 
     <div class="col-span-1 lg:col-span-2 space-y-6">
       @if($tournament->status !== 'finished')
-        <div class="bg-neutral-900 border border-neutral-800 rounded p-5">
-          <h2 class="text-lg font-semibold text-white mb-4">Mark Tournament as Finished</h2>
-          @php
-            $selectedKind = old('kind', 'single');
-          @endphp
-          <form action="{{ route('admin.tournaments.finish', $tournament) }}" method="POST" class="space-y-4">
-            @csrf
-            @php
-              $oldSingles = collect(old('single_registration_ids', []))->map(fn ($id) => (int) $id)->all();
-              $oldTeams = collect(old('team_registration_ids', []))->map(fn ($id) => (int) $id)->all();
-            @endphp
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="col-span-1 md:col-span-1">
-                <label class="block text-sm text-gray-300 mb-1">Winner Type</label>
-                <select name="kind" class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2">
-                  @foreach(['single' => 'Single', 'team' => 'Team', 'mixed' => 'Mixed'] as $value => $label)
-                    <option value="{{ $value }}" {{ $selectedKind === $value ? 'selected' : '' }}>{{ $label }}</option>
-                  @endforeach
-                </select>
+        <div class="bg-neutral-900 border border-neutral-800 rounded p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-white">Finish Tournament</h2>
+            <a href="{{ route('admin.tournaments.games.index', $tournament) }}" class="px-3 py-2 text-sm bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded">
+              Manage Games
+            </a>
+          </div>
+          @if($tournament->games->isEmpty())
+            <p class="text-sm text-gray-400">Add games before recording winners.</p>
+          @else
+            @php($oldFinished = collect(old('finished_games', []))->map(fn ($id) => (int) $id)->all())
+            <form action="{{ route('admin.tournaments.finish', $tournament) }}" method="POST" class="space-y-6">
+              @csrf
+              <p class="text-sm text-gray-400">Enter the winners for each game below. Use the checkbox to mark the game as finished and add as many winners as you need.</p>
+              <div class="space-y-4">
+                @foreach($tournament->games as $game)
+                  @php($oldKey = 'game_winners.' . $game->id)
+                  @php($existingWinners = collect(old($oldKey, $game->winnerEntry?->winners ?? []))->filter()->values()->all())
+                  <div class="border border-neutral-800 rounded p-4 space-y-3" data-game-wrapper>
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                      <div>
+                        <h3 class="text-base font-semibold text-white">{{ $game->titleFor(app()->getLocale()) ?: 'Untitled Game' }}</h3>
+                        <p class="text-xs text-gray-400">
+                          Status: <span class="capitalize">{{ $game->status }}</span> • Single: {{ $game->allow_single ? 'Yes' : 'No' }} • Team: {{ $game->allow_team ? 'Yes' : 'No' }}
+                        </p>
+                      </div>
+                      <label class="inline-flex items-center gap-2 text-sm text-gray-200">
+                        <input type="checkbox" name="finished_games[]" value="{{ $game->id }}" class="rounded border-neutral-600 bg-neutral-900 text-emerald-500 focus:ring-emerald-500" {{ in_array($game->id, $oldFinished, true) || $game->status === 'finished' ? 'checked' : '' }}>
+                        <span>Mark this game finished</span>
+                      </label>
+                    </div>
+                    <div class="space-y-2" data-game-winners data-field="game_winners[{{ $game->id }}][]">
+                      <div class="flex flex-col md:flex-row gap-3">
+                        <input type="text" class="flex-1 px-3 py-2 bg-neutral-900 border border-neutral-700 rounded text-gray-100" placeholder="Winner name" data-game-input>
+                        <button type="button" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded" data-game-add>Add</button>
+                      </div>
+                      <p class="text-xs text-gray-500">Press Enter or click Add to capture the winner.</p>
+                      <div class="flex flex-wrap gap-2" data-game-chips>
+                        @foreach($existingWinners as $winnerName)
+                          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-800 text-gray-100 text-sm" data-game-chip>
+                            <span>{{ $winnerName }}</span>
+                            <button type="button" class="text-xs text-gray-400 hover:text-red-300" data-game-remove>&times;</button>
+                            <input type="hidden" name="game_winners[{{ $game->id }}][]" value="{{ $winnerName }}">
+                          </span>
+                        @endforeach
+                      </div>
+                    </div>
+                  </div>
+                @endforeach
               </div>
-              <div class="col-span-1 space-y-2">
-                <label class="block text-sm text-gray-300">Single Registrations</label>
-                <div class="bg-neutral-800/60 border border-neutral-700 rounded max-h-60 overflow-y-auto divide-y divide-neutral-800">
-                  @forelse($singleRegistrations as $registration)
-                    <label class="flex items-start gap-3 px-3 py-2 text-sm text-gray-200">
-                      <input
-                        type="checkbox"
-                        name="single_registration_ids[]"
-                        value="{{ $registration->id }}"
-                        class="mt-1 h-4 w-4 rounded border-neutral-600 bg-neutral-900 text-emerald-500 focus:ring-emerald-500"
-                        {{ in_array($registration->id, $oldSingles, true) ? 'checked' : '' }}
-                      >
-                      <span>
-                        <span class="block font-medium text-white">{{ $registration->player_name }}</span>
-                        @if($registration->ingame_id)
-                          <span class="block text-xs text-gray-400">{{ $registration->ingame_id }}</span>
-                        @endif
-                      </span>
-                    </label>
-                  @empty
-                    <p class="px-3 py-2 text-xs text-gray-500">No single registrations yet.</p>
-                  @endforelse
-                </div>
+              <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition">
+                  Finish Tournament
+                </button>
               </div>
-              <div class="col-span-1 space-y-2">
-                <label class="block text-sm text-gray-300">Team Registrations</label>
-                <div class="bg-neutral-800/60 border border-neutral-700 rounded max-h-60 overflow-y-auto divide-y divide-neutral-800">
-                  @forelse($teamRegistrations as $registration)
-                    <label class="flex items-start gap-3 px-3 py-3 text-sm text-gray-200">
-                      <input
-                        type="checkbox"
-                        name="team_registration_ids[]"
-                        value="{{ $registration->id }}"
-                        class="mt-1 h-4 w-4 rounded border-neutral-600 bg-neutral-900 text-emerald-500 focus:ring-emerald-500"
-                        {{ in_array($registration->id, $oldTeams, true) ? 'checked' : '' }}
-                      >
-                      <span>
-                        <span class="block font-medium text-white">{{ $registration->team_name }}</span>
-                        @if($registration->captain_name)
-                          <span class="block text-xs text-gray-400">Captain: {{ $registration->captain_name }}</span>
-                        @endif
-                      </span>
-                    </label>
-                  @empty
-                    <p class="px-3 py-2 text-xs text-gray-500">No team registrations yet.</p>
-                  @endforelse
-                </div>
-              </div>
-            </div>
-            <p class="text-xs text-gray-500">Use the checkboxes to mark the winners for this tournament. Pick the entries that match the winner type above.</p>
-            <div class="flex justify-end">
-              <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition">
-                Finish Tournament
-              </button>
-            </div>
-          </form>
+            </form>
+          @endif
         </div>
       @endif
 
@@ -310,3 +360,79 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('[data-game-winners]').forEach(function (section) {
+    var input = section.querySelector('[data-game-input]');
+    var addBtn = section.querySelector('[data-game-add]');
+    var chips = section.querySelector('[data-game-chips]');
+    var fieldName = section.getAttribute('data-field');
+
+    if (!input || !addBtn || !chips || !fieldName) {
+      return;
+    }
+
+    function createChip(value) {
+      var chip = document.createElement('span');
+      chip.className = 'inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-800 text-gray-100 text-sm';
+      chip.setAttribute('data-game-chip', '');
+
+      var label = document.createElement('span');
+      label.textContent = value;
+      chip.appendChild(label);
+
+      var removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'text-xs text-gray-400 hover:text-red-300';
+      removeBtn.setAttribute('data-game-remove', '');
+      removeBtn.textContent = '×';
+      removeBtn.addEventListener('click', function () {
+        chip.remove();
+      });
+      chip.appendChild(removeBtn);
+
+      var hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = fieldName;
+      hidden.value = value;
+      chip.appendChild(hidden);
+
+      chips.appendChild(chip);
+    }
+
+    function addWinner() {
+      var value = input.value.trim();
+      if (!value) {
+        return;
+      }
+      createChip(value);
+      input.value = '';
+      input.focus();
+    }
+
+    addBtn.addEventListener('click', function (event) {
+      event.preventDefault();
+      addWinner();
+    });
+
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        addWinner();
+      }
+    });
+
+    chips.querySelectorAll('[data-game-chip]').forEach(function (chip) {
+      var removeButton = chip.querySelector('[data-game-remove]');
+      if (removeButton) {
+        removeButton.addEventListener('click', function () {
+          chip.remove();
+        });
+      }
+    });
+  });
+});
+</script>
+@endpush

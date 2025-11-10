@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SingleRegistrationRequest extends FormRequest
 {
@@ -20,7 +21,16 @@ class SingleRegistrationRequest extends FormRequest
             'tournament_card_id' => [
                 'required',
                 'integer',
-                \Illuminate\Validation\Rule::exists('tournament_cards', 'id')->where('status', 'open'),
+                Rule::exists('tournament_cards', 'id')->where('status', 'open'),
+            ],
+            'tournament_game_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('tournament_games', 'id')->where(function ($query) {
+                    $query->where('tournament_card_id', $this->input('tournament_card_id'))
+                        ->where('allow_single', true)
+                        ->where('status', 'open');
+                }),
             ],
             'player_name' => ['required', 'string', 'max:255'],
             'ingame_id' => ['required', 'string', 'max:255'],

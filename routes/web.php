@@ -5,13 +5,16 @@ use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\NewsArticleController;
 use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\TournamentAdminController;
 use App\Http\Controllers\Admin\TournamentCardController;
+use App\Http\Controllers\Admin\TournamentGameAdminController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PartnerPublicController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TeamPublicController;
 use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\Registration\SingleRegistrationController;
 use App\Http\Controllers\Registration\TeamRegistrationController;
@@ -46,7 +49,8 @@ Route::view('/tournaments', 'site.tournaments')->name('tournaments');
 Route::get('/tournaments/{tournament:slug}/register', [TournamentController::class, 'register'])
     ->name('tournaments.register');
 Route::view('/tours-reg', 'site.tours-reg')->name('tours-reg');
-Route::view('/team', 'site.team')->name('team');
+Route::get('/team', [TeamPublicController::class, 'index'])->name('team');
+Route::get('/team/{team:slug}', [TeamPublicController::class, 'show'])->name('teams.show');
 
 // Public registration
 Route::get('/register/single', [SingleRegistrationController::class, 'create'])->name('register.single');
@@ -118,6 +122,13 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::get('/tournaments/{tournament:slug}', [TournamentAdminController::class, 'show'])->name('tournaments.show');
         Route::get('/tournaments/{tournament:slug}/export', [TournamentAdminController::class, 'export'])->name('tournaments.export');
         Route::post('/tournaments/{tournament:slug}/finish', [TournamentAdminController::class, 'finish'])->name('tournaments.finish');
+        Route::get('/tournaments/{tournament:slug}/games', [TournamentGameAdminController::class, 'index'])->name('tournaments.games.index');
+        Route::get('/tournaments/{tournament:slug}/games/create', [TournamentGameAdminController::class, 'create'])->name('tournaments.games.create');
+        Route::post('/tournaments/{tournament:slug}/games', [TournamentGameAdminController::class, 'store'])->name('tournaments.games.store');
+        Route::get('/tournaments/{tournament:slug}/games/{game:slug}/edit', [TournamentGameAdminController::class, 'edit'])->name('tournaments.games.edit');
+        Route::put('/tournaments/{tournament:slug}/games/{game:slug}', [TournamentGameAdminController::class, 'update'])->name('tournaments.games.update');
+        Route::delete('/tournaments/{tournament:slug}/games/{game:slug}', [TournamentGameAdminController::class, 'destroy'])->name('tournaments.games.destroy');
+        Route::post('/tournaments/{tournament:slug}/games/reorder', [TournamentGameAdminController::class, 'reorder'])->name('tournaments.games.reorder');
 
         Route::resource('news-articles', NewsArticleController::class)->except(['show']);
         Route::post('news-articles/reorder', [NewsArticleController::class, 'reorder'])
@@ -136,4 +147,6 @@ Route::middleware(['web','auth']) // Phase 8 can add 'can:manage-content'
         Route::resource('partners', PartnerController::class)->except(['show']);
         Route::post('partners/reorder', [PartnerController::class, 'reorder'])
             ->name('partners.reorder');
+
+        Route::resource('teams', TeamController::class);
     });

@@ -23,88 +23,33 @@
     <i class="tri mr" aria-hidden="true"></i>
 
     <!-- Grid -->
+    @php($locale = app()->getLocale())
     <ul class="team-grid">
-        <!-- Card -->
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member1.image', 'img/image-3.png') }}" alt="{{ content('team.member1.name', 'Mickdad Abbas') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member1.name', 'Mickdad Abbas') }}</h3>
-                <div class="role">{{ content('team.member1.role', 'Founder') }}</div>
-            </figcaption>
-        </li>
-
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member2.image', 'img/image 4.png') }}" alt="{{ content('team.member2.name', 'Wysten Night') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member2.name', 'Wysten Night') }}</h3>
-                <div class="role">{{ content('team.member2.role', 'CEO') }}</div>
-            </figcaption>
-        </li>
-
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member3.image', 'img/image 5.png') }}" alt="{{ content('team.member3.name', 'David Lee') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member3.name', 'David Lee') }}</h3>
-                <div class="role">{{ content('team.member3.role', 'CTO') }}</div>
-            </figcaption>
-        </li>
-
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member4.image', 'img/image 6.png') }}" alt="{{ content('team.member4.name', 'Sarah Kim') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member4.name', 'Sarah Kim') }}</h3>
-                <div class="role">{{ content('team.member4.role', 'COO') }}</div>
-            </figcaption>
-        </li>
-
-        <!-- Row 2 -->
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member3.image', 'img/image-3.png') }}" alt="{{ content('team.member3.name', 'David Lee') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member3.name', 'David Lee') }}</h3>
-                <div class="role">{{ content('team.member3.role', 'CTO') }}</div>
-            </figcaption>
-        </li>
-
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member2.image', 'img/image 4.png') }}" alt="{{ content('team.member2.name', 'Wysten Night') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member2.name', 'Wysten Night') }}</h3>
-                <div class="role">{{ content('team.member2.role', 'CEO') }}</div>
-            </figcaption>
-        </li>
-
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member5.image', 'img/image 5.png') }}" alt="{{ content('team.member5.name', 'Pro Team') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member5.name', 'Pro Team') }}</h3>
-                <div class="role">{{ content('team.member5.role', 'Lead Developer') }}</div>
-            </figcaption>
-        </li>
-
-        <li class="member">
-            <figure class="avatar">
-                <img src="{{ content_media('team.member6.image', 'img/image 6.png') }}" alt="{{ content('team.member6.name', 'Junior Squad') }}" />
-            </figure>
-            <figcaption class="meta">
-                <h3 class="name">{{ content('team.member6.name', 'Junior Squad') }}</h3>
-                <div class="role">{{ content('team.member6.role', 'Junior Developer') }}</div>
-            </figcaption>
-        </li>
+        @forelse($teams as $team)
+            @php
+                $name = $team->textFor($team->name, $locale);
+                $role = $team->textFor($team->role, $locale);
+                $image = $team->imageUrl() ?? content_media('team.placeholder.image', 'img/image-3.png');
+            @endphp
+            <li class="member">
+                <figure class="avatar">
+                    <img src="{{ $image }}" alt="{{ $name }}" />
+                </figure>
+                <figcaption class="meta">
+                    <h3 class="name">{{ $name }}</h3>
+                    @if($role)
+                        <div class="role">{{ $role }}</div>
+                    @endif
+                    <a class="read-more-link" href="{{ route('teams.show', $team) }}">{{ __('Read more') }}</a>
+                </figcaption>
+            </li>
+        @empty
+            <li class="member">
+                <figcaption class="meta">
+                    <h3 class="name">{{ __('Team profiles coming soon') }}</h3>
+                </figcaption>
+            </li>
+        @endforelse
     </ul>
 </section>
 

@@ -12,7 +12,10 @@ class TournamentController extends Controller
             return redirect()->route('winners.show', $tournament->slug);
         }
 
-        return view('site.tournament-reg', compact('tournament'));
+        $tournament->load(['games' => fn ($query) => $query->orderBy('sort_order')->orderBy('id')]);
+
+        $games = $tournament->games;
+
+        return view('site.tours-reg', compact('tournament', 'games'));
     }
 }
-
