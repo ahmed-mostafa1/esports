@@ -117,7 +117,7 @@
                         <span data-content-key="tours-reg.section.title"
                               data-content-type="text"
                               data-content-value='{{ json_encode(optional($contents->get("tours-reg.section.title"))->value ?? []) }}'>
-                            {{ content('tours-reg.section.title', 'Our News') }}
+                            {{ content('tours-reg.section.title', 'Games') }}
                         </span>
                     </button>
                 </div>

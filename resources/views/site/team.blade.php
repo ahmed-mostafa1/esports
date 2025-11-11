@@ -28,7 +28,6 @@
         @forelse($teams as $team)
             @php
                 $name = $team->textFor($team->name, $locale);
-                $role = $team->textFor($team->role, $locale);
                 $image = $team->imageUrl() ?? content_media('team.placeholder.image', 'img/image-3.png');
             @endphp
             <li class="member">
@@ -37,9 +36,6 @@
                 </figure>
                 <figcaption class="meta">
                     <h3 class="name">{{ $name }}</h3>
-                    @if($role)
-                        <div class="role">{{ $role }}</div>
-                    @endif
                     <a class="pill-red" href="{{ route('teams.show', $team) }}">{{ __('Read more') }}</a>
                 </figcaption>
             </li>

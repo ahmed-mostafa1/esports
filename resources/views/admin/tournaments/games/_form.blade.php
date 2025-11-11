@@ -57,7 +57,7 @@
         accept="image/*"
         class="w-full text-sm text-gray-200 bg-neutral-900 border border-dashed border-neutral-700 rounded px-3 py-2"
       >
-      <p class="text-xs text-gray-500 mt-1">{{ __('Recommended at least 800x600px. Formats: JPG, PNG, WEBP (max 4MB).') }}</p>
+      <p class="text-xs text-gray-500 mt-1">{{ __('Recommended at least 800x600px. Formats: JPG, PNG, WEBP (max 1 MB).') }}</p>
     </div>
     @if(!empty($game->image_path))
       <div class="space-y-2">

@@ -94,18 +94,12 @@ class TeamController extends Controller
                 'en' => $request->input('name.en'),
                 'ar' => $request->input('name.ar'),
             ],
-            'role' => $this->prepareNullableTranslatable(
-                $request->input('role.en'),
-                $request->input('role.ar')
-            ),
+            'role' => null,
             'description' => $this->prepareNullableTranslatable(
                 $request->input('description.en'),
                 $request->input('description.ar')
             ),
-            'values' => $this->prepareNullableTranslatable(
-                $request->input('values.en'),
-                $request->input('values.ar')
-            ),
+            'values' => $this->prepareHighlights($request),
             'is_published' => $request->boolean('is_published'),
         ];
     }
@@ -131,6 +125,42 @@ class TeamController extends Controller
         }
 
         return $slug;
+    }
+
+    private function prepareHighlights(StoreTeamRequest|UpdateTeamRequest $request): ?array
+    {
+        $locales = ['en', 'ar'];
+        $result = [];
+
+        foreach ($locales as $locale) {
+            $entries = $request->input("values.$locale", []);
+
+            if (!is_array($entries)) {
+                $entries = [];
+            }
+
+            $normalized = [];
+
+            foreach (array_slice($entries, 0, 3) as $entry) {
+                $title = trim((string)($entry['title'] ?? ''));
+                $body = trim((string)($entry['body'] ?? ''));
+
+                if ($title === '' && $body === '') {
+                    continue;
+                }
+
+                $normalized[] = [
+                    'title' => $title,
+                    'body' => $body,
+                ];
+            }
+
+            if (!empty($normalized)) {
+                $result[$locale] = $normalized;
+            }
+        }
+
+        return empty($result) ? null : $result;
     }
 
     private function slugExists(string $slug, ?int $ignoreId = null): bool

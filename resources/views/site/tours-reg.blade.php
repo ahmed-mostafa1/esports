@@ -67,13 +67,13 @@
             
               <i class="accent" aria-hidden="true"></i>
               <div class="abilities">
-                              <img class="ab" src="{{ asset('./img/vectors/Vector.png') }} " alt="" />
+                <img class="ab" src="{{ asset('./img/vectors/Vector.png') }} " alt="" />
                 <img class="ab" src="{{ asset('./img/vectors/Vector(1).png') }} " alt="" />
                 <img class="ab" src="{{ asset('./img/vectors/Vector(2).png') }} " alt="" />
                 <img class="ab" src="{{ asset('./img/vectors/Vector(3).png') }} " alt="" />
               </div>
             </div>
-            <div class="cta">
+            <div class="cta">    
               <div class="segmented">
                 @if($singleAllowed)
                   <a
@@ -187,15 +187,13 @@
     <section class="our-news-section">
       <h2 style="display: flex; justify-content: start">
         <button class="secondary-btn" style="font-size: 25px; padding: 10px 40px; border-radius: 5px !important;">
-          {{ content('tours-reg.section.title', 'Our News') }}
+          {{ content('tours-reg.section.title', 'Games') }}
         </button>
       </h2>
-
       <span class="tri t1" aria-hidden="true"></span>
       <span class="tri t2" aria-hidden="true"></span>
       <span class="tri t3" aria-hidden="true"></span>
       <span class="tri t4" aria-hidden="true"></span>
-
       <ul class="char-grid">
         @foreach($toursRegCards as $card)
           @php

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Team;
+use App\Support\HighlightParser;
 
 class TeamPublicController extends Controller
 {
@@ -21,48 +22,47 @@ class TeamPublicController extends Controller
         abort_unless($team->is_published, 404);
 
         $valueCards = $this->buildValueCards($team);
+        $legacyValuesText = $this->legacyValuesText($team);
 
         return view('site.team_show', [
             'team' => $team,
             'valueCards' => $valueCards,
+            'legacyValuesText' => $legacyValuesText,
         ]);
     }
 
     private function buildValueCards(Team $team): array
     {
         $locale = app()->getLocale();
-        $raw = trim($team->textFor($team->values, $locale));
+        $values = $team->values ?? [];
 
-        if ($raw === '') {
-            return [];
+        $cards = HighlightParser::normalize(data_get($values, $locale));
+
+        if (empty($cards) && $locale !== 'en') {
+            $cards = HighlightParser::normalize(data_get($values, 'en'));
         }
 
-        $blocks = preg_split("/\n{2,}/", $raw) ?: [];
-        $cards = [];
+        return collect($cards)
+            ->take(3)
+            ->map(fn ($card) => [
+                'title' => $card['title'] ?? '',
+                'body' => $card['body'] ?? '',
+            ])
+            ->all();
+    }
 
-        foreach ($blocks as $block) {
-            $block = trim($block);
-            if ($block === '') {
-                continue;
-            }
+    private function legacyValuesText(Team $team): string
+    {
+        $locale = app()->getLocale();
+        $values = $team->values ?? [];
+        $raw = data_get($values, $locale);
 
-            $title = null;
-            $body = $block;
-
-            if (str_contains($block, '::')) {
-                [$title, $body] = array_map('trim', explode('::', $block, 2));
-            } elseif (str_contains($block, '||')) {
-                [$title, $body] = array_map('trim', explode('||', $block, 2));
-            } elseif (str_contains($block, '|')) {
-                [$title, $body] = array_map('trim', explode('|', $block, 2));
-            }
-
-            $cards[] = [
-                'title' => $title,
-                'body' => $body,
-            ];
+        if (is_string($raw) && trim($raw) !== '') {
+            return trim($raw);
         }
 
-        return $cards;
+        $fallback = data_get($values, 'en');
+
+        return is_string($fallback) ? trim($fallback) : '';
     }
 }

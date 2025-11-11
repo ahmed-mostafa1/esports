@@ -1,5 +1,31 @@
-@php($team = $team ?? null)
-@php($defaultSortOrder = $defaultSortOrder ?? 0)
+@php
+  $team = $team ?? null;
+  $defaultSortOrder = $defaultSortOrder ?? 0;
+  $highlightLocales = config('highlights.locales', []);
+  $maxHighlightCards = config('highlights.max_cards', 3);
+  $highlightDefaults = [];
+
+  foreach ($highlightLocales as $localeCode => $meta) {
+      $old = old("values.$localeCode");
+
+      if (is_array($old)) {
+          $rows = collect($old)
+              ->map(fn ($entry) => [
+                  'title' => $entry['title'] ?? '',
+                  'body' => $entry['body'] ?? '',
+              ])
+              ->all();
+      } else {
+          $rows = \App\Support\HighlightParser::normalize(data_get($team, "values.$localeCode"));
+      }
+
+      $highlightDefaults[$localeCode] = array_pad(
+          array_slice($rows, 0, $maxHighlightCards),
+          $maxHighlightCards,
+          ['title' => '', 'body' => '']
+      );
+  }
+@endphp
 
 @if($errors->any())
   <div class="mb-4 px-4 py-3 bg-red-900/40 border border-red-700 text-red-200 rounded">
@@ -42,25 +68,6 @@
           name="name[ar]"
           dir="rtl"
           value="{{ old('name.ar', data_get($team, 'name.ar')) }}"
-          class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
-        >
-      </div>
-      <div>
-        <label class="block text-sm text-gray-300 mb-1">Role / Title (EN)</label>
-        <input
-          type="text"
-          name="role[en]"
-          value="{{ old('role.en', data_get($team, 'role.en')) }}"
-          class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
-        >
-      </div>
-      <div>
-        <label class="block text-sm text-gray-300 mb-1">Role / Title (AR)</label>
-        <input
-          type="text"
-          name="role[ar]"
-          dir="rtl"
-          value="{{ old('role.ar', data_get($team, 'role.ar')) }}"
           class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
         >
       </div>
@@ -126,36 +133,39 @@
     <header class="flex flex-col gap-1">
       <h3 class="text-lg font-semibold text-white">Story Highlights (Red Cards)</h3>
       <p class="text-sm text-gray-400">
-        Each highlight card on the right column uses <strong>Title :: Body</strong> pairs separated by blank lines.
-        Example: <code>From Passion to Purpose :: Born and raised...</code>.
+        Provide up to three short highlight cards. Each card has a title and a short supportive paragraph.
       </p>
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label class="block text-sm text-gray-300 mb-1">Highlights (EN)</label>
-        <textarea
-          name="values[en]"
-          rows="6"
-          placeholder="From Passion to Purpose :: Born and raised...\n\nVision for the Future :: ..."
-          class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 font-mono text-sm"
-        >{{ old('values.en', data_get($team, 'values.en')) }}</textarea>
-        <p class="text-xs text-gray-500 mt-2">
-          Each block = one card. Optional separators: <code>::</code>, <code>||</code>, or <code>|</code>. Blank line between cards.
-        </p>
-      </div>
-      <div>
-        <label class="block text-sm text-gray-300 mb-1">Highlights (AR)</label>
-        <textarea
-          name="values[ar]"
-          dir="rtl"
-          rows="6"
-          class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600 font-mono text-sm"
-        >{{ old('values.ar', data_get($team, 'values.ar')) }}</textarea>
-        <p class="text-xs text-gray-500 mt-2" dir="rtl">
-          افصل بين كل بطاقة بسطر فارغ. استخدم :: أو | لكتابة عنوان يتبعه وصف.
-        </p>
-      </div>
+      @foreach(($highlightLocales ?? []) as $localeCode => $meta)
+        @php($cards = $highlightDefaults[$localeCode] ?? [])
+        <div class="space-y-4" @if($meta['dir'] === 'rtl') dir="rtl" @endif>
+          <p class="text-sm font-semibold text-gray-200">{{ $meta['label'] }}</p>
+          @foreach($cards as $index => $card)
+            <div class="space-y-2 bg-neutral-900/40 border border-neutral-800 rounded-lg p-4">
+              <p class="text-xs uppercase tracking-wide text-gray-400">{{ __('Card') }} {{ $index + 1 }}</p>
+              <div>
+                <label class="block text-sm text-gray-300 mb-1">{{ __('Title') }}</label>
+                <input
+                  type="text"
+                  name="values[{{ $localeCode }}][{{ $index }}][title]"
+                  value="{{ $card['title'] }}"
+                  class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                >
+              </div>
+              <div>
+                <label class="block text-sm text-gray-300 mb-1">{{ __('Body') }}</label>
+                <textarea
+                  name="values[{{ $localeCode }}][{{ $index }}][body]"
+                  rows="3"
+                  class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+                >{{ $card['body'] }}</textarea>
+              </div>
+            </div>
+          @endforeach
+        </div>
+      @endforeach
     </div>
   </section>
 

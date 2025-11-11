@@ -26,7 +26,6 @@
       <thead class="bg-neutral-900 text-gray-300 uppercase tracking-wide text-xs">
         <tr>
           <th class="px-3 py-3 text-left">Member</th>
-          <th class="px-3 py-3 text-left">Role</th>
           <th class="px-3 py-3 text-left">Published</th>
           <th class="px-3 py-3 text-left">Sort</th>
           <th class="px-3 py-3 text-right">Actions</th>
@@ -51,9 +50,6 @@
                 @endif
               </div>
             </td>
-            <td class="px-3 py-3 text-gray-300">
-              {{ data_get($team->role, 'en') ?: '—' }}
-            </td>
             <td class="px-3 py-3">
               <span class="inline-flex items-center px-2 py-1 rounded text-xs {{ $team->is_published ? 'bg-green-700/70 text-white' : 'bg-neutral-700 text-gray-300' }}">
                 {{ $team->is_published ? 'Yes' : 'No' }}
@@ -72,7 +68,7 @@
           </tr>
         @empty
           <tr>
-            <td colspan="5" class="px-3 py-12 text-center text-gray-400">
+            <td colspan="4" class="px-3 py-12 text-center text-gray-400">
               No team members yet. <a href="{{ route('admin.teams.create') }}" class="text-blue-400 hover:underline">Create the first profile</a>.
             </td>
           </tr>

@@ -2,9 +2,8 @@
 
 @php($locale = app()->getLocale())
 @php($name = $team->textFor($team->name, $locale))
-@php($role = $team->textFor($team->role, $locale))
 @php($description = trim($team->textFor($team->description, $locale)))
-@php($valuesText = trim($team->textFor($team->values, $locale)))
+@php($legacyText = $legacyValuesText ?? '')
 @php($icons = ['🎮','🌍','🏆','⚡','🎯'])
 
 @section('title', $name ?: __('Team Member'))
@@ -33,10 +32,6 @@
                 </div>
             @endif
 
-            @if($role)
-                <p class="team-profile-role">{{ $role }}</p>
-            @endif
-
             @if($description !== '')
                 <p class="team-profile-intro">{!! nl2br(e($description)) !!}</p>
             @endif
@@ -52,13 +47,13 @@
                     <div class="team-value-body">{!! nl2br(e($card['body'])) !!}</div>
                 </article>
             @empty
-                @if($valuesText !== '')
+                @if($legacyText !== '')
                     <article class="team-value-card">
                         <div class="team-value-heading">
                             <span class="team-value-icon">★</span>
                             <span>{{ __('Values') }}</span>
                         </div>
-                        <div class="team-value-body">{!! nl2br(e($valuesText)) !!}</div>
+                        <div class="team-value-body">{!! nl2br(e($legacyText)) !!}</div>
                     </article>
                 @endif
             @endforelse

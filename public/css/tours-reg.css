@@ -112,7 +112,7 @@
   background: linear-gradient(#141519, #0b0c0e);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
   /* Fixed inner canvas height so every piece aligns perfectly */
-  height: 560px;
+  height: 480px;
 }
 
 /* art: baseline-locked (all images align to same bottom) */
@@ -317,7 +317,7 @@
   --vlabel-top: 200px; /* vertical label anchor from top */
   --accent-top: 70px; /* red bar start from top */
   --abilities-bottom: 26px; /* ability rail position */
-  --card-h: 560px; /* card inner canvas height */
+  --card-h: 500px; /* card inner canvas height */
 }
 
 /* Baseline & size updates (applies to all four cards) */

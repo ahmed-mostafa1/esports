@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,19 +9,19 @@
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap"
         rel="stylesheet" />
 
-        @stack('styles')
-        <!-- Navbar CSS loads last to ensure it overrides any conflicts -->
-        <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+    @stack('styles')
+    <!-- Navbar CSS loads last to ensure it overrides any conflicts -->
+    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
 </head>
 
 <body>
-@include('layouts.header')
-        <main>
+    @include('layouts.header')
+    <main>
 
-            @yield('content')
-            
-            
-        </main>
+        @yield('content')
+
+
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -61,11 +62,16 @@
         </div>
 
         <div class="footer-bottom gradient-bar">
-            <p>{{ content('footer.copyright', '©Copyright 2025') }}</p> 
+            <p>{{ content('footer.copyright', '©Copyright 2025') }}</p>
             <p>{{ content('footer.developed_by', 'Designed & Developed by Four04') }}</p>
+        </div>
+
+        <div class="footer-bottom gradient-bar">
             <p>{{ __('Total Visitors: :count', ['count' => number_format($totalVisitorCount ?? 0)]) }}</p>
         </div>
+
     </footer>
     @stack('scripts')
 </body>
+
 </html>
