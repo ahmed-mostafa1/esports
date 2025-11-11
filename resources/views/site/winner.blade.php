@@ -230,7 +230,7 @@
   <section class="winners-stage">
     <div class="container" style="max-width:1200px;">
       <div class="winners-banner">
-        <button class="badge-pill badge-pill--muted">{{ __('Our Tournament') }}</button>
+        <button class="badge-pill badge-pill--muted">{{ __('Winners') }}</button>
         <button class="badge-pill badge-pill--primary">{{ content('winners.header.main_title', 'E-sports') }}</button>
       </div>
 
@@ -248,9 +248,6 @@
             <p><span>{{ __('Time') }}</span><strong>{{ $tournament->time ?: __('TBD') }}</strong></p>
             <p><span>{{ __('Status') }}</span><strong>{{ ucfirst($tournament->status) }}</strong></p>
           </div>
-          <a class="winner-card__cta" href="{{ route('tournaments.register', $tournament->slug) }}">
-            {{ __('View Tournament') }}
-          </a>
         </aside>
 
         <div class="winner-track">

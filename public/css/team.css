@@ -226,6 +226,9 @@
   position: relative;
   width: 320px;
   margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .team-avatar-glow {
   background: radial-gradient(circle at 30% 20%, #ff6f6f, #1a0000 70%);
@@ -240,10 +243,9 @@
   object-fit: cover;
 }
 .team-name-tag {
-  position: absolute;
-  bottom: -26px;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 10px;
+  position: static;
+  transform: none;
   background: var(--team-red);
   color: #fff;
   font-weight: 700;

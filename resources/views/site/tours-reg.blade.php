@@ -16,7 +16,7 @@
 @if($isTournamentContext)
   @php
       $gamesList = ($games ?? collect())->sortBy('sort_order')->values();
-      $themeCycle = ['theme-dark', 'theme-slate', 'theme-coal', 'theme-white'];
+      $themeCycle = ['theme-dark', 'theme-slate', 'theme-coal'];
       $tournamentTitle = $tournament->titleFor(app()->getLocale()) ?: content('tours-reg.header.title', 'E-Sports');
   @endphp
   <section class="tr-cards" aria-labelledby="tr-title">
@@ -67,9 +67,9 @@
             
               <i class="accent" aria-hidden="true"></i>
               <div class="abilities">
-              <h5>
+              <h4>
  {{ $description ?: __('Select your preferred mode below to continue.') }}
-              </h5>
+              </h4>
               </div>
             </div>
             <div class="cta">

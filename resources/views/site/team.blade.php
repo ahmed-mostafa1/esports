@@ -40,7 +40,7 @@
                     @if($role)
                         <div class="role">{{ $role }}</div>
                     @endif
-                    <a class="read-more-link" href="{{ route('teams.show', $team) }}">{{ __('Read more') }}</a>
+                    <a class="pill-red" href="{{ route('teams.show', $team) }}">{{ __('Read more') }}</a>
                 </figcaption>
             </li>
         @empty

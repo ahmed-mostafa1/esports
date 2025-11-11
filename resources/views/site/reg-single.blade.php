@@ -66,7 +66,7 @@
           <div class="field">
             <label for="tournamentId">{{ content('single_registration.form.tournament', __('Choose Tournament')) }}</label>
             @php($selectedTournament = old('tournament_card_id', $selectedTournamentId ?? null))
-            <select id="tournamentId" name="tournament_card_id" required>
+            <select id="tournamentId" name="tournament_card_id" required style="height: 40px; border-radius: 15px;">
               <option value="">{{ content('single_registration.form.tournament_placeholder', __('Select...')) }}</option>
               @foreach($tournaments as $tournament)
                 @php($title = $tournament->title[app()->getLocale()] ?? $tournament->title['en'] ?? __('Tournament'))
