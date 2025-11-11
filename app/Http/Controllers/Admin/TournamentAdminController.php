@@ -101,15 +101,19 @@ class TournamentAdminController extends Controller
     public function export(TournamentCard $tournament)
     {
         $tournament->load([
-            'singleRegistrations' => fn ($query) => $query->orderBy('player_name'),
-            'teamRegistrations' => fn ($query) => $query->with('members')->orderBy('team_name'),
+            'singleRegistrations' => fn ($query) => $query->with('game')->orderBy('player_name'),
+            'teamRegistrations' => fn ($query) => $query->with(['members', 'game'])->orderBy('team_name'),
         ]);
 
-        $tournamentTitle = $tournament->titleFor(app()->getLocale()) ?: $tournament->slug;
+        $locale = app()->getLocale();
+        $tournamentTitle = $tournament->titleFor($locale) ?: $tournament->slug;
 
-        $singleRows = $tournament->singleRegistrations->map(function (SingleRegistration $registration) use ($tournamentTitle) {
+        $singleRows = $tournament->singleRegistrations->map(function (SingleRegistration $registration) use ($tournamentTitle, $locale) {
+            $gameName = $registration->game ? $registration->game->titleFor($locale) : null;
+
             return [
                 'tournament' => $tournamentTitle,
+                'game_name' => $gameName,
                 'team_name' => null,
                 'player_name' => $registration->player_name,
                 'role' => 'Single',
@@ -120,9 +124,12 @@ class TournamentAdminController extends Controller
             ];
         });
 
-        $teamRows = $tournament->teamRegistrations->flatMap(function (TeamRegistration $team) use ($tournamentTitle) {
+        $teamRows = $tournament->teamRegistrations->flatMap(function (TeamRegistration $team) use ($tournamentTitle, $locale) {
+            $gameName = $team->game ? $team->game->titleFor($locale) : null;
+
             $rows = [[
                 'tournament' => $tournamentTitle,
+                'game_name' => $gameName,
                 'team_name' => $team->team_name,
                 'player_name' => $team->captain_name,
                 'role' => 'Captain',
@@ -135,6 +142,7 @@ class TournamentAdminController extends Controller
             foreach ($team->members as $member) {
                 $rows[] = [
                     'tournament' => $tournamentTitle,
+                    'game_name' => $gameName,
                     'team_name' => $team->team_name,
                     'player_name' => $member->member_name,
                     'role' => 'Member',
