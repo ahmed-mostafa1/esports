@@ -5,7 +5,7 @@
 @section('content')
 <div class="px-6 py-4 space-y-4">
   <div>
-    <h1 class="text-xl font-semibold text-white">Edit Team Member</h1>
+    <h1 class="text-xl font-semibold text-white">Edit Team </h1>
     <p class="text-sm text-gray-400">Update profile information for the selected team member.</p>
   </div>
 

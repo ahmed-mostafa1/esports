@@ -81,22 +81,8 @@
   <!-- ! to keep space -->
 </div>
 
-        @if($tournaments->isEmpty())
-          <div class="field" style="grid-column: span 2;">
-            <div class="alert info">
-              {{ __('No tournaments are open for team registrations right now.') }}
-            </div>
-          </div>
-        @endif
 
-        @if(($selectedGame ?? null) || $stickyGameId)
-          @php($gameName = ($selectedGame ?? null)?->titleFor(app()->getLocale()) ?? '')
-          <div class="field" style="grid-column: span 2;">
-            <div class="alert info">
-              {{ $gameName ?: __('You are registering for a selected game slot.') }}
-            </div>
-          </div>
-        @endif
+
 
         <!-- Row 1 -->
         <div class="field">

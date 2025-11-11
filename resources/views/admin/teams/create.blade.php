@@ -5,7 +5,7 @@
 @section('content')
 <div class="px-6 py-4 space-y-4">
   <div>
-    <h1 class="text-xl font-semibold text-white">Add Team Member</h1>
+    <h1 class="text-xl font-semibold text-white">Add Team</h1>
     <p class="text-sm text-gray-400">Create a new profile for the public team page.</p>
   </div>
 
