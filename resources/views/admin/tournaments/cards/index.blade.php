@@ -27,7 +27,7 @@
         <tr>
           <th class="px-3 py-3 text-left">Order</th>
           <th class="px-3 py-3 text-left">Title (EN)</th>
-          <th class="px-3 py-3 text-left">Date</th>
+          <th class="px-3 py-3 text-left">Dates</th>
           <th class="px-3 py-3 text-left">Time</th>
           <th class="px-3 py-3 text-left">Prize</th>
           <th class="px-3 py-3 text-left">Published</th>
@@ -41,7 +41,12 @@
               <input type="number" class="w-24 bg-neutral-800 text-gray-200 rounded px-2 py-1 sort-input" value="{{ $card->sort_order }}">
             </td>
             <td class="px-3 py-3 text-gray-200">{{ $card->title['en'] ?? '' }}</td>
-            <td class="px-3 py-3 text-gray-400">{{ $card->date?->format('d/m/Y') }}</td>
+            <td class="px-3 py-3 text-gray-400">
+              <div>{{ $card->date?->format('d/m/Y') ?? '—' }}</div>
+              <div class="text-xs text-gray-500">
+                {{ __('End:') }} {{ $card->end_date?->format('d/m/Y') ?? '—' }}
+              </div>
+            </td>
             <td class="px-3 py-3 text-gray-400">{{ $card->time }}</td>
             <td class="px-3 py-3 text-gray-200">{{ $card->prize }}</td>
             <td class="px-3 py-3">

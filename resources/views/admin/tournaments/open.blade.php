@@ -26,7 +26,7 @@
       <thead class="bg-neutral-900 text-gray-300 uppercase tracking-wide text-xs">
         <tr>
           <th class="px-3 py-3 text-left">Title</th>
-          <th class="px-3 py-3 text-left">Date</th>
+          <th class="px-3 py-3 text-left">Dates</th>
           <th class="px-3 py-3 text-left">Singles</th>
           <th class="px-3 py-3 text-left">Teams</th>
           <th class="px-3 py-3 text-left">Status</th>
@@ -40,7 +40,10 @@
               <div class="font-semibold">{{ $tournament->titleFor(app()->getLocale()) ?: 'Untitled Tournament' }}</div>
               <div class="text-xs text-gray-500">{{ $tournament->slug }}</div>
             </td>
-            <td class="px-3 py-3 text-gray-300">{{ $tournament->date?->format('d/m/Y') ?? '--' }}</td>
+            <td class="px-3 py-3 text-gray-300">
+              <div>{{ $tournament->date?->format('d/m/Y') ?? '--' }}</div>
+              <div class="text-xs text-gray-500">{{ __('End:') }} {{ $tournament->end_date?->format('d/m/Y') ?? '--' }}</div>
+            </td>
             <td class="px-3 py-3 text-gray-300">{{ $tournament->single_registrations_count }}</td>
             <td class="px-3 py-3 text-gray-300">{{ $tournament->team_registrations_count }}</td>
             <td class="px-3 py-3">

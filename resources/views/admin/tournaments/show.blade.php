@@ -12,13 +12,14 @@
   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
     <div>
       <h1 class="text-2xl font-semibold text-white">{{ $tournament->titleFor(app()->getLocale()) ?: 'Tournament' }}</h1>
-      <div class="flex items-center gap-3 text-sm text-gray-400 mt-1">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-gray-400 mt-1">
         <span class="inline-flex items-center gap-2 px-2 py-1 bg-neutral-800 text-gray-200 rounded">
           <span class="w-2 h-2 rounded-full {{ $tournament->status === 'finished' ? 'bg-emerald-400' : 'bg-yellow-400' }}"></span>
           {{ ucfirst($tournament->status) }}
         </span>
-        <span>{{ $tournament->date?->format('d/m/Y') ?? '--' }}</span>
-        <span>{{ $tournament->time ?: '--' }}</span>
+        <span>{{ __('Start:') }} {{ $tournament->date?->format('d/m/Y') ?? '--' }}</span>
+        <span>{{ __('End:') }} {{ $tournament->end_date?->format('d/m/Y') ?? '--' }}</span>
+        <span>{{ __('Time:') }} {{ $tournament->time ?: '--' }}</span>
       </div>
     </div>
     <div class="flex items-center gap-3">

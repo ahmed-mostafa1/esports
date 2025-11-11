@@ -35,12 +35,19 @@
             <div class="ot-body">
               <h3 class="ot-title">{{ $card->titleFor(app()->getLocale()) ?: 'Untitled Tournament' }}</h3>
 
+              @php
+                $startDate = $card->date?->format('d/m/Y') ?? '--';
+                $endDate = $card->end_date?->format('d/m/Y') ?? '--';
+              @endphp
               <ul class="ot-meta">
-                <li class="meta">
+                <li class="meta meta--stacked">
                   <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M7 2v3M17 2v3M3 9h18M5 6h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
                   </svg>
-                  <span>{{ $card->date?->format('d/m/Y') ?? '--' }}</span>
+                  <div class="meta-lines">
+                    <span>{{ __('Start:') }} {{ $startDate }}</span>
+                    <span>{{ __('End:') }} {{ $endDate }}</span>
+                  </div>
                 </li>
                 <li class="meta">
                   <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">

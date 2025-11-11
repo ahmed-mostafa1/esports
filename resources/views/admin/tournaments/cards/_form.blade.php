@@ -39,6 +39,15 @@
     >
   </div>
   <div>
+    <label class="block text-sm text-gray-300 mb-1">End Date</label>
+    <input
+      type="date"
+      name="end_date"
+      value="{{ old('end_date', optional(data_get($card, 'end_date'))->format('Y-m-d')) }}"
+      class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600"
+    >
+  </div>
+  <div>
     <label class="block text-sm text-gray-300 mb-1">Time</label>
     <input
       name="time"

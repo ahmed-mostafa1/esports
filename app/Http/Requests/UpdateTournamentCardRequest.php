@@ -17,6 +17,7 @@ class UpdateTournamentCardRequest extends FormRequest
             'title.en' => ['required', 'string', 'max:200'],
             'title.ar' => ['nullable', 'string', 'max:200'],
             'date' => ['nullable', 'date'],
+            'end_date' => ['nullable', 'date', 'after_or_equal:date'],
             'time' => ['nullable', 'string', 'max:20'],
             'prize' => ['nullable', 'string', 'max:100'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],

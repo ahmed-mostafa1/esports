@@ -86,7 +86,10 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M7 2v3M17 2v3M3 9h18M5 6h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>
                                     </svg>
-                                    <span>{{ $card->date?->format('d/m/Y') ?? '--' }}</span>
+                                    <div class="leading-tight">
+                                        <div>{{ __('Start:') }} {{ $card->date?->format('d/m/Y') ?? '--' }}</div>
+                                        <div>{{ __('End:') }} {{ $card->end_date?->format('d/m/Y') ?? '--' }}</div>
+                                    </div>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">

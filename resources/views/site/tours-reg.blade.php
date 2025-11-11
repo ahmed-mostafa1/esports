@@ -67,9 +67,10 @@
             
               <i class="accent" aria-hidden="true"></i>
               <div class="abilities">
-              <h4>
- {{ $description ?: __('Select your preferred mode below to continue.') }}
-              </h4>
+                              <img class="ab" src="{{ asset('./img/vectors/Vector.png') }} " alt="" />
+                <img class="ab" src="{{ asset('./img/vectors/Vector(1).png') }} " alt="" />
+                <img class="ab" src="{{ asset('./img/vectors/Vector(2).png') }} " alt="" />
+                <img class="ab" src="{{ asset('./img/vectors/Vector(3).png') }} " alt="" />
               </div>
             </div>
             <div class="cta">

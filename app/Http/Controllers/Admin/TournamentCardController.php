@@ -100,7 +100,7 @@ class TournamentCardController extends Controller
 
     private function normaliseOptionalFields(array $data): array
     {
-        foreach (['time', 'prize', 'register_url'] as $key) {
+        foreach (['date', 'end_date', 'time', 'prize', 'register_url'] as $key) {
             if (array_key_exists($key, $data) && $data[$key] === '') {
                 $data[$key] = null;
             }

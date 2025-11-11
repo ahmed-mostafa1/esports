@@ -343,10 +343,15 @@
                   <span class="t-card__status {{ $statusModifier }}">{{ $status }}</span>
                 </figure>
                 <div class="t-card__body">
+                  @php
+                    $startDate = $t->date?->format('d/m/Y') ?? __('Date TBD');
+                    $endDate = $t->end_date?->format('d/m/Y') ?? __('End Date TBD');
+                    $timeDisplay = $t->time ?: __('Time TBD');
+                  @endphp
                   <p class="t-card__meta">
-                    {{ optional($t->date)->format('d/m/Y') ?? __('Date TBD') }}
-                    <span aria-hidden="true">•</span>
-                    {{ $t->time ?: __('Time TBD') }}
+                    <span class="t-card__meta-line">{{ __('Start:') }} {{ $startDate }}</span>
+                    <span class="t-card__meta-line">{{ __('End:') }} {{ $endDate }}</span>
+                    <span class="t-card__meta-line">{{ __('Time:') }} {{ $timeDisplay }}</span>
                   </p>
                   <h3 class="t-card__title">
                     <a href="{{ route('tournaments.register', $t->slug) }}">

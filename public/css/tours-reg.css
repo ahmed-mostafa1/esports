@@ -211,7 +211,7 @@
 .cta {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
 }
 .btn-register {

@@ -133,6 +133,14 @@
   font-weight: 600;
   font-size: 14px;
 }
+.meta--stacked{
+  align-items: flex-start;
+}
+.meta-lines{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .ico{
   width: 18px; height: 18px; color: var(--accent);
 }

@@ -86,8 +86,9 @@
                 </span>
               </td>
               <td class="px-3 py-3 align-top text-gray-200">
-                {{ optional($tournament->date)->format('d/m/Y') ?? '—' }}<br>
-                <span class="text-xs text-gray-500">{{ $tournament->time ?: '—' }}</span>
+                <div>{{ optional($tournament->date)->format('d/m/Y') ?? '—' }}</div>
+                <div class="text-xs text-gray-500">{{ __('End:') }} {{ optional($tournament->end_date)->format('d/m/Y') ?? '—' }}</div>
+                <div class="text-xs text-gray-500">{{ __('Time:') }} {{ $tournament->time ?: '—' }}</div>
               </td>
               <td class="px-3 py-3 align-top text-gray-200">
                 {{ $tournament->prize ?: '—' }}

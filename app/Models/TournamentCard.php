@@ -13,6 +13,7 @@ class TournamentCard extends Model
         'title',
         'slug',
         'date',
+        'end_date',
         'time',
         'prize',
         'image_path',
@@ -25,6 +26,7 @@ class TournamentCard extends Model
     protected $casts = [
         'title' => 'array',
         'date' => 'date',
+        'end_date' => 'date',
         'is_published' => 'boolean',
     ];
 
