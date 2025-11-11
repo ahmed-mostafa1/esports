@@ -9,9 +9,11 @@
         href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap"
         rel="stylesheet" />
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     @stack('styles')
     <!-- Navbar CSS loads last to ensure it overrides any conflicts -->
-    <link rel="stylesheet" href="{{ asset('css/navbar.css') }}" />
+    @vite('resources/css/navbar.css')
 </head>
 
 <body>

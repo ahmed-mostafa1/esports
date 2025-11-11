@@ -3,8 +3,10 @@
 @section('title', 'Tournaments')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/tournaments.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/tournaments.css',
+    ])
 @endpush
 
 @section('content')

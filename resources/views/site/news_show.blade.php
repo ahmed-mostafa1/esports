@@ -3,7 +3,7 @@
 @section('title', $article->t('title', app()->getLocale()))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    @vite('resources/css/style.css')
 @endpush
 
 @section('content')
@@ -47,5 +47,5 @@
 @endsection
 
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 @endpush

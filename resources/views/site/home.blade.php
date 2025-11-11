@@ -3,7 +3,7 @@
 @section('title', __('Home'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('./css/home.css') }}" />
+    @vite('resources/css/home.css')
 @endpush
 
 @section('content')
@@ -610,5 +610,5 @@
 
 @endsection
 @push('scripts')
-@vite('../../../public/js/home.js')
+@vite('resources/js/home.js')
 @endpush

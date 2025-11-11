@@ -9,8 +9,10 @@
 @section('title', $name ?: __('Team Member'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/team.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/team.css',
+    ])
 @endpush
 
 @section('content')

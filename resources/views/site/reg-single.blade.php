@@ -3,7 +3,7 @@
 @section('title', __('Single Registration'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/reg-single.css') }}" />
+    @vite('resources/css/reg-single.css')
 @endpush
 
 @section('content')
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endpush
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 @endpush
 
 

@@ -307,7 +307,7 @@
   }
 }
 
-/* ===== E-sports cards – final fixes ===== */
+/* ===== E-sports cards - final fixes ===== */
 
 /* 1) Single source of truth for alignment */
 .tr-cards {
@@ -361,7 +361,7 @@
   }
 }
 
-/* 3) Mobile (phones) – responsive layout + alignment */
+/* 3) Mobile (phones) - responsive layout + alignment */
 @media (max-width: 680px) {
   .char-grid {
     gap: 22px;
@@ -391,7 +391,7 @@
   }
 }
 
-/* 4) Very small phones – keep everything inside the card */
+/* 4) Very small phones - keep everything inside the card */
 @media (max-width: 400px) {
   .tr-cards {
     --card-h: 500px;

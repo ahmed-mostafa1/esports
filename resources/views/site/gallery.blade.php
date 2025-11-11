@@ -3,8 +3,10 @@
 @section('title', 'Gallery')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/gallery.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/gallery.css',
+    ])
 @endpush
 
 @php($hasMultipleItems = $items->count() > 1)
@@ -123,7 +125,7 @@
 </section>
 @endsection
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.querySelector('.js-gallery-slider');

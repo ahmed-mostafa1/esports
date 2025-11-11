@@ -3,8 +3,10 @@
 @section('title', 'Forgot Password')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/auth-fixes.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/auth-fixes.css',
+    ])
 @endpush
 
 @section('content')
@@ -61,5 +63,5 @@
 
 @endsection
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 @endpush

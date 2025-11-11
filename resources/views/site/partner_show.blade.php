@@ -3,9 +3,11 @@
 @section('title', $partner->displayName(app()->getLocale()) ?: __('Partner'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/partners.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/partner_show.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/partners.css',
+        'resources/css/partner_show.css',
+    ])
 @endpush
 
 @section('content')
@@ -41,7 +43,7 @@
     $historyObjectives = [];
 
     foreach ($normalizeLines($history) as $line) {
-        if (preg_match('/^(?<year>\d{4})\s*[-:–]\s*(?<detail>.+)$/u', $line, $matches)) {
+        if (preg_match('/^(?<year>\d{4})\s*(?:-|:|–)\s*(?<detail>.+)$/u', $line, $matches)) {
             $historyEntries[] = [
                 'year' => $matches['year'],
                 'detail' => trim($matches['detail']),

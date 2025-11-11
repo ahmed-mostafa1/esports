@@ -3,8 +3,10 @@
 @section('title', 'Team Registeration')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/reg-team.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/reg-team.css',
+    ])
 @endpush
 
 @section('content')
@@ -178,5 +180,5 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endpush
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 @endpush

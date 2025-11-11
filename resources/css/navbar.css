@@ -112,6 +112,7 @@ header.navbar,
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.3s ease;
+}
 .nav-links a:hover,
 .nav-links a:focus,
 .nav-links form button:hover,

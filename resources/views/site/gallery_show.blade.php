@@ -3,8 +3,10 @@
 @section('title', $item->t('title', app()->getLocale()) ?: __('Gallery Item'))
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/gallery.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/gallery.css',
+    ])
 @endpush
 
 @section('content')
@@ -54,5 +56,5 @@
 @endsection
 
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 @endpush

@@ -3,8 +3,10 @@
 @section('title', $tournament->titleFor(app()->getLocale()) ?: 'Tournament')
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/tours-reg.css') }}" />
+    @vite([
+        'resources/css/style.css',
+        'resources/css/tours-reg.css',
+    ])
 @endpush
 
 @section('content')
@@ -78,5 +80,5 @@
 @endsection
 
 @push('scripts')
-@vite('../../../public/js/script.js')
+@vite('resources/js/script.js')
 @endpush
