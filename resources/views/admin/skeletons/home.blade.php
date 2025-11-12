@@ -173,12 +173,6 @@
                                      alt="Register Now" 
                                      class="h-12" />
                             </span>
-                            
-                            <span data-content-key="home.cta.button" 
-                                  data-content-type="text"
-                                  data-content-value="{{ $contents['home.cta.button']->value ?? '{}' }}">
-                                {{ content('home.cta.button', 'Register Now') }}
-                            </span>
                         </div>
                     </div>
 
