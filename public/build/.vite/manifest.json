@@ -8,7 +8,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-bWkaTPJd.css",
+    "file": "assets/app-BWRE04Me.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -32,7 +32,7 @@
     ]
   },
   "resources/css/home.css": {
-    "file": "assets/home-DQhvw4qX.css",
+    "file": "assets/home-WOVZLZk8.css",
     "src": "resources/css/home.css",
     "isEntry": true,
     "names": [
@@ -48,7 +48,7 @@
     ]
   },
   "resources/css/navbar.css": {
-    "file": "assets/navbar-fK-Moj_E.css",
+    "file": "assets/navbar-BRtob_cO.css",
     "src": "resources/css/navbar.css",
     "isEntry": true,
     "names": [
@@ -104,7 +104,7 @@
     ]
   },
   "resources/css/style.css": {
-    "file": "assets/style-CeeOuM8D.css",
+    "file": "assets/style-eClc90AI.css",
     "src": "resources/css/style.css",
     "isEntry": true,
     "names": [
@@ -152,12 +152,12 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-BB1VzONp.js",
+    "file": "assets/app-ClSTl3np.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-bWkaTPJd.css"
+      "assets/app-BWRE04Me.css"
     ]
   },
   "resources/js/home.js": {

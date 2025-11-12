@@ -8,6 +8,8 @@
 
 @section('content')
 
+<div class="home-page">
+
 @php
   $homeLocale = app()->getLocale();
   $tournaments = \App\Models\TournamentCard::published()->ordered()->get();
@@ -110,12 +112,12 @@
           <div class="num">{{ str_pad($countdownMonths, 2, '0', STR_PAD_LEFT) }}</div>
           <div class="label">{{ content('home.countdown.months', __('Months')) }}</div>
         </div>
-        <img src="{{ asset('./img/Star 8.png') }}" class="star-icon" alt="{{ __('Star Icon') }}" />
+        <img src="{{ asset('./img/Star 8.png') }}" class="star-icon img-fluid" alt="{{ __('Star Icon') }}" />
         <div class="countbox">
           <div class="num">{{ str_pad($countdownDays, 2, '0', STR_PAD_LEFT) }}</div>
           <div class="label">{{ content('home.countdown.days', __('Days')) }}</div>
         </div>
-        <img src="{{ asset('./img/Star 8.png') }}" class="star-icon" alt="{{ __('Star Icon') }}" />
+        <img src="{{ asset('./img/Star 8.png') }}" class="star-icon img-fluid" alt="{{ __('Star Icon') }}" />
         <div class="countbox">
           <div class="num">{{ str_pad($countdownMinutes, 2, '0', STR_PAD_LEFT) }}</div>
           <div class="label">{{ content('home.countdown.minutes', __('Minutes')) }}</div>
@@ -125,6 +127,7 @@
       <div class="hero-actions">
         <a href="./tournaments.html" class="hero-cta" aria-label="{{ content('home.cta.button', __('Register Now')) }}">
           <img
+            class="img-fluid"
             src="{{ content_media('home.cta.button.image', 'img/register-now.png') }}"
             alt="{{ content('home.cta.button', __('Register Now')) }}" />
         </a>
@@ -153,7 +156,7 @@
         @else
           <img
             src="{{ $heroMediaUrl }}"
-            class="hero-media-el"
+            class="hero-media-el img-fluid"
             alt="{{ __('Esports showcase') }}" />
         @endif
         <div class="hero-tag">
@@ -208,7 +211,7 @@
     <div class="cards">
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ content_media('home.services.card1.icon', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', __('Experienced Trainers')) }}" />
+          <img class="img-fluid" src="{{ content_media('home.services.card1.icon', 'img/Subtract(1).png') }}" alt="{{ content('home.services.card1.title', __('Experienced Trainers')) }}" />
         </div>
         <div class="img-desc">
           <h3>{{ content('home.services.card1.title', __('Experienced Trainers')) }}</h3>
@@ -218,7 +221,7 @@
 
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ content_media('home.services.card2.icon', 'img/Subtract.png') }}" alt="{{ content('home.services.card2.title', __('Every Console')) }}" />
+          <img class="img-fluid" src="{{ content_media('home.services.card2.icon', 'img/Subtract.png') }}" alt="{{ content('home.services.card2.title', __('Every Console')) }}" />
         </div>
         <div class="img-desc">
           <h3>{{ content('home.services.card2.title', __('Every Console')) }}</h3>
@@ -228,7 +231,7 @@
 
       <div class="card">
         <div class="img-wrapper">
-          <img src="{{ content_media('home.services.card3.icon', 'img/Subtract(2).png') }}" alt="{{ content('home.services.card3.title', __('Live Streaming')) }}" />
+          <img class="img-fluid" src="{{ content_media('home.services.card3.icon', 'img/Subtract(2).png') }}" alt="{{ content('home.services.card3.title', __('Live Streaming')) }}" />
         </div>
         <div class="img-desc">
           <h3>{{ content('home.services.card3.title', __('Live Streaming')) }}</h3>
@@ -337,6 +340,7 @@
               <article class="t-card">
                 <figure class="t-card__media">
                   <img
+                    class="img-fluid"
                     src="{{ $t->imageUrl() ?? content_media('tournaments.card.image','img/tournaments-inner.png') }}"
                     alt="{{ $tournamentTitle }}"
                     loading="lazy" />
@@ -429,7 +433,7 @@
                   <iframe src="{{ $partner->video_url }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
               @elseif($partner->media_type === 'image' && $partner->image_path)
-                <img src="{{ asset($partner->image_path) }}" alt="{{ $partner->displayName($homeLocale) }}">
+                <img class="img-fluid" src="{{ asset($partner->image_path) }}" alt="{{ $partner->displayName($homeLocale) }}">
               @else
                 <div class="ratio-16x9">
                   <div class="ratio-16x9__inner">{{ __('Media unavailable') }}</div>
@@ -509,7 +513,7 @@
         @forelse($testimonials as $t)
           <article class="ts-card">
             <div class="ts-avatar {{ $loop->even ? 'ts-alt' : '' }}">
-              <img src="{{ $t->avatar_path ? asset($t->avatar_path) : content_media('home.testimonial1.avatar', 'img/Rectangle 28.png') }}" />
+              <img class="img-fluid" src="{{ $t->avatar_path ? asset($t->avatar_path) : content_media('home.testimonial1.avatar', 'img/Rectangle 28.png') }}" />
             </div>
             <div class="ts-inner">
               <h3 class="ts-name">{{ $t->name[$homeLocale] ?? ($t->name['en'] ?? '') }}</h3>
@@ -607,6 +611,8 @@
     </form>
   </div>
 </section>
+
+</div>
 
 @endsection
 @push('scripts')
