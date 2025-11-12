@@ -20,7 +20,7 @@ class TournamentAdminController extends Controller
     {
         $tournaments = TournamentCard::query()
             ->withCount(['singleRegistrations', 'teamRegistrations'])
-            ->orderByRaw("FIELD(status, 'open','finished','closed') ASC")
+            ->orderByRaw($this->statusOrderingExpression())
             ->orderBy('sort_order')
             ->orderByDesc('id')
             ->paginate(20);
@@ -246,6 +246,17 @@ class TournamentAdminController extends Controller
         return redirect()
             ->route('admin.tournaments.show', $tournament)
             ->with('ok', __('Tournament marked as finished.'));
+    }
+
+    private function statusOrderingExpression(): string
+    {
+        $expression = "CASE status WHEN 'open' THEN 0 WHEN 'finished' THEN 1 WHEN 'closed' THEN 2 ELSE 3 END";
+
+        if (in_array(DB::connection()->getDriverName(), ['mysql', 'mariadb'], true)) {
+            $expression = "FIELD(status, 'open','finished','closed')";
+        }
+
+        return $expression . ' ASC';
     }
 
     private function removeCardImage(?string $path): void

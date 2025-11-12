@@ -64,17 +64,7 @@
 
         <div class="form-row">
           <div class="field">
-            <label for="tournamentId">{{ content('single_registration.form.tournament', __('Choose Tournament')) }}</label>
-            @php($selectedTournament = old('tournament_card_id', $selectedTournamentId ?? null))
-            <select id="tournamentId" name="tournament_card_id" required style="height: 40px; border-radius: 15px;">
-              <option value="">{{ content('single_registration.form.tournament_placeholder', __('Select...')) }}</option>
-              @foreach($tournaments as $tournament)
-                @php($title = $tournament->title[app()->getLocale()] ?? $tournament->title['en'] ?? __('Tournament'))
-                <option value="{{ $tournament->id }}" {{ (int) $selectedTournament === $tournament->id ? 'selected' : '' }}>
-                  {{ $title }}
-                </option>
-              @endforeach
-            </select>
+           
           </div>
         </div>
 
@@ -136,12 +126,3 @@ document.addEventListener('DOMContentLoaded', function () {
 @push('scripts')
 @vite('resources/js/script.js')
 @endpush
-
-
-
-        @if(($selectedGame ?? null) || $stickyGameId)
-          @php($gameName = ($selectedGame ?? null)?->titleFor(app()->getLocale()) ?? '')
-          <div class="alert info">
-            {{ $gameName ?: __('You are registering for a selected game slot.') }}
-          </div>
-        @endif

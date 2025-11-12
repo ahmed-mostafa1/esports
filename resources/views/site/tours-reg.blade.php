@@ -189,7 +189,7 @@
     <section class="our-news-section">
       <h2 style="display: flex; justify-content: start">
         <button class="secondary-btn" style="font-size: 25px; padding: 10px 40px; border-radius: 5px !important;">
-          {{ content('tours-reg.section.title', __('Games')) }}
+          Games
         </button>
       </h2>
       <span class="tri t1" aria-hidden="true"></span>
