@@ -27,10 +27,12 @@ class DatabaseSeeder extends Seeder
         ]);
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'admin@esport.com',
-            'password' => bcrypt('admin123'),
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@esport.com'],
+            [
+                'name' => 'Test User',
+                'password' => bcrypt('admin123'),
+            ]
+        );
     }
 }
