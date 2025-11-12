@@ -19,7 +19,7 @@
 <section class="team team-show" aria-labelledby="team-member-title">
     <div class="team-head">
         <h2 id="team-member-title" class="pill-red">
-           Our Team
+           {{ __('Our Team') }}
         </h2>
     </div>
 

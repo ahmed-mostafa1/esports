@@ -19,28 +19,26 @@
             class="tab-btn active"
             style="font-size: 20px; border-radius: 10px;"
           >
-            {{ content('partners.header.text', 'E-Sports') }}
+            {{ content('partners.header.text', __('E-Sports')) }}
           </button>
         </div>
       </div>
 
   <!-- Section 1 -->
   <div class="section1" style="margin: 20px; text-align: center;">
-    <h2 class="section1__title">{{ content('partners.section1.title', 'Our Partnership Benefits') }}</h2>
-    <p class="section1__text">{{ content('partners.section1.text', 'Discover how partnering with us can elevate your brand and connect you with the esports community.') }}</p>
+    <h2 class="section1__title">{{ content('partners.section1.title', __('Our Partnership Benefits')) }}</h2>
+    <p class="section1__text">{{ content('partners.section1.text', __('Discover how partnering with us can elevate your brand and connect you with the esports community.')) }}</p>
   </div>
 
   @php($locale = app()->getLocale())
   @php($partners = \App\Models\Partner::published()->ordered()->get())
-  @php($ctaLabel = app()->getLocale() === 'ar'
-      ? 'اقرأ المزيد'
-      : content('partners.card.cta', 'Read More'))
+  @php($ctaLabel = content('partners.card.cta', __('Read More')))
   <ul class="partners__grid">
     @forelse($partners as $partner)
       <li class="p-card">
         <figure class="p-card__thumb">
           @if($partner->media_type === 'image' && $partner->image_path)
-            <img src="{{ asset($partner->image_path) }}" alt="{{ $partner->displayName(app()->getLocale()) ?: content('partners.header.text') }}">
+            <img src="{{ asset($partner->image_path) }}" alt="{{ $partner->displayName(app()->getLocale()) ?: content('partners.header.text', __('E-Sports')) }}">
           @elseif($partner->media_type === 'video' && $partner->video_url)
             <div class="ratio-16x9">
               <iframe src="{{ $partner->video_url }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
@@ -53,7 +51,7 @@
         </figure>
         @php($cardDescription = $partner->displayText($partner->description, $locale))
         <p class="p-card__desc">
-          {{ $cardDescription ?: content('partners.intro.text', 'The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.') }}
+          {{ $cardDescription ?: content('partners.intro.text', __('The Healing is fresh!!! can not wait to take my next session, really I feel so Energetic and I know care of the quality for my mental health and Happiness no matter what I face.')) }}
         </p>
         @if($partner->slug)
           <a class="btn-more" href="{{ route('partners.show', $partner) }}">

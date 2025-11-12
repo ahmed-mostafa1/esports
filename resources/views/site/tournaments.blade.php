@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tournaments')
+@section('title', __('Tournaments'))
 
 @push('styles')
     @vite([
@@ -15,15 +15,17 @@
     <div class="right-panel">
       <div class="form-header">
         <button class="tab-btn active" style="font-size: 20px; border-radius: 10px">
-          {{ content('tournaments.header.title', 'E-Sports') }}
+          {{ content('tournaments.header.title', __('E-Sports')) }}
         </button>
       </div>
     </div>
 
-    <span class="ot-pill ot-pill--gray">{{ content('tournaments.our_tournament', 'Our Tournament') }}</span>
+    <span class="ot-pill ot-pill--gray">{{ content('tournaments.our_tournament', __('Our Tournament')) }}</span>
 
     <!-- grid -->
-    @php($cards = \App\Models\TournamentCard::published()->ordered()->get())
+    @php
+      $cards = \App\Models\TournamentCard::published()->ordered()->get();
+    @endphp
     <ul class="ot-grid">
       @forelse($cards as $card)
         <li class="ot-card">
@@ -31,11 +33,11 @@
             <figure class="ot-media">
               <img
                 src="{{ $card->imageUrl() ?? content_media('tournaments.card.image', 'img/tournaments-inner.png') }}"
-                alt="{{ $card->titleFor(app()->getLocale()) ?: 'Tournament card' }}"
+                alt="{{ $card->titleFor(app()->getLocale()) ?: __('Tournament card') }}"
               />
             </figure>
             <div class="ot-body">
-              <h3 class="ot-title">{{ $card->titleFor(app()->getLocale()) ?: 'Untitled Tournament' }}</h3>
+              <h3 class="ot-title">{{ $card->titleFor(app()->getLocale()) ?: __('Untitled Tournament') }}</h3>
 
               @php
                 $startDate = $card->date?->format('d/m/Y') ?? '--';
@@ -68,15 +70,15 @@
 
               @if($card->status === 'open')
                 <a href="{{ route('tournaments.register', $card->slug) }}" class="ot-btn ot-btn--register" style="width: 50%;">
-                  {{ content('tournaments.card.register', 'REGISTER') }}
+                  {{ content('tournaments.card.register', __('REGISTER')) }}
                 </a>
               @elseif($card->status === 'finished')
                 <a href="{{ route('winners.show', $card->slug) }}" class="ot-btn" style="background: #059669; width: 50%;">
-                  {{ content('tournaments.card.winner', 'Winner') }}
+                  {{ content('tournaments.card.winner', __('Winner')) }}
                 </a>
               @else
                 <span class="ot-btn" style="background:#4b5563; pointer-events:none;">
-                  {{ content('tournaments.card.closed', 'Closed') }}
+                  {{ content('tournaments.card.closed', __('Closed')) }}
                 </span>
               @endif
             </div>

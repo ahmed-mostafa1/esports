@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Registeration')
+@section('title', __('Registration'))
 
 @push('styles')
     @vite([
@@ -19,7 +19,7 @@
   @php
       $gamesList = ($games ?? collect())->sortBy('sort_order')->values();
       $themeCycle = ['theme-dark', 'theme-slate', 'theme-coal'];
-      $tournamentTitle = $tournament->titleFor(app()->getLocale()) ?: content('tours-reg.header.title', 'E-Sports');
+      $tournamentTitle = $tournament->titleFor(app()->getLocale()) ?: content('tours-reg.header.title', __('E-Sports'));
   @endphp
   <section class="tr-cards" aria-labelledby="tr-title">
     <h2 style="display: flex; justify-content: center">
@@ -31,7 +31,7 @@
     <section class="our-news-section">
       <h2 style="display: flex; justify-content: start">
         <button class="secondary-btn" style="font-size: 25px; padding: 10px 40px; border-radius: 5px !important;">
-          {{ content('tours-reg.section.title', 'Available Games') }}
+          {{ content('tours-reg.section.title', __('Available Games')) }}
         </button>
       </h2>
 
@@ -83,7 +83,7 @@
                     class="tab-btn active"
                     style="{{ $singleUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
                   >
-                    {{ content('tours-reg.links.single', 'Single') }}
+                    {{ content('tours-reg.links.single', __('Single')) }}
                   </a>
                 @endif
 
@@ -93,7 +93,7 @@
                     class="tab-btn active"
                     style="{{ $teamUrl ? '' : 'pointer-events:none;opacity:0.4;' }}"
                   >
-                    {{ content('tours-reg.links.team', 'Team') }}
+                    {{ content('tours-reg.links.team', __('Team')) }}
                   </a>
                 @endif
               </div>
@@ -182,14 +182,14 @@
   <section class="tr-cards" aria-labelledby="tr-title">
     <h2 style="display: flex; justify-content: center">
       <button class="tab-btn active" style="font-size: 25px; padding: 10px 40px; border-radius: 5px !important;">
-        {{ content('tours-reg.header.title', 'E-Sports') }}
+                {{ content('tours-reg.header.title', __('E-Sports')) }}
       </button>
     </h2>
 
     <section class="our-news-section">
       <h2 style="display: flex; justify-content: start">
         <button class="secondary-btn" style="font-size: 25px; padding: 10px 40px; border-radius: 5px !important;">
-          {{ content('tours-reg.section.title', 'Games') }}
+          {{ content('tours-reg.section.title', __('Games')) }}
         </button>
       </h2>
       <span class="tri t1" aria-hidden="true"></span>
@@ -200,15 +200,15 @@
         @foreach($toursRegCards as $card)
           @php
               $cardKey = 'tours-reg.' . $card['key'];
-              $cardName = content($cardKey . '.name', $card['fallback_name']);
-              $cardCountry = content($cardKey . '.country', $card['fallback_country']);
+              $cardName = content($cardKey . '.name', __($card['fallback_name']));
+              $cardCountry = content($cardKey . '.country', __($card['fallback_country']));
           @endphp
           <li class="char-card {{ $card['theme'] }}">
             <div class="char-wrap">
               <figure class="art">
                 <img
                   src="{{ content_media($cardKey . '.image', $card['image']) }}"
-                  alt="{{ $cardName }} artwork"
+                  alt="{{ __(':name artwork', ['name' => $cardName]) }}"
                 />
               </figure>
 
@@ -223,7 +223,7 @@
                   <img
                     class="ab"
                     src="{{ content_media($cardKey . '.' . $ability['key'], $ability['fallback']) }}"
-                    alt="{{ $cardName }} ability {{ $loop->iteration }}"
+                    alt="{{ __(':name ability :number', ['name' => $cardName, 'number' => $loop->iteration]) }}"
                   />
                 @endforeach
                 <span class="under" aria-hidden="true"></span>
@@ -232,30 +232,30 @@
 
             <div class="cta">
               <button class="btn-register" type="button">
-                {{ content('tours-reg.card.register_button', 'Register - now') }}
+                {{ content('tours-reg.card.register_button', __('Register now')) }}
               </button>
               <div class="segmented">
                 @auth
                   <a href="{{ route('register.single') }}" class="mini">
-                    {{ content('tours-reg.links.single', 'Single') }}
+                    {{ content('tours-reg.links.single', __('Single')) }}
                   </a>
                   <a href="{{ route('register.team') }}" class="mini">
-                    {{ content('tours-reg.links.team', 'Team') }}
+                    {{ content('tours-reg.links.team', __('Team')) }}
                   </a>
                 @else
                   <a
                     href="{{ route('login') }}"
                     class="mini"
-                    onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;"
+                    onclick="sessionStorage.setItem('loginMessage', '{{ __('You must login to register') }}'); return true;"
                   >
-                    {{ content('tours-reg.links.single', 'Single') }}
+                    {{ content('tours-reg.links.single', __('Single')) }}
                   </a>
                   <a
                     href="{{ route('login') }}"
                     class="mini"
-                    onclick="sessionStorage.setItem('loginMessage', 'You must login to register'); return true;"
+                    onclick="sessionStorage.setItem('loginMessage', '{{ __('You must login to register') }}'); return true;"
                   >
-                    {{ content('tours-reg.links.team', 'Team') }}
+                    {{ content('tours-reg.links.team', __('Team')) }}
                   </a>
                 @endauth
               </div>

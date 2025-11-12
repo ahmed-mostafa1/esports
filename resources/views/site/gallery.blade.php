@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gallery')
+@section('title', __('Gallery'))
 
 @push('styles')
     @vite([

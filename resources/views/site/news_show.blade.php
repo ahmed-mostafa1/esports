@@ -9,14 +9,14 @@
 @section('content')
   <h2 style="display:flex;justify-content:center;">
     <button class="tab-btn active" style="font-size:25px;padding:10px 40px;border-radius:5px!important;">
-      {{ content('news.header.main_title','E-Sports') }}
+      {{ content('news.header.main_title', __('E-Sports')) }}
     </button>
   </h2>
 
   <section class="our-news-section">
     <h2 style="display:flex;justify-content:start;">
       <button class="secondary-btn" style="font-size:25px;padding:10px 40px;border-radius:5px!important;">
-        {{ content('news.header.section_title','Our News') }}
+        {{ content('news.header.section_title', __('Our News')) }}
       </button>
     </h2>
 

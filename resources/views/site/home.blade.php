@@ -409,7 +409,7 @@
 <section class="partners-section" data-reveal="fade-right" data-reveal-delay="150">
   <div class="container">
     <!-- Title -->
-    <h2 class="title">{{ content('home.partners.title', 'Our Partners') }}</h2>
+    <h2 class="title">{{ content('home.partners.title', __('Our Partners')) }}</h2>
     <div class="title-swoosh" aria-hidden="true">
       <svg viewBox="0 0 260 22" xmlns="http://www.w3.org/2000/svg">
         <!-- gentle upward “smile” like the source -->
@@ -439,13 +439,13 @@
                   <div class="ratio-16x9__inner">{{ __('Media unavailable') }}</div>
                 </div>
               @endif
-              <span class="live">{{ content('home.partners.live_indicator', '● Live') }}</span>
-                            <button class="play" aria-label="Play"></button>
+              <span class="live">{{ content('home.partners.live_indicator', __('● Live')) }}</span>
+                            <button class="play" aria-label="{{ __('Play') }}"></button>
 
 
             </div>
             <figcaption class="name {{ $partner->displayName($homeLocale) && strlen($partner->displayName($homeLocale)) > 18 ? 'wrap' : '' }}">
-              {{ $partner->displayName($homeLocale) ?: content('home.partners.title', 'Our Partners') }}
+              {{ $partner->displayName($homeLocale) ?: content('home.partners.title', __('Our Partners')) }}
             </figcaption>
           </figure>
         @empty
@@ -454,10 +454,10 @@
               <div class="ratio-16x9">
                 <div class="ratio-16x9__inner">{{ __('Partners coming soon') }}</div>
               </div>
-              <span class="live">{{ content('home.partners.live_indicator', '● Live') }}</span>
-              <button class="play" aria-label="Play"></button>
+              <span class="live">{{ content('home.partners.live_indicator', __('● Live')) }}</span>
+              <button class="play" aria-label="{{ __('Play') }}"></button>
             </div>
-            <figcaption class="name">{{ content('home.partners.title', 'Our Partners') }}</figcaption>
+            <figcaption class="name">{{ content('home.partners.title', __('Our Partners')) }}</figcaption>
           </figure>
         @endforelse
       </div>
@@ -469,7 +469,7 @@
       <div
         class="dots-partner dots-partner--inline"
         id="p-dots"
-        aria-label="Slider pagination">
+        aria-label="{{ __('Slider pagination') }}">
         @php($partnerDotCount = max(1, min(5, $partners->count())))
         @for($i = 0; $i < $partnerDotCount; $i++)
           <span class="dot {{ $i === 0 ? 'active' : '' }}"></span>
@@ -478,10 +478,10 @@
 
       <!-- Arrow pills (bottom-right) -->
       <div class="nav nav--partners">
-        <button class="pill light" id="p-prev" aria-label="Previous">
+        <button class="pill light" id="p-prev" aria-label="{{ __('Previous') }}">
           <span class="chev">‹</span>
         </button>
-        <button class="pill dark" id="p-next" aria-label="Next">
+        <button class="pill dark" id="p-next" aria-label="{{ __('Next') }}">
           <span class="chev">›</span>
         </button>
       </div>
@@ -494,7 +494,7 @@
 <section class="ts-section" data-reveal="fade-up" data-reveal-delay="150">
   <div class="ts-container">
     <div class="ts-head">
-      <h2 class="ts-title">{{ content('home.testimonials.title', 'Client') }} <span>{{ content('home.testimonials.subtitle', 'Testimonial') }}</span></h2>
+      <h2 class="ts-title">{{ content('home.testimonials.title', __('Client')) }} <span>{{ content('home.testimonials.subtitle', __('Testimonial')) }}</span></h2>
       <div class="ts-swoosh" aria-hidden="true">
         <svg viewBox="0 0 240 22" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -505,7 +505,7 @@
             stroke-linecap="round" />
         </svg>
       </div>
-      <p class="ts-sub">{{ content('home.testimonials.description', 'Our Client feedback is overseas and Localy') }}</p>
+      <p class="ts-sub">{{ content('home.testimonials.description', __('Our Client feedback is overseas and Localy')) }}</p>
     </div>
 
     <div class="ts-slider" id="ts-slider">
@@ -537,17 +537,17 @@
       <div
         class="ts-dots"
         id="ts-dots"
-        aria-label="Slider pagination"></div>
+        aria-label="{{ __('Slider pagination') }}"></div>
 
       <!-- Arrows -->
       <div class="ts-nav">
         <button
           class="ts-pill ts-light"
           id="ts-prev"
-          aria-label="Previous">
+          aria-label="{{ __('Previous') }}">
           <span class="ts-chev">‹</span>
         </button>
-        <button class="ts-pill ts-red" id="ts-next" aria-label="Next">
+        <button class="ts-pill ts-red" id="ts-next" aria-label="{{ __('Next') }}">
           <span class="ts-chev">›</span>
         </button>
       </div>

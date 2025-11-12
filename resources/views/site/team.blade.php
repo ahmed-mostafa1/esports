@@ -14,7 +14,7 @@
 <section class="team" aria-labelledby="team-title">
     <div class="team-head">
         <h2 id="team-title" class="pill-red">
-            {{ content('team.title', 'Our Team') }}
+            {{ content('team.title', __('Our Team')) }}
         </h2>
     </div>
 

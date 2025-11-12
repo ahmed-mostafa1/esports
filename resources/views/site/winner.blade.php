@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $tournament->titleFor(app()->getLocale()) ?: 'Winners')
+@section('title', $tournament->titleFor(app()->getLocale()) ?: __('Winners'))
 
 @push('styles')
     @vite('resources/css/style.css')
@@ -205,7 +205,7 @@
 
         if ($singleEntries->isNotEmpty()) {
             $displayCards->push([
-                'title' => content('winners.single.label', 'Winner (Single)'),
+                'title' => content('winners.single.label', __('Winner (Single)')),
                 'image' => $tournamentImage,
                 'status' => __('Singles'),
                 'allow_single' => true,
@@ -216,7 +216,7 @@
 
         if ($teamEntries->isNotEmpty()) {
             $displayCards->push([
-                'title' => content('winners.team.label', 'Winner (Team)'),
+                'title' => content('winners.team.label', __('Winner (Team)')),
                 'image' => $tournamentImage,
                 'status' => __('Teams'),
                 'allow_single' => false,
@@ -231,7 +231,7 @@
     <div class="container" style="max-width:1200px;">
       <div class="winners-banner">
         <button class="badge-pill badge-pill--muted">{{ __('Winners') }}</button>
-        <button class="badge-pill badge-pill--primary">{{ content('winners.header.main_title', 'E-sports') }}</button>
+        <button class="badge-pill badge-pill--primary">{{ content('winners.header.main_title', __('E-Sports')) }}</button>
       </div>
 
       <div class="winner-shell">
@@ -282,7 +282,7 @@
             </div>
           @else
             <p style="color:#f23b33; font-size:1.2rem; text-align:center;">
-              {{ content('winners.empty', 'Winner will be announced soon.') }}
+              {{ content('winners.empty', __('Winner will be announced soon.')) }}
             </p>
           @endif
         </div>

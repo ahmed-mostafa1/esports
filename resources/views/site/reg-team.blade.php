@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Team Registeration')
+@section('title', __('Team Registration'))
 
 @push('styles')
     @vite([
@@ -19,7 +19,7 @@
           class="tab-btn active"
           style="font-size: 20px; border-radius: 10px;"
         >
-          {{ content('team_registration.header.title', 'E-Sports') }}
+          {{ content('team_registration.header.title', __('E-Sports')) }}
         </button>
       </div>
     </div>
@@ -29,13 +29,13 @@
     <!-- LEFT: tabs + Phoenix -->
     <aside class="rt-left">
       <div class="tabs">
-        <span class="tab tab--gray">{{ content('team_registration.tabs.tournament', 'Tournament Registrations') }}</span>
-        <span class="tab tab--red">{{ content('team_registration.tabs.register', 'Register – now') }}</span>
-        <span class="tab tab--gray tab--sm">{{ content('team_registration.tabs.team', 'Team') }}</span>
+        <span class="tab tab--gray">{{ content('team_registration.tabs.tournament', __('Tournament Registrations')) }}</span>
+        <span class="tab tab--red">{{ content('team_registration.tabs.register', __('Register now')) }}</span>
+        <span class="tab tab--gray tab--sm">{{ content('team_registration.tabs.team', __('Team')) }}</span>
       </div>
 
       <figure class="phoenix">
-        <img src="{{ content_media('team_registration.phoenix_image', 'img/Phoenix.png') }}" alt="Phoenix character card">
+        <img src="{{ content_media('team_registration.phoenix_image', 'img/Phoenix.png') }}" alt="{{ __('Phoenix character card') }}">
       </figure>
     </aside>
 
@@ -88,8 +88,8 @@
 
         <!-- Row 1 -->
         <div class="field">
-          <label for="teamName">Team Name</label>
-          <input id="teamName" name="teamName" type="text" placeholder="Enter  your team name" value="{{ old('teamName') }}">
+          <label for="teamName">{{ __('Team Name') }}</label>
+          <input id="teamName" name="teamName" type="text" placeholder="{{ __('Enter your team name') }}" value="{{ old('teamName') }}">
         </div>
 <div>
   <!-- ! to keep space -->
@@ -97,66 +97,66 @@
 
         <!-- Row 2 -->
         <div class="field">
-         <label for="captainName">Captain's Name</label>
-          <input id="captainName" name="captainName" type="text" placeholder="Enter  captain's name" value="{{ old('captainName') }}">
+         <label for="captainName">{{ __('Captain\'s Name') }}</label>
+          <input id="captainName" name="captainName" type="text" placeholder="{{ __('Enter captain\'s name') }}" value="{{ old('captainName') }}">
         </div>
           <div class="field" style="margin-left: 40px;">
-          <label for="captainLogo">Captain's Logo</label>
+          <label for="captainLogo">{{ __('Captain\'s Logo') }}</label>
           <label class="file-field">
             <input id="captainLogo" name="captainLogo" type="file" accept="image/*">
-            <span class="file-placeholder">click to upload</span>
+            <span class="file-placeholder">{{ __('Click to upload') }}</span>
           </label>
         </div>
         <!-- Row 3 -->
         <div class="field">
-          <label for="captainEmail">Captain's Email</label>
-          <input id="captainEmail" name="captainEmail" type="email" placeholder="Enter  captain's email" value="{{ old('captainEmail') }}">
+          <label for="captainEmail">{{ __('Captain\'s Email') }}</label>
+          <input id="captainEmail" name="captainEmail" type="email" placeholder="{{ __('Enter captain\'s email') }}" value="{{ old('captainEmail') }}">
         </div>
           <div class="field" style="margin-left: 40px;">
-          <label for="teamLogo">Team's Logo</label>
+          <label for="teamLogo">{{ __('Team\'s Logo') }}</label>
           <label class="file-field">
             <input id="teamLogo" name="teamLogo" type="file" accept="image/*">
-            <span class="file-placeholder">click to upload</span>
+            <span class="file-placeholder">{{ __('Click to upload') }}</span>
           </label>
         </div>
 
 
         <div class="field">
-          <label for="captainPhone">Captain's Phone</label>
-          <input id="captainPhone" name="captainPhone" type="tel" placeholder="Enter  captain's phone" value="{{ old('captainPhone') }}">
+          <label for="captainPhone">{{ __('Captain\'s Phone') }}</label>
+          <input id="captainPhone" name="captainPhone" type="tel" placeholder="{{ __('Enter captain\'s phone') }}" value="{{ old('captainPhone') }}">
         </div>
         <div class="field" style="margin-left: 40px;">
-          <label for="gameId">Game  -ID</label>
-          <input id="gameId" name="gameId" type="text" placeholder="Enter  Game ID" value="{{ old('gameId') }}">
+          <label for="gameId">{{ __('Game ID') }}</label>
+          <input id="gameId" name="gameId" type="text" placeholder="{{ __('Enter your game ID') }}" value="{{ old('gameId') }}">
         </div>
 
         <!-- Subheading -->
         <div class="full">
-          <h3 class="subhead">Team Members</h3>
+          <h3 class="subhead">{{ __('Team Members') }}</h3>
         </div>
 
         <!-- Members (2 columns) -->
         <div class="field">
-          <label for="m1">Member 1</label>
-          <input id="m1" name="m1" type="text" placeholder="Enter  member 1's name" value="{{ old('m1') }}">
+          <label for="m1">{{ __('Member 1') }}</label>
+          <input id="m1" name="m1" type="text" placeholder="{{ __('Enter member 1 name') }}" value="{{ old('m1') }}">
         </div>
         <div class="field" style="margin-left: 40px;">
-          <label for="m2">Member 2</label>
-          <input id="m2" name="m2" type="text" placeholder="Enter  member 2's name" value="{{ old('m2') }}">
+          <label for="m2">{{ __('Member 2') }}</label>
+          <input id="m2" name="m2" type="text" placeholder="{{ __('Enter member 2 name') }}" value="{{ old('m2') }}">
         </div>
 
         <div class="field">
-          <label for="m3">Member 3</label>
-          <input id="m3" name="m3" type="text" placeholder="Enter  member 3's name" value="{{ old('m3') }}">
+          <label for="m3">{{ __('Member 3') }}</label>
+          <input id="m3" name="m3" type="text" placeholder="{{ __('Enter member 3 name') }}" value="{{ old('m3') }}">
         </div>
         <div class="field" style="margin-left: 40px;">
-          <label for="m4">Member 4</label>
-          <input id="m4" name="m4" type="text" placeholder="Enter  member 4's name" value="{{ old('m4') }}">
+          <label for="m4">{{ __('Member 4') }}</label>
+          <input id="m4" name="m4" type="text" placeholder="{{ __('Enter member 4 name') }}" value="{{ old('m4') }}">
         </div>
 
         <!-- CTA -->
         <div class="full actions">
-          <button class="btn-register" type="submit">Register Team</button>
+          <button class="btn-register" type="submit">{{ __('Register Team') }}</button>
         </div>
       </form>
     </div>
