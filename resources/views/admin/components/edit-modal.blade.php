@@ -4,8 +4,8 @@
     <!-- Modal Header -->
     <div class="flex items-center justify-between p-6 border-b border-neutral-800">
       <div>
-        <h3 class="text-lg font-semibold text-white" id="modalTitle">Edit Content</h3>
-        <p class="text-sm text-gray-400" id="modalKey">content.key.here</p>
+        <h3 class="text-lg font-semibold text-white" id="modalTitle">{{ __('Edit Content') }}</h3>
+        <p class="text-sm text-gray-400" id="modalKey">{{ __('content.key.here') }}</p>
       </div>
       <button onclick="closeModal()" class="text-gray-400 hover:text-white">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,7 +22,7 @@
         <!-- Content Type Display -->
         <div class="mb-4">
           <span class="inline-flex items-center px-2 py-1 text-xs rounded bg-neutral-800 text-gray-200 border border-neutral-700" id="contentType">
-            text
+            {{ __('text') }}
           </span>
         </div>
 
@@ -30,26 +30,26 @@
         <div id="textFields" class="space-y-4">
           <div>
             <label for="valueEn" class="block text-sm font-medium text-gray-300 mb-2">
-              English Content
+              {{ __('English Content') }}
             </label>
             <textarea 
               id="valueEn" 
               name="value[en]" 
               rows="4" 
               class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-              placeholder="Enter English content..."></textarea>
+              placeholder="{{ __('Enter English content...') }}"></textarea>
           </div>
           
           <div>
             <label for="valueAr" class="block text-sm font-medium text-gray-300 mb-2">
-              Arabic Content (Optional)
+              {{ __('Arabic Content (Optional)') }}
             </label>
             <textarea 
               id="valueAr" 
               name="value[ar]" 
               rows="4" 
               class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-              placeholder="Enter Arabic content..."
+              placeholder="{{ __('Enter Arabic content...') }}"
               dir="rtl"></textarea>
           </div>
         </div>
@@ -58,7 +58,7 @@
         <div id="datetimeFields" class="space-y-4 hidden">
           <div>
             <label for="valueDatetime" class="block text-sm font-medium text-gray-300 mb-2">
-              Event Date &amp; Time
+              {{ __('Event Date & Time') }}
             </label>
             <input
               type="datetime-local"
@@ -66,13 +66,13 @@
               class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
             >
             <p class="text-xs text-gray-500 mt-1">
-              Pick the desired date and time. It will be stored in ISO 8601 format for the countdown.
+              {{ __('Pick the desired date and time. It will be stored in ISO 8601 format for the countdown.') }}
             </p>
           </div>
 
           <div>
             <label for="valueTimezone" class="block text-sm font-medium text-gray-300 mb-2">
-              Timezone Offset
+              {{ __('Timezone Offset') }}
             </label>
             <input
               type="text"
@@ -83,13 +83,13 @@
               inputmode="text"
             >
             <p class="text-xs text-gray-500 mt-1">
-              Enter the offset in <code>±HH:MM</code> format (examples: <code>+00:00</code>, <code>+03:00</code>, <code>-05:30</code>).
+              {!! __('Enter the offset in <code>±HH:MM</code> format (examples: <code>+00:00</code>, <code>+03:00</code>, <code>-05:30</code>).') !!}
             </p>
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-300 mb-2">
-              ISO 8601 Preview
+              {{ __('ISO 8601 Preview') }}
             </label>
             <div class="bg-neutral-800 border border-neutral-700 rounded-md px-3 py-2">
               <code id="valueIsoPreview" class="text-sm text-green-400 font-mono break-all">--</code>
@@ -105,15 +105,15 @@
               <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span class="text-sm font-medium text-blue-400">Expected filename:</span>
+              <span class="text-sm font-medium text-blue-400">{{ __('Expected filename:') }}</span>
             </div>
             <code id="expectedFilename" class="text-sm text-green-400 bg-neutral-900 px-2 py-1 rounded font-mono">content.key.png</code>
-            <p class="text-xs text-gray-500 mt-2">Your uploaded image will be automatically renamed to match this filename for consistency.</p>
+            <p class="text-xs text-gray-500 mt-2">{{ __('Your uploaded image will be automatically renamed to match this filename for consistency.') }}</p>
           </div>
           
           <div>
             <label for="imageFile" class="block text-sm font-medium text-gray-300 mb-2">
-              Upload New Media
+              {{ __('Upload New Media') }}
             </label>
             <input 
               type="file" 
@@ -122,31 +122,31 @@
               accept="image/*,video/*"
               class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
             <p class="text-xs text-gray-500 mt-1">
-              Accepted images: PNG, JPG, JPEG, WebP, GIF. Accepted videos: MP4, MOV, WebM, MKV, OGG.
+              {{ __('Accepted images: PNG, JPG, JPEG, WebP, GIF. Accepted videos: MP4, MOV, WebM, MKV, OGG.') }}
             </p>
           </div>
 
           <!-- OR: External video URL (YouTube/Vimeo/CDN) -->
           <div>
             <label for="externalVideoUrl" class="block text-sm font-medium text-gray-300 mb-2">
-              Or paste external video URL
+              {{ __('Or paste external video URL') }}
             </label>
             <input
               type="url"
               id="externalVideoUrl"
               name="external_url"
-              placeholder="https://youtu.be/xxxx or https://www.youtube.com/watch?v=xxxx or https://cdn.example.com/video.mp4"
+              placeholder="{{ __('https://youtu.be/xxxx or https://www.youtube.com/watch?v=xxxx or https://cdn.example.com/video.mp4') }}"
               class="w-full px-3 py-2 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
             <p class="text-xs text-gray-500 mt-1">
-              If provided, this URL will be saved as the media for this slot (no upload needed).
+              {{ __('If provided, this URL will be saved as the media for this slot (no upload needed).') }}
             </p>
           </div>
           
           <!-- Current Media Preview -->
           <div id="currentImagePreview" class="hidden">
-            <label class="block text-sm font-medium text-gray-300 mb-2">Current Media</label>
+            <label class="block text-sm font-medium text-gray-300 mb-2">{{ __('Current Media') }}</label>
             <div class="border border-neutral-700 rounded-md p-4 bg-neutral-800">
-              <img id="currentImage" src="" alt="Current image" class="max-w-full h-auto max-h-48 rounded">
+              <img id="currentImage" src="" alt="{{ __('Current image') }}" class="max-w-full h-auto max-h-48 rounded">
             </div>
           </div>
         </div>
@@ -169,14 +169,14 @@
         onclick="closeModal()" 
         type="button"
         class="px-4 py-2 text-sm font-medium text-gray-300 bg-transparent border border-neutral-600 rounded-md hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-500">
-        Cancel
+        {{ __('Cancel') }}
       </button>
       <button 
         onclick="saveContent()" 
         type="button" 
         id="saveButton"
         class="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-        <span id="saveButtonText">Save Changes</span>
+        <span id="saveButtonText">{{ __('Save Changes') }}</span>
         <svg id="saveButtonSpinner" class="hidden inline w-4 h-4 ml-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
         </svg>

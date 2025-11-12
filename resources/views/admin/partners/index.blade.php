@@ -1,17 +1,17 @@
 @extends('admin.layout')
 
-@section('title', 'Partners')
+@section('title', __('Partners'))
 
 @section('content')
 <div class="px-6 py-4 space-y-4">
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
     <div>
-      <h1 class="text-xl font-semibold text-white">Partners</h1>
-      <p class="text-sm text-gray-400">Manage partner cards used on the home page slider and partners page.</p>
+      <h1 class="text-xl font-semibold text-white">{{ __('Partners') }}</h1>
+      <p class="text-sm text-gray-400">{{ __('Manage partner cards used on the home page slider and partners page.') }}</p>
     </div>
     <a href="{{ route('admin.partners.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition">
       <span class="text-lg leading-none">＋</span>
-      <span>Add Partner</span>
+      <span>{{ __('Add Partner') }}</span>
     </a>
   </div>
 
@@ -25,11 +25,11 @@
     <table class="min-w-full divide-y divide-neutral-800 text-sm">
       <thead class="bg-neutral-900 text-gray-300 uppercase tracking-wide text-xs">
         <tr>
-          <th class="px-3 py-3 text-left">Order</th>
-          <th class="px-3 py-3 text-left">Name (EN)</th>
-          <th class="px-3 py-3 text-left">Type</th>
-          <th class="px-3 py-3 text-left">Published</th>
-          <th class="px-3 py-3 text-right">Actions</th>
+          <th class="px-3 py-3 text-left">{{ __('Order') }}</th>
+          <th class="px-3 py-3 text-left">{{ __('Name (EN)') }}</th>
+          <th class="px-3 py-3 text-left">{{ __('Type') }}</th>
+          <th class="px-3 py-3 text-left">{{ __('Published') }}</th>
+          <th class="px-3 py-3 text-right">{{ __('Actions') }}</th>
         </tr>
       </thead>
       <tbody id="partner-sortable-body" class="divide-y divide-neutral-800">
@@ -42,22 +42,22 @@
             <td class="px-3 py-3 text-gray-400">{{ ucfirst($partner->media_type) }}</td>
             <td class="px-3 py-3">
               <span class="inline-flex items-center px-2 py-1 rounded text-xs {{ $partner->is_published ? 'bg-green-700/70 text-white' : 'bg-neutral-700 text-gray-300' }}">
-                {{ $partner->is_published ? 'Yes' : 'No' }}
+                {{ $partner->is_published ? __('Yes') : __('No') }}
               </span>
             </td>
             <td class="px-3 py-3 text-right space-x-2">
-              <a href="{{ route('admin.partners.edit', $partner->getKey()) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition">Edit</a>
-              <form action="{{ route('admin.partners.destroy', $partner->getKey()) }}" method="POST" class="inline" onsubmit="return confirm('Delete this partner?');">
+              <a href="{{ route('admin.partners.edit', $partner->getKey()) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition">{{ __('Edit') }}</a>
+              <form action="{{ route('admin.partners.destroy', $partner->getKey()) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('Delete this partner?') }}');">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition">Delete</button>
+                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition">{{ __('Delete') }}</button>
               </form>
             </td>
           </tr>
         @empty
           <tr>
             <td colspan="5" class="px-3 py-12 text-center text-gray-400">
-              No partners yet. <a href="{{ route('admin.partners.create') }}" class="text-blue-400 hover:underline">Create the first partner</a>.
+              {{ __('No partners yet.') }} <a href="{{ route('admin.partners.create') }}" class="text-blue-400 hover:underline">{{ __('Create the first partner') }}</a>.
             </td>
           </tr>
         @endforelse
@@ -74,7 +74,7 @@
   @if($partners->count())
     <div class="flex justify-end">
       <button id="partner-save-order" type="button" class="px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-gray-200 rounded transition">
-        Save Order
+        {{ __('Save Order') }}
       </button>
     </div>
   @endif
@@ -110,12 +110,12 @@
       });
 
       if (!response.ok) {
-        throw new Error('Failed to save order.');
+        throw new Error(@json(__('Failed to save order.')));
       }
 
       window.location.reload();
     } catch (error) {
-      alert('Unable to save order. Please try again.');
+      alert(@json(__('Unable to save order. Please try again.')));
       console.error(error);
     }
   });

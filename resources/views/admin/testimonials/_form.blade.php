@@ -12,7 +12,7 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Name (EN)</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Name (EN)') }}</label>
     <input
       name="name[en]"
       value="{{ old('name.en', data_get($testimonial, 'name.en')) }}"
@@ -21,7 +21,7 @@
     >
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Name (AR)</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Name (AR)') }}</label>
     <input
       name="name[ar]"
       dir="rtl"
@@ -30,7 +30,7 @@
     >
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Role (EN)</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Role (EN)') }}</label>
     <input
       name="role[en]"
       value="{{ old('role.en', data_get($testimonial, 'role.en')) }}"
@@ -38,7 +38,7 @@
     >
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Role (AR)</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Role (AR)') }}</label>
     <input
       name="role[ar]"
       dir="rtl"
@@ -47,7 +47,7 @@
     >
   </div>
   <div class="md:col-span-2">
-    <label class="block text-sm text-gray-300 mb-1">Text (EN)</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Text (EN)') }}</label>
     <textarea
       name="text[en]"
       rows="4"
@@ -55,7 +55,7 @@
       required>{{ old('text.en', data_get($testimonial, 'text.en')) }}</textarea>
   </div>
   <div class="md:col-span-2">
-    <label class="block text-sm text-gray-300 mb-1">Text (AR)</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Text (AR)') }}</label>
     <textarea
       name="text[ar]"
       rows="4"
@@ -63,7 +63,7 @@
       class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-600">{{ old('text.ar', data_get($testimonial, 'text.ar')) }}</textarea>
   </div>
   <div>
-    <label class="block text-sm text-gray-300 mb-1">Avatar</label>
+    <label class="block text-sm text-gray-300 mb-1">{{ __('Avatar') }}</label>
     <input
       type="file"
       name="avatar"
@@ -71,7 +71,7 @@
       class="w-full text-gray-200"
     >
     @if($testimonial && $testimonial->avatar_path)
-      <img src="{{ asset($testimonial->avatar_path) }}" alt="Current avatar" class="mt-3 h-24 w-24 rounded-full border border-neutral-700 object-cover">
+      <img src="{{ asset($testimonial->avatar_path) }}" alt="{{ __('Current avatar') }}" class="mt-3 h-24 w-24 rounded-full border border-neutral-700 object-cover">
     @endif
   </div>
   <div class="flex items-center gap-2">
@@ -83,11 +83,11 @@
       {{ old('is_published', data_get($testimonial, 'is_published', true)) ? 'checked' : '' }}
       class="w-4 h-4 text-red-500 bg-neutral-800 border-neutral-600 rounded focus:ring-red-600"
     >
-    <label for="is_published" class="text-sm text-gray-300">Published</label>
+    <label for="is_published" class="text-sm text-gray-300">{{ __('Published') }}</label>
   </div>
   @if($testimonial && isset($testimonial->sort_order))
     <div>
-      <label class="block text-sm text-gray-300 mb-1">Sort Order</label>
+      <label class="block text-sm text-gray-300 mb-1">{{ __('Sort Order') }}</label>
       <input
         type="number"
         name="sort_order"

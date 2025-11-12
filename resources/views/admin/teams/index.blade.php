@@ -1,17 +1,17 @@
 @extends('admin.layout')
 
-@section('title', 'Teams')
+@section('title', __('Teams'))
 
 @section('content')
 <div class="px-6 py-4 space-y-4">
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
     <div>
-      <h1 class="text-xl font-semibold text-white">Teams</h1>
-      <p class="text-sm text-gray-400">Manage the people and squads displayed on the public team page.</p>
+      <h1 class="text-xl font-semibold text-white">{{ __('Teams') }}</h1>
+      <p class="text-sm text-gray-400">{{ __('Manage the people and squads displayed on the public team page.') }}</p>
     </div>
     <a href="{{ route('admin.teams.create') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded transition">
       <span class="text-lg leading-none">＋</span>
-      <span>Add Team</span>
+      <span>{{ __('Add Team') }}</span>
     </a>
   </div>
 
@@ -25,10 +25,10 @@
     <table class="min-w-full divide-y divide-neutral-800 text-sm">
       <thead class="bg-neutral-900 text-gray-300 uppercase tracking-wide text-xs">
         <tr>
-          <th class="px-3 py-3 text-left">Member</th>
-          <th class="px-3 py-3 text-left">Published</th>
-          <th class="px-3 py-3 text-left">Sort</th>
-          <th class="px-3 py-3 text-right">Actions</th>
+          <th class="px-3 py-3 text-left">{{ __('Member') }}</th>
+          <th class="px-3 py-3 text-left">{{ __('Published') }}</th>
+          <th class="px-3 py-3 text-left">{{ __('Sort') }}</th>
+          <th class="px-3 py-3 text-right">{{ __('Actions') }}</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-neutral-800">
@@ -52,24 +52,24 @@
             </td>
             <td class="px-3 py-3">
               <span class="inline-flex items-center px-2 py-1 rounded text-xs {{ $team->is_published ? 'bg-green-700/70 text-white' : 'bg-neutral-700 text-gray-300' }}">
-                {{ $team->is_published ? 'Yes' : 'No' }}
+                {{ $team->is_published ? __('Yes') : __('No') }}
               </span>
             </td>
             <td class="px-3 py-3 text-gray-300">{{ $team->sort_order }}</td>
             <td class="px-3 py-3 text-right space-x-2">
-              <a href="{{ route('admin.teams.show', $team) }}" class="inline-flex items-center px-3 py-1.5 bg-neutral-700 hover:bg-neutral-600 text-gray-200 rounded transition">View</a>
-              <a href="{{ route('admin.teams.edit', $team) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition">Edit</a>
-              <form action="{{ route('admin.teams.destroy', $team) }}" method="POST" class="inline" onsubmit="return confirm('Delete this team member?');">
+              <a href="{{ route('admin.teams.show', $team) }}" class="inline-flex items-center px-3 py-1.5 bg-neutral-700 hover:bg-neutral-600 text-gray-200 rounded transition">{{ __('View') }}</a>
+              <a href="{{ route('admin.teams.edit', $team) }}" class="inline-flex items-center px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded transition">{{ __('Edit') }}</a>
+              <form action="{{ route('admin.teams.destroy', $team) }}" method="POST" class="inline" onsubmit="return confirm('{{ __('Delete this team member?') }}');">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition">Delete</button>
+                <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded transition">{{ __('Delete') }}</button>
               </form>
             </td>
           </tr>
         @empty
           <tr>
             <td colspan="4" class="px-3 py-12 text-center text-gray-400">
-              No team members yet. <a href="{{ route('admin.teams.create') }}" class="text-blue-400 hover:underline">Create the first profile</a>.
+              {{ __('No team members yet.') }} <a href="{{ route('admin.teams.create') }}" class="text-blue-400 hover:underline">{{ __('Create the first profile') }}</a>.
             </td>
           </tr>
         @endforelse

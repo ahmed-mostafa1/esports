@@ -1,35 +1,35 @@
 @extends('admin.layout')
 
-@section('title', $pageTitle ?? 'Contents')
+@section('title', $pageTitle ?? __('Contents'))
 
 @section('content')
 <form class="flex flex-wrap gap-2 mb-4">
-  <input type="text" name="q" value="{{ $q }}" placeholder="Search key…"
+  <input type="text" name="q" value="{{ $q }}" placeholder="{{ __('Search key…') }}"
          class="border border-gray-700 bg-neutral-900 text-white placeholder-gray-400 px-2 py-1 rounded w-64">
   <select name="group" class="border border-gray-700 bg-neutral-900 text-white px-2 py-1 rounded">
-    <option value="">All groups</option>
+    <option value="">{{ __('All groups') }}</option>
     @foreach($groups as $g)
       <option value="{{ $g }}" @selected($group===$g)>{{ $g }}</option>
     @endforeach
   </select>
   <select name="type" class="border border-gray-700 bg-neutral-900 text-white px-2 py-1 rounded">
-    <option value="">All types</option>
+    <option value="">{{ __('All types') }}</option>
     @foreach($types as $t)
       <option value="{{ $t }}" @selected($type===$t)>{{ $t }}</option>
     @endforeach
   </select>
-  <button class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700 transition">Filter</button>
+  <button class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700 transition">{{ __('Filter') }}</button>
 </form>
 
 <div class="overflow-x-auto rounded-lg border border-neutral-800">
   <table class="w-full text-sm">
     <thead class="bg-neutral-900">
       <tr class="text-left text-gray-300">
-        <th class="p-2 border-b border-neutral-800">Key</th>
-        <th class="p-2 border-b border-neutral-800">Label</th>
-        <th class="p-2 border-b border-neutral-800">Group</th>
-        <th class="p-2 border-b border-neutral-800">Type</th>
-        <th class="p-2 border-b border-neutral-800">Updated</th>
+        <th class="p-2 border-b border-neutral-800">{{ __('Key') }}</th>
+        <th class="p-2 border-b border-neutral-800">{{ __('Label') }}</th>
+        <th class="p-2 border-b border-neutral-800">{{ __('Group') }}</th>
+        <th class="p-2 border-b border-neutral-800">{{ __('Type') }}</th>
+        <th class="p-2 border-b border-neutral-800">{{ __('Updated') }}</th>
         <th class="p-2 border-b border-neutral-800"></th>
       </tr>
     </thead>
@@ -46,7 +46,7 @@
           </td>
           <td class="p-2 border-b border-neutral-900 text-gray-400">{{ $row->updated_at?->diffForHumans() }}</td>
           <td class="p-2 border-b border-neutral-900">
-            <a class="underline text-red-400 hover:text-red-300 transition" href="{{ route('admin.contents.edit',$row->key) }}">Edit</a>
+            <a class="underline text-red-400 hover:text-red-300 transition" href="{{ route('admin.contents.edit',$row->key) }}">{{ __('Edit') }}</a>
           </td>
         </tr>
       @endforeach

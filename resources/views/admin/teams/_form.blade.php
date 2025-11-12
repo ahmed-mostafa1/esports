@@ -42,17 +42,17 @@
   <section class="bg-neutral-900/60 border border-neutral-800 rounded-xl p-6 space-y-6">
     <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div>
-        <h3 class="text-lg font-semibold text-white">Hero Card</h3>
+        <h3 class="text-lg font-semibold text-white">{{ __('Hero Card') }}</h3>
         <p class="text-sm text-gray-400">
-          This data feeds the big avatar, red name tag, and hero copy on the public page.
+          {{ __('This data feeds the big avatar, red name tag, and hero copy on the public page.') }}
         </p>
       </div>
-      <span class="text-xs uppercase tracking-widest text-gray-500">Matches the left column in the mock</span>
+      <span class="text-xs uppercase tracking-widest text-gray-500">{{ __('Matches the left column in the mock') }}</span>
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm text-gray-300 mb-1">Name (EN)</label>
+        <label class="block text-sm text-gray-300 mb-1">{{ __('Name (EN)') }}</label>
         <input
           type="text"
           name="name[en]"
@@ -62,7 +62,7 @@
         >
       </div>
       <div>
-        <label class="block text-sm text-gray-300 mb-1">Name (AR)</label>
+        <label class="block text-sm text-gray-300 mb-1">{{ __('Name (AR)') }}</label>
         <input
           type="text"
           name="name[ar]"
@@ -75,7 +75,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div>
-        <label class="block text-sm text-gray-300 mb-1">Hero Image</label>
+        <label class="block text-sm text-gray-300 mb-1">{{ __('Hero Image') }}</label>
         <input
           type="file"
           name="image"
@@ -83,17 +83,16 @@
           class="w-full text-gray-200"
         >
         <p class="text-xs text-gray-400 mt-1">
-          Square crop works best (600x600). File is saved under <code>content-images/teams</code>.
+          {!! __('Square crop works best (600x600). File is saved under <code>content-images/teams</code>.') !!}
         </p>
         @if($team && $team->image_path)
-          <img src="{{ asset($team->image_path) }}" alt="Current team image" class="mt-3 h-32 w-32 object-cover rounded-2xl border border-neutral-700 shadow-lg">
+          <img src="{{ asset($team->image_path) }}" alt="{{ __('Current team image') }}" class="mt-3 h-32 w-32 object-cover rounded-2xl border border-neutral-700 shadow-lg">
         @endif
       </div>
       <div class="bg-neutral-900/70 border border-neutral-800 rounded-lg p-4 text-sm text-gray-400">
-        <p class="font-semibold text-gray-200 mb-2">Hero Copy Tips</p>
+        <p class="font-semibold text-gray-200 mb-2">{{ __('Hero Copy Tips') }}</p>
         <p>
-          The hero section mirrors the mock: bold name, red pillow, and a short focus paragraph.
-          Keep it punchy: 2–3 sentences max describing achievements, focus, or mission.
+          {{ __('The hero section mirrors the mock: bold name, red pillow, and a short focus paragraph. Keep it punchy: 2–3 sentences max describing achievements, focus, or mission.') }}
         </p>
       </div>
     </div>
@@ -102,14 +101,14 @@
   <!-- Focused description -->
   <section class="bg-neutral-900/60 border border-neutral-800 rounded-xl p-6 space-y-4">
     <header>
-      <h3 class="text-lg font-semibold text-white">Focus Statement</h3>
+      <h3 class="text-lg font-semibold text-white">{{ __('Focus Statement') }}</h3>
       <p class="text-sm text-gray-400">
-        Appears beneath the hero card (bold white copy). Use this to explain their public role.
+        {{ __('Appears beneath the hero card (bold white copy). Use this to explain their public role.') }}
       </p>
     </header>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm text-gray-300 mb-1">Focus Statement (EN)</label>
+        <label class="block text-sm text-gray-300 mb-1">{{ __('Focus Statement (EN)') }}</label>
         <textarea
           name="description[en]"
           rows="4"
@@ -117,7 +116,7 @@
         >{{ old('description.en', data_get($team, 'description.en')) }}</textarea>
       </div>
       <div>
-        <label class="block text-sm text-gray-300 mb-1">Focus Statement (AR)</label>
+        <label class="block text-sm text-gray-300 mb-1">{{ __('Focus Statement (AR)') }}</label>
         <textarea
           name="description[ar]"
           dir="rtl"
@@ -131,9 +130,9 @@
   <!-- Highlight cards -->
   <section class="bg-neutral-900/60 border border-neutral-800 rounded-xl p-6 space-y-4">
     <header class="flex flex-col gap-1">
-      <h3 class="text-lg font-semibold text-white">Story Highlights (Red Cards)</h3>
+      <h3 class="text-lg font-semibold text-white">{{ __('Story Highlights (Red Cards)') }}</h3>
       <p class="text-sm text-gray-400">
-        Provide up to three short highlight cards. Each card has a title and a short supportive paragraph.
+        {{ __('Provide up to three short highlight cards. Each card has a title and a short supportive paragraph.') }}
       </p>
     </header>
 
@@ -180,12 +179,12 @@
         {{ old('is_published', data_get($team, 'is_published', true)) ? 'checked' : '' }}
         class="w-4 h-4 text-red-500 bg-neutral-800 border-neutral-600 rounded focus:ring-red-600"
       >
-      <label for="is_published" class="text-sm text-gray-300">Published</label>
+      <label for="is_published" class="text-sm text-gray-300">{{ __('Published') }}</label>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div>
-        <label class="block text-sm text-gray-300 mb-1">Sort Order</label>
+        <label class="block text-sm text-gray-300 mb-1">{{ __('Sort Order') }}</label>
         <input
           type="number"
           name="sort_order"
@@ -196,7 +195,7 @@
       </div>
       @if($team)
         <div class="md:col-span-2">
-          <label class="block text-sm text-gray-300 mb-1">Slug (auto)</label>
+          <label class="block text-sm text-gray-300 mb-1">{{ __('Slug (auto)') }}</label>
           <input
             type="text"
             value="{{ $team->slug }}"

@@ -186,17 +186,30 @@
       <header class="px-6 py-4 border-b border-gray-800 sticky top-0 bg-black/80 backdrop-blur">
         <div class="flex items-center justify-between gap-4">
           <h1 class="text-xl md:text-2xl font-semibold text-white">@yield('title')</h1>
-          @if(request()->routeIs('admin.contents.skeleton'))
-            <a
-              href="{{ route('admin.dashboard') }}"
-              class="inline-flex items-center gap-2 rounded-md border border-red-600 px-3 py-2 text-sm text-red-400 hover:bg-red-600 hover:text-white transition"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-              {{ __('Back to Dashboard') }}
-            </a>
-          @endif
+          <div class="flex items-center gap-3">
+            @if(request()->routeIs('admin.contents.skeleton'))
+              <a
+                href="{{ route('admin.dashboard') }}"
+                class="inline-flex items-center gap-2 rounded-md border border-red-600 px-3 py-2 text-sm text-red-400 hover:bg-red-600 hover:text-white transition"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                {{ __('Back to Dashboard') }}
+              </a>
+            @endif
+            @php($locales = ['en' => 'EN', 'ar' => __('AR')])
+            <div class="inline-flex overflow-hidden rounded-md border border-gray-700 text-xs font-semibold uppercase">
+              @foreach($locales as $code => $label)
+                <a
+                  href="{{ route('setLocale', $code) }}"
+                  class="px-3 py-2 transition {{ app()->getLocale() === $code ? 'bg-red-600 text-white' : 'text-gray-400 hover:bg-gray-900' }}"
+                >
+                  {{ $label }}
+                </a>
+              @endforeach
+            </div>
+          </div>
         </div>
       </header>
 
