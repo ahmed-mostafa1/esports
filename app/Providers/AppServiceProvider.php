@@ -23,7 +23,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (is_file(public_path('build/.vite/manifest.json'))) {
+        if (
+            class_exists(\Laravel\Vite\Facades\Vite::class)
+            && is_file(public_path('build/.vite/manifest.json'))
+        ) {
             // Vite 5+ places the manifest inside /.vite; tell Laravel where to look.
             Vite::useManifestFilename('.vite/manifest.json');
         }

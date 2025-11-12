@@ -25,9 +25,6 @@ use Illuminate\Support\Facades\Route;
 // Keep ONE home route
 Route::view('/', 'site.home')->name('home');
 
-Route::view('/dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 // Locale toggle
 Route::get('/lang/{locale}', function (string $locale) {
