@@ -6,6 +6,7 @@ use App\Models\SiteVisit;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Vite\Facades\Vite;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (is_file(public_path('build/.vite/manifest.json'))) {
+            // Vite 5+ places the manifest inside /.vite; tell Laravel where to look.
+            Vite::useManifestFilename('.vite/manifest.json');
+        }
+
         View::composer('layouts.app', function ($view): void {
             $totalVisitors = Cache::remember(
                 'site_visits_total',

@@ -11,7 +11,9 @@ test('new users can register', function () {
         'name' => 'Test User',
         'email' => 'admin@esport.com',
         'password' => 'admin123',
-        'password_confirmation' => 'password',
+        'password_confirmation' => 'admin123',
+        'accept_privacy' => true,
+        'accept_terms' => true,
     ]);
 
     $this->assertAuthenticated();
