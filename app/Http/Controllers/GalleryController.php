@@ -15,10 +15,7 @@ class GalleryController extends Controller
 
     public function show(GalleryItem $item)
     {
-        if (
-            !$item->is_published ||
-            ($item->published_at && $item->published_at->isFuture())
-        ) {
+        if (!$item->is_published) {
             abort(404);
         }
 

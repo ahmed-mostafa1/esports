@@ -149,6 +149,6 @@
       value="{{ old('published_at', optional(data_get($item, 'published_at'))->format('Y-m-d\TH:i')) }}"
       class="w-full bg-neutral-800 text-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
     >
-    <p class="mt-1 text-xs text-gray-500">{{ __('When set, the item will only be visible after this date/time.') }}</p>
+    <p class="mt-1 text-xs text-gray-500">{{ __('Optional metadata shown in the admin tools; leave blank if you do not need to record a publish date.') }}</p>
   </div>
 </div>

@@ -31,6 +31,11 @@ class Partner extends Model
         return 'slug';
     }
 
+    public function getRouteKey()
+    {
+        return $this->slug ?: $this->getKey();
+    }
+
     public function resolveRouteBinding($value, $field = null)
     {
         $field ??= $this->getRouteKeyName();
